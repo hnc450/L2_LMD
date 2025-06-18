@@ -5,7 +5,7 @@
   {
     public static function getPage(string $page)
     {
-      //echo  explode('?',$page)[0];
+   
       if (file_exists(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . $page.".php"))
       {
         require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . $page.".php";
@@ -28,6 +28,19 @@
         return;
       }
     }
+
+    public static function dashboard(string $page)
+    {
+      if (file_exists(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "administration" . DIRECTORY_SEPARATOR ."pages". DIRECTORY_SEPARATOR . $page.".php"))
+      {
+        require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "administration" . DIRECTORY_SEPARATOR."pages". DIRECTORY_SEPARATOR.$page.".php";
+      }
+      else 
+      {
+        return;
+      }
+    }
+
 
   }
 ?>

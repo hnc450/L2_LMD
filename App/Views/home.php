@@ -1,4 +1,6 @@
- <main class="main-content">
+<link rel="stylesheet" href="/css/style.css">
+
+<main class="main-content">
             <!-- Header mobile -->
             <header class="mobile-header">
                 <img src="img/logo.png" alt="Logo" class="logo">

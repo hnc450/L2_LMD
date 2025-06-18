@@ -2,6 +2,7 @@
     namespace App\Controllers\User;
     use App\Models\Database\Database;
     use App\Controllers\Action\Action;
+    use Exception;
     
    class User
    {
@@ -168,12 +169,48 @@
                   $mdp = $datas['new_password'];
                   Database::QueryRequest("UPDATE users SET mdps='$mdp' WHERE id_user=$id",3);
                   $_SESSION['user'][0]['mdps'] = $mdp;
-                  header("Location: /parametres");
+                  header("Location: /user/parametres");
                 }
 
               }
 
           }
+        }
+
+        public function envoyer_message($contenu) {
+            try {
+                if (empty($contenu)) {
+                    throw new Exception("Le message ne peut pas être vide");
+                }
+
+                $user_id = $_SESSION['user_id'];
+                $sql = "INSERT INTO messages (sender_id, content, created_at) VALUES (?, ?, NOW())";
+                $params = [$user_id, $contenu];
+                
+                Database::executeQuery($sql, $params);
+                return true;
+            } catch (Exception $e) {
+                error_log("Erreur lors de l'envoi du message : " . $e->getMessage());
+                return false;
+            }
+        }
+
+        public static function recuperer_messages($limit = 50) {
+            try {
+                $sql = "SELECT m.*, u.username, u.role 
+                        FROM messages m 
+                        JOIN users u ON m.sender_id = u.id_user 
+                        ORDER BY m.created_at DESC 
+                        LIMIT ?";
+                $params = [$limit];
+                
+               // $messages = Database::QueryRequest($sql, $params);
+               $messages = Database::QueryRequest($sql, 2);
+                return array_reverse($messages); // Pour avoir les messages dans l'ordre chronologique
+            } catch (Exception $e) {
+                error_log("Erreur lors de la récupération des messages : " . $e->getMessage());
+                return [];
+            }
         }
    }
 ?>

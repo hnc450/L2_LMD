@@ -1,6 +1,6 @@
 <?php 
   if(isset($_SESSION['user'])){
-    header("Location: /home");
+    \App\Middlewares\Security\Security::verify_role($_SESSION['user'][0]['role']);
     exit();
   }
 ?>

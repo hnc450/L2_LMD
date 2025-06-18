@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Utilisateurs - Le Monde Dans Ma Poche</title>
-    <link rel="stylesheet" href="../assets/css/theme.css">
-    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Slider styles */
@@ -409,13 +409,13 @@
                                 <td>
                                     <div class="action-buttons">
                                         <button class="btn-icon edit" title="Modifier">
-                                            <i class="fas fa-edit"></i>
+                                            <i class="fas fa-edit" style="color: #fff;"></i>
                                         </button>
                                         <button class="btn-icon ban" title="Bannir">
                                             <i class="fas fa-ban"></i>
                                         </button>
                                         <button class="btn-icon delete" title="Supprimer">
-                                            <i class="fas fa-trash"></i>
+                                            <i class="fa-solid fa-trash" style="color: #fff;"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -435,10 +435,10 @@
             </div>
         </main>
     </div>
-    <!-- <script src="../assets/js/theme.js"></script> -->
-    <!-- <script src="../assets/js/dashboard.js"></script> -->
-    <!-- <script src="../assets/js/include.js"></script> -->
-    <!-- <script src="../assets/js/admin-users.js"></script> -->
+    <script src="/js/theme.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/include.js"></script>
+    <!-- <script src="/js/admin-users.js"></script> -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const track = document.getElementById('sliderTrack');

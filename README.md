@@ -1,7 +1,10 @@
 # Le Monde Dans Ma Poche - Interface d'Administration
 
 ## Structure du Projet
-
+## pour retirer  un dossier ou un fichier du versionning 
+```
+     git rm --cached -r vendor composer.lock
+```
 ```
 admin_front_end/
 ├── assets/
@@ -62,6 +65,7 @@ admin_front_end/
 
 - Font Awesome 6.4.0
 - Chart.js (pour les graphiques)
+- Altorouter (pour les routes)
 
 ## Installation
 

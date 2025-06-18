@@ -67,7 +67,8 @@
                $_SESSION['user'] = Database::QueryRequest("SELECT * FROM users  WHERE mails='$email' AND mdps='$mdp'",2);
                self::souviens_toi_de_moi("Tokken",$datas,$datas['remember']?? '');
               
-                header("Location: /home");
+                //header("Location: /home");
+                \App\Middlewares\Security\Security::verify_role($_SESSION['user'][0]['role']);
               }
 
               else

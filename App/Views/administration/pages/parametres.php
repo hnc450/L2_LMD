@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paramètres - Le Monde Dans Ma Poche</title>
-    <link rel="stylesheet" href="../assets/css/theme.css">
-    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Styles spécifiques pour la page paramètres */
@@ -214,8 +214,8 @@
             </div>
         </main>
     </div>
-    <script src="../assets/js/theme.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
-    <script src="../assets/js/include.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/include.js"></script>
 </body>
 </html> 

@@ -29,10 +29,8 @@
              die('Erreur de connexion '.$exception->getMessage());
           }
        }
-       public static function testing()
-       {
-          echo "autoload reussie";
-       }
+
+        
        public static function setNewDatabase(string $database):void
        {
             self::$database = $database;
@@ -110,6 +108,11 @@
                break;
          }
 
+       }
+
+       public static function insert_into_database(string $generic_table_with_column,array $datas)
+       {
+         self::executeQuery("INSERT INTO ".$generic_table_with_column." VALUES (".str_repeat('?,', count($datas) - 1)."?)", $datas, 1);
        }
     }
 ?>

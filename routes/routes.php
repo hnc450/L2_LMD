@@ -5,49 +5,52 @@
             use App\Controllers\User\User;
             use App\Controllers\Action\Action;
             use App\Controllers\Admin\Admin;
+                
+            $routes->map("GET","/test", function($action) {
+                Page::getPage("mark");
+            });
 
             $routes->map("GET","/", function() {
-                //echo  Component::P("url avec ltrim: ",null,"color: white; font-size: 20px;text-align: center;");
                 Page::getPage("welcome");
             });
-            $routes->map("GET","/chat", function() {
-                Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
+
+             /* Route for User*/
+            $routes->map("GET","/user/chat", function() {
+                Page::getPage("chat");
             });
-            $routes->map("GET","/home", function() {
-               
-                Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
+            $routes->map("GET","/user/home", function() {
+                Page::getPage("home");
             });
 
-            $routes->map("GET","/jeux", function() {
-                Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
+            $routes->map("GET","/user/jeux", function() {
+                Page::getPage("jeux");
             });
-            $routes->map("GET","/modules",function(){
-                Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
-            });
-
-            $routes->map("GET","/profile", function() {
-                 Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
+            $routes->map("GET","/user/modules",function(){
+                Page::getPage("modules");
             });
 
-            $routes->map("GET","/ligue", function() {
-                  Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
+            $routes->map("GET","/user/profile", function() {
+                 Page::getPage("profile");
             });
 
-            $routes->map("GET","/parametres", function() {
-                Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
+            $routes->map("GET","/user/ligue", function() {
+                  Page::getPage("ligue");
             });
-            $routes->map("GET","/routes", function() {
-             echo "salut routes pour le test";
-            });
-            $routes->map("GET","/login",function(){
-                 Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
-                // echo Component::P(explode('?',$_SERVER['REQUEST_URI'])[0],null,"color: white; font-size: 20px;text-align: center;");
+
+            $routes->map("GET","/user/parametres", function() {
+                Page::getPage("parametres");
             });
             
-            $routes->map("GET","/explorations", function() {
-                Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
+            $routes->map("GET","/user/explorations", function() {
+                Page::getPage("explorations");
             });
+           /*--------------*/
 
+            $routes->map("GET","/login",function(){
+                 Page::getPage("login");
+            });
+            
+         
             $routes->map("GET","/deconnexion",function(){
                 User::se_deconnecter();
             });
@@ -93,14 +96,17 @@
             });
 
             // route pour ajouter un jeu , une exploaration, un module
-            $routes->map("POST","/add/expoloration",function(){
+            $routes->map("POST","/administration/add/expoloration",function(){
                 var_dump($_POST);
+                Admin::ajouter_un_exploration($_POST,$_SERVER['REQUEST_METHOD']);
             });
-            $routes->map("POST","/add/jeu",function(){
-               echo "<pre>";
-               var_dump($_POST);
-               echo "</pre>";
-               Admin::ajouter_un_jeu($_POST,$_SERVER['REQUEST_METHOD']);
+
+            $routes->map("POST","/administration/add/quiz",function(){
+                Admin::ajouter_un_jeu($_POST,$_SERVER['REQUEST_METHOD']);
+            });
+
+            $routes->map("POST","/administration/add/category",function(){
+                Admin::ajouter_une_categorie($_POST);
             });
 
             $routes->map("DELETE","/clean/user/[i:id]",function($id){
@@ -110,14 +116,14 @@
              
             });
 
-
             //chemin vers la dashboard d ou /administration route
             $routes->map("GET","/administration/dashboard", function() {
                 Page::dashboard("dashboard");
             });
 
             $routes->map("GET","/administration/users",function() {
-                Page::getPage("utilisateurs");
+               // Page::getPage("utilisateurs");
+               Page::dashboard("utilisateurs");
             });
         
             $routes->map("GET","/administration/contenus",function() {
@@ -131,6 +137,36 @@
             $routes->map("GET","/administration/ligues",function() {
                 Page::dashboard("ligues");
             });
+            
+            $routes->map("GET","/administration/parametres",function() {
+                Page::dashboard("parametres");
+            });
+            
+            // Routes pour le bannissement des utilisateurs
+            $routes->map("POST", "/administration/ban/user/[i:id]", function($id) {
+                Admin::banir_utilisateur((int)$id['id']);
+            });
+
+            //Routes pour le chat
+            $routes->map("GET", "/chat", function() {
+                $page = new \App\Controllers\Page\Page();
+                $page->getPage("chat");
+            });
+
+            $routes->map("POST", "/chat/send", function() {
+                $user = new \App\Controllers\User\User();
+                $data = json_decode(file_get_contents('php://input'), true);
+                $success = $user->envoyer_message($data['message']);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $success]);
+            });
+
+            $routes->map("GET", "/chat/messages", function() {
+                $messages = User::recuperer_messages();
+                header('Content-Type: application/json');
+                echo json_encode($messages);
+            });
+
             $match = $routes->match();
             
             if($match)

@@ -12,7 +12,7 @@ function showPopup(title, type) {
                 <button class="close-popup">&times;</button>
             </div>
             <div class="popup-body">
-                <form id="contentForm">
+                <form id="contentForm" method="POST" action="/administration/add/${type}">
                     <div class="form-group">
                         <label for="title">Titre</label>
                         <input type="text" id="title" required>
@@ -66,22 +66,22 @@ function showPopup(title, type) {
     cancelBtn.addEventListener('click', closePopup);
 
     // Gérer la soumission du formulaire
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const formData = {
-            title: document.getElementById('title').value,
-            description: document.getElementById('description').value,
-            category: document.getElementById('category').value,
-            level: document.getElementById('level').value,
-            type: type
-        };
+    // form.addEventListener('submit', (e) => {
+    //     e.preventDefault();
+    //     const formData = {
+    //         title: document.getElementById('title').value,
+    //         description: document.getElementById('description').value,
+    //         category: document.getElementById('category').value,
+    //         level: document.getElementById('level').value,
+    //         type: type
+    //     };
         
-        // Ici, vous pouvez ajouter la logique pour sauvegarder les données
-        console.log('Données du formulaire:', formData);
+    //     // Ici, vous pouvez ajouter la logique pour sauvegarder les données
+    //     console.log('Données du formulaire:', formData);
         
-        // Fermer la pop-up après l'enregistrement
-        closePopup();
-    });
+    //     // Fermer la pop-up après l'enregistrement
+    //     closePopup();
+    // });
 }
 
 // Ajouter les écouteurs d'événements aux boutons
