@@ -45,12 +45,12 @@
 
              if(!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) 
              {
-                header("Location :/login?message=addresse email invalide && color=red");
+                header("Location:/login?message=addresse email invalide && color=danger");
              }
 
              if(!preg_match("/^[a-zA-Z0-9]*$/",$datas['password']))
              {
-                header("Location: /login?message=le mot de passe doit contenir dea chiffres et des lettres && color=red");
+                header("Location: /login?message=le mot de passe doit contenir dea chiffres et des lettres && color=danger");
              }   
 
              else

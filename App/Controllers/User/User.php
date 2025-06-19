@@ -19,41 +19,54 @@
 
         public static function modifier_profile(string $request, $fichier)
         {
-          // Vérifier si un fichier a été soumis
-           if ($request === 'POST' && isset($_FILES['image'])) {
-               $uploadDir = './assets/photos/'; // Chemin vers le dossier de stockage
-               $file = $_FILES['image'];
-              
-               // Vérifier les erreurs d'upload
-               if ($file['error'] !== UPLOAD_ERR_OK) {
-                   die('Erreur lors de l\'upload du fichier.');
-                   header("Location: /profile?message=Erreur lors de l envoie du fichier");
-               }
-              
-               // Vérifier si le fichier est une image
-               $fileType = mime_content_type($file['tmp_name']);
-               if (strpos($fileType, 'image/') !== 0) {
-                   die('Le fichier soumis n\'est pas une image.');
-               }
-              
-               // Générer un nom unique pour le fichier
-               $fileName = uniqid('photo_', true) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
-              
-               // Déplacer le fichier dans le dossier de destination
-               if (!is_dir($uploadDir)) {
-                   mkdir($uploadDir, 0755, true); // Créer le dossier s'il n'existe pas
-               }
-              
-               $destination = $uploadDir . $fileName;
-               if (move_uploaded_file($file['tmp_name'], $destination)) {
-                   echo 'Image uploadée avec succès !';
-               } else {
-                   echo 'Erreur lors du déplacement du fichier.';
-                   header("Location: /profile?message=Erreur lors du deplacement du fichier && color=red");
-               }
-           } else {
-               header("Location: /profile?message=Aucun fichier soumis&&color=red");
-           }
+            // Utilisation du middleware Upload
+            \App\Middlewares\Security\Security::require_auth();
+            if ($request === 'POST' && isset($_FILES['image'])) {
+                require_once __DIR__ . '/../../Middlewares/Request/Upload.php';
+                $uploadDir = 'public/uploads/avatars/';
+                $file = $_FILES['image'];
+                $userId = $_SESSION['user'][0]['id_user'];
+                // Upload sécurisé
+                $avatarPath = \Upload::upload_image($file, $uploadDir);
+                if ($avatarPath) {
+                    // Supprimer l'ancien avatar si ce n'est pas l'avatar par défaut
+                    $user = Database::QueryRequest("SELECT avatar FROM users WHERE id_user=$userId", 2);
+                    if (!empty($user[0]['avatar']) && strpos($user[0]['avatar'], 'default') === false) {
+                        \Upload::delete_image($user[0]['avatar']);
+                    }
+                    // Mettre à jour la BDD
+                    Database::executeQuery("UPDATE users SET avatar=:avatar WHERE id_user=:id", [
+                        ':avatar' => $avatarPath,
+                        ':id' => $userId
+                    ], 3);
+                    $_SESSION['user'][0]['avatar'] = $avatarPath;
+                    header("Location: /profile?message=Avatar mis à jour avec succès");
+                } else {
+                    header("Location: /profile?message=Erreur lors de l'upload de l'image&&color=red");
+                }
+            } else {
+                header("Location: /profile?message=Aucun fichier soumis&&color=red");
+            }
+        }
+
+        /**
+         * Supprime l'avatar utilisateur (remet l'avatar par défaut)
+         */
+        public static function supprimer_avatar(int $id)
+        {
+            \App\Middlewares\Security\Security::require_auth();
+            require_once __DIR__ . '/../../Middlewares/Request/Upload.php';
+            $user = Database::QueryRequest("SELECT avatar FROM users WHERE id_user=$id", 2);
+            if (!empty($user[0]['avatar']) && strpos($user[0]['avatar'], 'default') === false) {
+                \Upload::delete_image($user[0]['avatar']);
+            }
+            $default = 'public/uploads/avatars/default.png';
+            Database::executeQuery("UPDATE users SET avatar=:avatar WHERE id_user=:id", [
+                ':avatar' => $default,
+                ':id' => $id
+            ], 3);
+            $_SESSION['user'][0]['avatar'] = $default;
+            header("Location: /profile?message=Avatar supprimé");
         }
 
   
@@ -98,7 +111,7 @@
 
               if(strlen($datas['pseudo']) < 3 || strlen($datas['pseudo']) > 20)
               { 
-                header("Location: /error/le0pseudo0doit0avoir0entre060et020caracteres");
+                header("Location: /error/le0pseudo0do les it0avoir0entre060et020caracteres");
               }
 
               if(!preg_match('/^[a-zA-Z]+$/', $datas['prenom'])) 
@@ -183,11 +196,11 @@
                     throw new Exception("Le message ne peut pas être vide");
                 }
 
-                $user_id = $_SESSION['user_id'];
+                $user_id = $_SESSION['user'][0]['id_user'];
                 $sql = "INSERT INTO messages (sender_id, content, created_at) VALUES (?, ?, NOW())";
                 $params = [$user_id, $contenu];
                 
-                Database::executeQuery($sql, $params);
+                Database::executeQuery($sql, $params,1);
                 return true;
             } catch (Exception $e) {
                 error_log("Erreur lors de l'envoi du message : " . $e->getMessage());
@@ -197,16 +210,21 @@
 
         public static function recuperer_messages($limit = 50) {
             try {
-                $sql = "SELECT m.*, u.username, u.role 
+                $sql = "SELECT m.*, u.prenoms, u.role
                         FROM messages m 
                         JOIN users u ON m.sender_id = u.id_user 
                         ORDER BY m.created_at DESC 
-                        LIMIT ?";
-                $params = [$limit];
+                        LIMIT $limit";
+                // $params = [$limit];
                 
-               // $messages = Database::QueryRequest($sql, $params);
+               //$messages = Database::executeQuery($sql,[$limit],2);
+
                $messages = Database::QueryRequest($sql, 2);
-                return array_reverse($messages); // Pour avoir les messages dans l'ordre chronologique
+              //  var_dump(array_reverse(
+              //   $messages));
+               
+              return $messages;
+                //return array_reverse($messages); // Pour avoir les messages dans l'ordre chronologique
             } catch (Exception $e) {
                 error_log("Erreur lors de la récupération des messages : " . $e->getMessage());
                 return [];

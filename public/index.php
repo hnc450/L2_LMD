@@ -23,7 +23,7 @@
     
      <!-- <link rel="stylesheet" href="/css/style.css"> -->
      <!-- <link rel="stylesheet" href="/css/styles.css"> -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
 
     <!-- <script src="/js/script.js" defer></script> -->
     <!-- <script src="/js/auth.js" defer></script> -->
@@ -34,7 +34,7 @@
         <!-- Sidebar pour Desktop -->
        <?php
             if($_SERVER['REQUEST_URI'] !== "/" && $_SERVER['REQUEST_URI'] !== "/login" && $_SERVER['REQUEST_URI'] !== "/register" &&  $_SERVER['REQUEST_URI'] !== "/administration/dashboard"){
-             //require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'sidebar.php';
+             require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'sidebar.php';
             }
             require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'routes.php';
        ?>

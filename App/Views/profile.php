@@ -10,7 +10,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil - Le Monde Dans Ma Poche</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="dark-theme">
@@ -32,10 +33,16 @@
             <div class="profile-content">
                 <section class="profile-header">
                     <div class="profile-avatar">
-                        <img src="img/avatar.png" alt="Avatar">
-                        <div class="edit-avatar">
-                            <i class="fas fa-camera"></i>
-                        </div>
+                        <!-- Affichage de l'avatar utilisateur (ou avatar par défaut) -->
+                        <img src="<?php echo !empty($_SESSION['user'][0]['avatar']) ? '/' . $_SESSION['user'][0]['avatar'] : '/public/uploads/avatars/default.png'; ?>" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <form action="/profile/avatar" method="POST" enctype="multipart/form-data" style="margin-top:10px;">
+                            <input type="file" name="image" accept="image/*" required>
+                            <button type="submit" class="btn-primary">Changer d'avatar</button>
+                        </form>
+                        <!-- Bouton de suppression d'avatar -->
+                        <form action="/profile/avatar/delete" method="POST" style="margin-top:5px;">
+                            <button type="submit" class="btn-danger">Supprimer l'avatar</button>
+                        </form>
                     </div>
                     <div class="profile-info">
                         <h2><?= $_SESSION['user'][0]['status'] ? "<i class='fa-solid fa-circle' style='color: green;'></i>" : "<i class='fa-solid fa-circle' style='color: red;'></i>" ?> <?= $_SESSION['user'][0]['prenoms'] ?></h2>
@@ -69,7 +76,7 @@
                 </section>
 
                 <section class="trophies-section">
-                    <div class="section-header">
+                    <div class="section-header">j
                         <h2>Mes Trophées</h2>
                     </div>
                     

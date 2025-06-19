@@ -263,7 +263,7 @@ if (!isset($_SESSION['user'][0]['id_user'])) {
                 .then(messages => {
                     const chatMessages = document.getElementById('chatMessages');
                     chatMessages.innerHTML = '';
-                    
+                    console.log(messages);
                     messages.forEach(message => {
                         const messageDiv = document.createElement('div');
                         messageDiv.className = `message ${message.sender_id === <?php echo $_SESSION['user'][0]['id_user']; ?> ? 'sent' : 'received'}`;

@@ -79,3 +79,10 @@ Pour ajouter de nouvelles fonctionnalités :
 1. Créez les fichiers nécessaires dans les dossiers appropriés
 2. Mettez à jour les chemins dans les fichiers HTML
 3. Testez sur différents navigateurs 
+
+## Amélioration Sidebar (2024)
+- La sidebar affiche désormais dynamiquement les liens selon le rôle de l'utilisateur (joueur ou administrateur).
+- L'avatar affiché est celui de l'utilisateur (ou un avatar par défaut).
+- Les liens d'administration (dashboard, gestion utilisateurs, contenus, ligues, plaintes, paramètres admin) n'apparaissent que pour les administrateurs.
+- Les liens vers les modules, explorations, jeux, chat, etc. sont accessibles à tous les utilisateurs connectés.
+- Le nom/prénom et le rôle de l'utilisateur sont affichés dans le footer de la sidebar.

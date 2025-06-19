@@ -28,8 +28,9 @@
         {
             return [
                 'actifs_users' => Database::QueryRequest("SELECT COUNT(*) AS actifs FROM users WHERE status = 1", 2),
-                '',
-                '',
+                'inatifs_user'=> Database::QueryRequest("SELECT COUNT(*) AS inatifs FROM users WHERE status = 0", 2),
+                'utilisateurs_inscrits'=> Database::QueryRequest("SELECT COUNT(*) AS utilisateurs_inscrits FROM users", 2),
+                'administrateurs'=> Database::QueryRequest("SELECT COUNT(*) AS administrateurs FROM users WHERE role = 'administrateur'", 2) ,
                 'categories' => Database::QueryRequest("SELECT COUNT(*) AS nombre_categorie FROM categories", 2),
             ];
         }
@@ -101,9 +102,26 @@
             header("Location: /administration/dashboard");
         }
 
-        public static function supprimer_une_categorie(int $id) 
+        public static function supprimer_une_categorie(string $id) 
         {
-       
+            try {
+                if(Action::check_existence("categories","id_categorie",$id)) {
+
+                    $query = "DELETE FROM categories WHERE id_categorie = :id";
+                    $params = [':id' => $id];
+                    Database::executeQuery($query, $params, 4);
+                    header("Location: /administration/contenus");
+                    return true;
+                }
+
+                else
+                {
+                    return false;
+                }
+            } catch (\PDOException $e) {
+                error_log("Erreur lors de la suppression de la catégorie: " . $e->getMessage());
+                return false;
+            }
         }
 
         public static function banir_utilisateur(int $id_user) 

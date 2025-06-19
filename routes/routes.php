@@ -14,7 +14,7 @@
                 Page::getPage("welcome");
             });
 
-             /* Route for User*/
+             /* Route for User in GET*/
             $routes->map("GET","/user/chat", function() {
                 Page::getPage("chat");
             });
@@ -44,18 +44,24 @@
             $routes->map("GET","/user/explorations", function() {
                 Page::getPage("explorations");
             });
-           /*--------------*/
+
+            /*--------------*/
+
+           /*     Route for User && Admin in GET*/
+            
 
             $routes->map("GET","/login",function(){
                  Page::getPage("login");
             });
-            
-         
+                     
             $routes->map("GET","/deconnexion",function(){
                 User::se_deconnecter();
             });
-            // user , users une routes pour l administration encore
-            $routes->map("GET","/user/[i:id]",function($id){
+
+            /*Route for Admin in GET*/ 
+            // route pour voir un utilisateur
+
+            $routes->map("GET","/administration/user/[i:id]",function($id){
               Page::getPageWithId("user",$id['id']);
             });
 
@@ -63,12 +69,13 @@
                Page::getPage("utilisateurs");
             });
 
-            // Message route
-            $routes->map("GET","/error/[a:message]",function($message){
-               // echo $message['message'];
-                //echo  "<br/>";
-               echo str_replace("0"," ",$message['message']);
-            });
+            // Message route à supprimer ne sert plus à rien
+
+            // $routes->map("GET","/error/[a:message]",function($message){
+            //    // echo $message['message'];
+            //     //echo  "<br/>";
+            //    echo str_replace("0"," ",$message['message']);
+            // });
 
             $routes->map("GET","/delete/account/[i:id]", function($id) {
                 echo Component::P($id['id'],null,"color: white; font-size: 20px;text-align: center;");
@@ -97,16 +104,33 @@
 
             // route pour ajouter un jeu , une exploaration, un module
             $routes->map("POST","/administration/add/expoloration",function(){
-                var_dump($_POST);
+                \App\Middlewares\Security\Security::require_role('administrateur');
                 Admin::ajouter_un_exploration($_POST,$_SERVER['REQUEST_METHOD']);
             });
 
             $routes->map("POST","/administration/add/quiz",function(){
+                \App\Middlewares\Security\Security::require_role('administrateur');
                 Admin::ajouter_un_jeu($_POST,$_SERVER['REQUEST_METHOD']);
             });
 
+            $routes->map("PUT","/administration/quiz/[i:id]",function($id){
+                \App\Middlewares\Security\Security::require_role('administrateur');
+                Admin::modifier_jeu($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
+            });
+
+            $routes->map("DELETE","/administration/quiz/[i:id]",function($id){
+                \App\Middlewares\Security\Security::require_role('administrateur');
+                Admin::supprimer_jeu((int)$id['id']);
+            });
+
             $routes->map("POST","/administration/add/category",function(){
+                \App\Middlewares\Security\Security::require_role('administrateur');
                 Admin::ajouter_une_categorie($_POST);
+            });
+
+            $routes->map("DELETE","/administration/category/[i:id]",function($id){
+                \App\Middlewares\Security\Security::require_role('administrateur');
+                Admin::supprimer_une_categorie((int)$id['id']);
             });
 
             $routes->map("DELETE","/clean/user/[i:id]",function($id){
@@ -163,8 +187,50 @@
 
             $routes->map("GET", "/chat/messages", function() {
                 $messages = User::recuperer_messages();
-                header('Content-Type: application/json');
-                echo json_encode($messages);
+               // var_dump($messages);
+                 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+                 header('Content-Type: application/json');
+                 echo json_encode($messages);
+            });
+
+            $routes->map("POST","/user/explorations", function() {
+                \App\Middlewares\Security\Security::require_role('joueur');
+                \App\Controllers\User\User::ajouter_une_exploration($_POST, $_SERVER['REQUEST_METHOD']);
+            });
+
+            $routes->map("PUT","/user/explorations/[i:id]", function($id) {
+                \App\Middlewares\Security\Security::require_role('joueur');
+                \App\Controllers\User\User::modifier_exploration($_POST, $_SERVER['REQUEST_METHOD'], (int)$id['id']);
+            });
+
+            $routes->map("DELETE","/user/explorations/[i:id]", function($id) {
+                \App\Middlewares\Security\Security::require_role('joueur');
+                \App\Controllers\User\User::supprimer_exploration((int)$id['id']);
+            });
+
+            $routes->map("POST","/administration/add/module",function(){
+                \App\Middlewares\Security\Security::require_role('administrateur');
+                Admin::ajouter_un_module($_POST,$_SERVER['REQUEST_METHOD']);
+            });
+
+            $routes->map("PUT","/administration/module/[i:id]",function($id){
+                \App\Middlewares\Security\Security::require_role('administrateur');
+                Admin::modifier_module($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
+            });
+
+            $routes->map("DELETE","/administration/module/[i:id]",function($id){
+                \App\Middlewares\Security\Security::require_role('administrateur');
+                Admin::supprimer_module((int)$id['id']);
+            });
+
+            $routes->map("PUT","/administration/exploration/[i:id]",function($id){
+                \App\Middlewares\Security\Security::require_role('administrateur');
+                Admin::modifier_exploration($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
+            });
+
+            $routes->map("DELETE","/administration/exploration/[i:id]",function($id){
+                \App\Middlewares\Security\Security::require_role('administrateur');
+                Admin::supprimer_exploration((int)$id['id']);
             });
 
             $match = $routes->match();

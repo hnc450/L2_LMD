@@ -10,7 +10,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - Le Monde Dans Ma Poche</title>
-    <link rel="stylesheet" href="css/styles.css">
+   
+    <!-- link bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="dark-theme auth-page">
@@ -27,10 +30,19 @@
             </div>
 
             <div class="auth-content">
-                <!-- Formulaire de connexion -->
                  <?php
                      $tokken = unserialize($_COOKIE['Tokken'] ?? '');
                  ?>
+                 <?php if(isset($_GET['message']) && isset($_GET['color'])): ?>
+                    <div class="container">
+                        <div class="alert alert-<?= $_GET['color']?>">
+                            <?= $_GET['message']?>
+                        
+                        </div>
+                    </div>
+                 <?php endif ?>
+
+                <!-- Formulaire de connexion -->
                 <form id="loginForm" class="auth-form active" action="/sign" method="POST">
                     <div class="form-group">
                         <label for="loginEmail">Email</label>
