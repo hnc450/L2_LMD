@@ -110,7 +110,7 @@
 
        }
 
-       public static function insert_into_table(string $generic_table_with_column,array $datas)
+       public static function insert(string $generic_table_with_column,array $datas)
        {
          self::executeQuery("INSERT INTO ".$generic_table_with_column." VALUES (".str_repeat('?,', count($datas) - 1)."?)", $datas, 1);
        }

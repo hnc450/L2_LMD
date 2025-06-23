@@ -3,6 +3,7 @@
     use App\Models\Database\Database;
     use App\Controllers\Action\Action;
     use Exception;
+    use App\Models\Exploration\Exploration as ExplorationModel;
     
    class User
    {
@@ -19,33 +20,32 @@
 
         public static function modifier_profile(string $request, $fichier)
         {
-            // Utilisation du middleware Upload
             \App\Middlewares\Security\Security::require_auth();
-            if ($request === 'POST' && isset($_FILES['image'])) {
-                require_once __DIR__ . '/../../Middlewares/Request/Upload.php';
-                $uploadDir = 'public/uploads/avatars/';
-                $file = $_FILES['image'];
-                $userId = $_SESSION['user'][0]['id_user'];
-                // Upload sécurisé
-                $avatarPath = \Upload::upload_image($file, $uploadDir);
+            if ($request === 'POST' && isset($fichier['image'])) {
+          
+                $uploadDir = __DIR__ . '/../../../public/assets/';
+                $file = $fichier['image'];
+                $avatarPath = \App\Middlewares\Upload\Upload::upload_image($file, $uploadDir);
                 if ($avatarPath) {
-                    // Supprimer l'ancien avatar si ce n'est pas l'avatar par défaut
+                    // On ne garde que le nom du fichier pour le chemin web
+                    $fileName = basename($avatarPath);
+                    $webAvatarPath = '/assets/' . $fileName;
+                    $userId = $_SESSION['user'][0]['id_user'];
                     $user = Database::QueryRequest("SELECT avatar FROM users WHERE id_user=$userId", 2);
                     if (!empty($user[0]['avatar']) && strpos($user[0]['avatar'], 'default') === false) {
-                        \Upload::delete_image($user[0]['avatar']);
+                        \App\Middlewares\Upload\Upload::delete_image($user[0]['avatar']);
                     }
-                    // Mettre à jour la BDD
                     Database::executeQuery("UPDATE users SET avatar=:avatar WHERE id_user=:id", [
-                        ':avatar' => $avatarPath,
+                        ':avatar' => $webAvatarPath,
                         ':id' => $userId
                     ], 3);
-                    $_SESSION['user'][0]['avatar'] = $avatarPath;
-                    header("Location: /profile?message=Avatar mis à jour avec succès");
+                    $_SESSION['user'][0]['avatar'] = $webAvatarPath;
+                    header("Location: /user/profile?message=Avatar mis à jour avec succès");
                 } else {
-                    header("Location: /profile?message=Erreur lors de l'upload de l'image&&color=red");
+                    header("Location: /user/profile?message=Erreur lors de l'upload de l'image&&color=red");
                 }
             } else {
-                header("Location: /profile?message=Aucun fichier soumis&&color=red");
+                header("Location: /user/profile?message=Aucun fichier soumis&&color=red");
             }
         }
 
@@ -55,10 +55,10 @@
         public static function supprimer_avatar(int $id)
         {
             \App\Middlewares\Security\Security::require_auth();
-            require_once __DIR__ . '/../../Middlewares/Request/Upload.php';
+   
             $user = Database::QueryRequest("SELECT avatar FROM users WHERE id_user=$id", 2);
             if (!empty($user[0]['avatar']) && strpos($user[0]['avatar'], 'default') === false) {
-                \Upload::delete_image($user[0]['avatar']);
+               \App\Middlewares\Upload\Upload::delete_image($user[0]['avatar']);
             }
             $default = 'public/uploads/avatars/default.png';
             Database::executeQuery("UPDATE users SET avatar=:avatar WHERE id_user=:id", [
@@ -66,7 +66,7 @@
                 ':id' => $id
             ], 3);
             $_SESSION['user'][0]['avatar'] = $default;
-            header("Location: /profile?message=Avatar supprimé");
+            header("Location: /user/profile?message=Avatar supprimé");
         }
 
   
@@ -213,7 +213,7 @@
                 $sql = "SELECT m.*, u.prenoms, u.role
                         FROM messages m 
                         JOIN users u ON m.sender_id = u.id_user 
-                        ORDER BY m.created_at DESC 
+                        ORDER BY m.created_at ASC
                         LIMIT $limit";
                 // $params = [$limit];
                 
@@ -229,6 +229,40 @@
                 error_log("Erreur lors de la récupération des messages : " . $e->getMessage());
                 return [];
             }
+        }
+
+        public static function ajouter_une_exploration(array $datas, string $methode)
+        {
+            \App\Middlewares\Security\Security::require_role('joueur');
+            if($methode === "POST") {
+                $titre = $datas['titre'] ?? '';
+                $categorie = $datas['categorie'] ?? '';
+                $info = $datas['info'] ?? '';
+                $user_id = $_SESSION['user'][0]['id_user'];
+                //ExplorationModel::create($titre, $categorie, $info, $user_id);
+                header("Location: /explorations?success=1");
+            }
+        }
+
+        public static function modifier_exploration(array $datas, string $methode, int $id)
+        {
+            \App\Middlewares\Security\Security::require_role('joueur');
+            if($methode === "POST") {
+                $titre = $datas['titre'] ?? '';
+                $categorie = $datas['categorie'] ?? '';
+                $info = $datas['info'] ?? '';
+                $user_id = $_SESSION['user'][0]['id_user'];
+                ExplorationModel::update($id, $titre, $categorie, $info, $user_id);
+                header("Location: /explorations?success=1");
+            }
+        }
+
+        public static function supprimer_exploration(int $id)
+        {
+            \App\Middlewares\Security\Security::require_role('joueur');
+            $user_id = $_SESSION['user'][0]['id_user'];
+            ExplorationModel::delete($id, $user_id);
+            header("Location: /explorations?deleted=1");
         }
    }
 ?>

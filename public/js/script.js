@@ -63,6 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Appliquer le thème sauvegardé dès le chargement
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme) {
+    document.body.className = savedTheme + "-theme";
+  }
+
   // Filter buttons in games page
   const filterButtons = document.querySelectorAll(".filter-btn")
 
@@ -184,5 +190,52 @@ document.addEventListener("DOMContentLoaded", () => {
         // In a real app, this would redirect to the game page
       })
     })
+  }
+
+  // --- FILTRAGE DES JEUX PAR CATÉGORIE, ÂGE ET DIFFICULTÉ ---
+  const gamesGrid = document.querySelector('.games-grid');
+  if (gamesGrid) {
+    let selectedCategory = 'Tous';
+    let selectedAge = 'Tous';
+    let selectedLevel = 'Tous';
+
+    // Sélection des groupes de filtres
+    const filterGroups = document.querySelectorAll('.games-filters .filter-group');
+    filterGroups.forEach((group) => {
+      group.addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-btn')) {
+          // Mettre à jour le filtre sélectionné
+          const label = group.querySelector('label').textContent.trim();
+          const value = e.target.textContent.trim();
+          if (label === 'Catégorie') selectedCategory = value;
+          if (label === 'Âge') selectedAge = value;
+          if (label === 'Difficulté') selectedLevel = value;
+          // Appliquer le filtrage
+          filterGames();
+        }
+      });
+    });
+
+    function filterGames() {
+      const cards = gamesGrid.querySelectorAll('.game-card');
+      cards.forEach((card) => {
+        // Récupérer les infos du jeu
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const badge = card.querySelector('.game-badge').textContent.trim();
+        const desc = card.querySelector('p').textContent.toLowerCase();
+        // Catégorie
+        let matchCategory = (selectedCategory === 'Tous') || title.includes(selectedCategory.toLowerCase()) || desc.includes(selectedCategory.toLowerCase());
+        // Âge
+        let matchAge = (selectedAge === 'Tous') || badge === selectedAge;
+        // Difficulté
+        let matchLevel = (selectedLevel === 'Tous') || desc.includes(selectedLevel.toLowerCase()) || title.includes(selectedLevel.toLowerCase());
+        // Affichage
+        if (matchCategory && matchAge && matchLevel) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
   }
 })

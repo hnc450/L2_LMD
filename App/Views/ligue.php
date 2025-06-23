@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="dark-theme">
+<body>
     <div class="app-container">
         <!-- Sidebar pour Desktop -->
-        
+        <?php
+           require __DIR__ . '/sidebar.php';
+        ?>
         <!-- Contenu principal -->
         <main class="main-content">
             <!-- Header mobile -->
@@ -283,6 +285,6 @@
         </nav>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="/js/script.js" defer></script>
 </body>
 </html>

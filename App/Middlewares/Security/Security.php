@@ -7,10 +7,6 @@
             return empty($value) ? true : false;
         }
         
-        // public static function security()
-        // {
-
-        // }
         public static function verify_role($roles)
         {
             if($roles === 'administrateur')

@@ -251,6 +251,7 @@
                     <!-- Modules Tab -->
                     <div class="tab-content" id="modules-tab">
                         <div class="modules-grid">
+
                             <div class="module-card-admin">
                                 <div class="module-header">
                                     <img src="img/geography.jpg" alt="Module">
@@ -296,24 +297,28 @@
                     <!-- Explorations Tab -->
                     <div class="tab-content" id="explorations-tab">
                         <div class="explorations-admin-grid">
-                            <div class="exploration-admin-card">
-                                <div class="exploration-image">
-                                    <img src="img/geography.jpg" alt="Exploration">
-                                    <div class="exploration-badge geography">Géographie</div>
-                                </div>
-                                <div class="exploration-content">
-                                    <h3>L'Europe</h3>
-                                    <p>Découverte des pays européens</p>
-                                    <div class="exploration-stats">
-                                        <span><i class="fas fa-eye"></i> 2,456 vues</span>
-                                        <span><i class="fas fa-clock"></i> 3h moyenne</span>
+                            <?php foreach( \App\Models\Exploration\Exploration::getAll() as $exploration): ?>
+                                <div class="module-card-admin">
+                                    <div class="module-header">
+                                        <img src="<?= htmlspecialchars($exploration['slug'] ?? 'img/placeholder.svg') ?>" alt="Exploration">
+                                        <div class="module-status <?= ($exploration['statut'] ?? 'active') ?>">
+                                            <?= ucfirst($exploration['statut'] ?? 'Actif') ?>
+                                        </div>
                                     </div>
-                                    <div class="exploration-actions">
-                                        <button class="btn-small edit">Modifier</button>
-                                        <button class="btn-small analytics">Analytics</button>
+                                    <div class="module-content">
+                                        <h3><?= htmlspecialchars($exploration['titre']) ?></h3>
+                                        <p><?= htmlspecialchars($exploration['description'] ?? '') ?></p>
+                                        <div class="module-meta">
+                                            <span><i class="fas fa-tag"></i> <?= htmlspecialchars($exploration['categorie']) ?></span>
+                                            <span><i class="fas fa-hashtag"></i> ID: <?= htmlspecialchars($exploration['id']) ?></span>
+                                        </div>
+                                        <div class="module-actions">
+                                            <button class="btn-small edit" type="submit">Modifier</button>
+                                            <button class="btn-small delete" type="submit">Supprimer</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
 
@@ -352,5 +357,116 @@
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
     <script src="/js/popup.js"></script>
+    <script src="/js/script.js" defer></script>
+    <script src="/js/analytics.js"></script>
+    <script src="/js/admin-dashboard.js"></script>
+
+    <!-- FORMULAIRES POPUP MASQUÉS -->
+    <div id="form-quiz" style="display:none">
+        <form id="contentFormQuiz" method="POST" action="/administration/add/quiz">
+            <div class="form-group">
+                <label for="title-quiz">Titre</label>
+                <input type="text" id="title-quiz" required>
+            </div>
+            <div class="form-group">
+                <label for="description-quiz">Description</label>
+                <textarea id="description-quiz" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="category-quiz">Catégorie</label>
+                <select id="category-quiz" required>
+                    <option value="">Sélectionner une catégorie</option>
+                    <option value="geography">Géographie</option>
+                    <option value="history">Histoire</option>
+                    <option value="science">Sciences</option>
+                    <option value="culture">Culture</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="level-quiz">Niveau</label>
+              
+                <select id="level-quiz" required>
+                    <option value="">Sélectionner un niveau</option>
+                    <option value="6-8">6-8 ans</option>
+                    <option value="9-11">9-11 ans</option>
+                    <option value="12-14">12-14 ans</option>
+                    <option value="15+">15+ ans</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel">Annuler</button>
+                <button type="submit" class="btn-save">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+    <div id="form-module" style="display:none">
+        <form id="contentFormModule" method="POST" action="/administration/add/module">
+            <div class="form-group">
+                <label for="title-module">Titre</label>
+                <input type="text" id="title-module" required>
+            </div>
+            <div class="form-group">
+                <label for="description-module">Description</label>
+                <textarea id="description-module" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="category-module">Catégorie</label>
+                <select id="category-module" required>
+                    <option value="">Sélectionner une catégorie</option>
+                    <option value="geography">Géographie</option>
+                    <option value="history">Histoire</option>
+                    <option value="science">Sciences</option>
+                    <option value="culture">Culture</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="level-module">Niveau</label>
+                <select id="level-module" required>
+                    <option value="">Sélectionner un niveau</option>
+                    <option value="6-8">6-8 ans</option>
+                    <option value="9-11">9-11 ans</option>
+                    <option value="12-14">12-14 ans</option>
+                    <option value="15+">15+ ans</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel">Annuler</button>
+                <button type="submit" class="btn-save">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+    <div id="form-exploration" style="display:none">
+        <form id="contentFormExploration" action="/administration/add/exploration" method="POST" >
+            <div class="form-group">
+                <label for="title-exploration">Titre</label>
+                <input type="text" id="title-exploration" required name="titre">
+            </div>
+            <div class="form-group">
+                <label for="title-exploration">Image</label>
+                <input type="text" id="title-image" required placeholder="slug | image path" name="slug">
+            </div>
+            <div class="form-group">
+                <label for="description-exploration">Description</label>
+                <textarea id="description-exploration" rows="3" name="description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="description-exploration">Contenu</label>
+                <textarea id="description-contenu" rows="3" placeholder="markdown" name="contenu"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="category-exploration">Catégorie</label>
+                <select id="category-exploration" required name="categorie">
+                  <option value="">Sélectionner une catégorie</option>
+                <?php foreach(\App\Models\Category\Category::categories() as $category):?>
+                    <option value="<?=$category['id_categorie']?>"><?=$category['categorie']?></option>
+                <?php endforeach ?>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel">Annuler</button>
+                <button type="submit" class="btn-save">Enregistrer</button>
+            </div>
+        </form>
+    </div>    
 </body>
 </html>

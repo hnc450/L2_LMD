@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="dark-theme auth-page">
+<body class="auth-page">
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
@@ -155,5 +155,6 @@
     </div>
 
     <script src="js/auth.js"></script>
+    <script src="/js/script.js" defer></script>
 </body>
 </html>

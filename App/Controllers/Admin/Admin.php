@@ -3,6 +3,7 @@
     use App\Controllers\Action\Action;
     use App\Models\Database\Database;
     use App\Controllers\User\User;
+    use App\Models\Exploration\Exploration ;
     
     class Admin extends User
     {
@@ -80,16 +81,38 @@
 
         public static function ajouter_un_exploration(array $datas , string $methode) 
         {
-            var_dump($datas);
-
             if($methode ==="POST")
-            {
-               
+            {  
+                Exploration::create($datas['titre'],$datas['slug'],$datas['categorie'],$datas['contenu'],$datas['description']);
+                header("Location: /administration/contenus");
+                exit();
             }
             else
             {
                 header("Location: /home");
             }
+        }
+
+        public static function modifier_exploration(array $datas, string $methode, int $id)
+        {
+            if($methode === "POST")
+            {
+                $titre = $datas['titre'] ?? '';
+                $categorie = $datas['categorie'] ?? '';
+                $info = $datas['info'] ?? '';
+               // Exploration::update($id, $titre, $categorie, $info);
+                header("Location: /administration/contenus");
+            }
+            else
+            {
+                header("Location: /home");
+            }
+        }
+
+        public static function supprimer_exploration(int $id)
+        {
+          //  ExplorationModel::delete($id);
+            header("Location: /administration/contenus");
         }
 
         public static function ajouter_une_categorie(array $datas) 

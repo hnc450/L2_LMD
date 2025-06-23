@@ -574,5 +574,6 @@
     <script src="/js/theme.js"></script>
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
+    <script src="/js/script.js" defer></script>
 </body>
 </html> 

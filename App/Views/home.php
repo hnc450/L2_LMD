@@ -3,11 +3,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil - Le Monde Dans Ma Poche</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
+
+<body>
+<?php 
+     require __DIR__.'/sidebar.php';
+?>
 <main class="main-content">
+    
             <!-- Header mobile -->
             <header class="mobile-header">
                 <img src="img/logo.png" alt="Logo" class="logo">
@@ -148,3 +155,5 @@
                 </section>
             </div>
         </main>
+<script src="/js/script.js" defer></script>
+</body>

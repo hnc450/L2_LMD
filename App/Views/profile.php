@@ -14,10 +14,12 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="dark-theme">
+<body>
     <div class="app-container">
         <!-- Sidebar pour Desktop -->
-        
+        <?php
+           require __DIR__ . '/sidebar.php';
+        ?>
         <!-- Contenu principal -->
         <main class="main-content">
             <!-- Header mobile -->
@@ -34,11 +36,14 @@
                 <section class="profile-header">
                     <div class="profile-avatar">
                         <!-- Affichage de l'avatar utilisateur (ou avatar par défaut) -->
-                        <img src="<?php echo !empty($_SESSION['user'][0]['avatar']) ? '/' . $_SESSION['user'][0]['avatar'] : '/public/uploads/avatars/default.png'; ?>" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
-                        <form action="/profile/avatar" method="POST" enctype="multipart/form-data" style="margin-top:10px;">
+                        <img src="<?= $_SESSION['user'][0]['avatar'] ? $_SESSION['user'][0]['avatar'] : '/assets/avatar.png'?>" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <form action="/user/profile/avatar" method="POST" enctype="multipart/form-data" style="margin-top:10px;">
                             <input type="file" name="image" accept="image/*" required>
                             <button type="submit" class="btn-primary">Changer d'avatar</button>
                         </form>
+                        <?php if(isset($uploadError)): ?>
+                            <div style="color:red; font-size:14px; margin-top:5px;"> <?= $uploadError ?> </div>
+                        <?php endif; ?>
                         <!-- Bouton de suppression d'avatar -->
                         <form action="/profile/avatar/delete" method="POST" style="margin-top:5px;">
                             <button type="submit" class="btn-danger">Supprimer l'avatar</button>
@@ -224,6 +229,6 @@
         </nav>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="/js/script.js" defer></script>
 </body>
 </html>

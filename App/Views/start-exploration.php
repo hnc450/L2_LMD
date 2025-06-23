@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Monde dans ma Poche - Explorateur</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/css/exploration.css">
 </head>
 <body>
     <div class="container">
@@ -79,6 +79,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="/js/game-exploration.js"></script>
+    <script src="/js/script.js" defer></script>
 </body>
 </html>

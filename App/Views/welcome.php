@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="dark-theme welcome-page">
+<body class="welcome-page">
     <div class="welcome-container">
         <div class="welcome-slides" id="welcomeSlides">
             <!-- Slide 1 -->
@@ -70,6 +70,7 @@
         </div>
     </div>
 
-    <!-- <script src="js/welcome.js"></script> -->
+    <script src="/js/welcome.js"></script>
+    <script src="/js/script.js" defer></script>
 </body>
 </html>

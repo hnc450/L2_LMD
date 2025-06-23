@@ -4,6 +4,8 @@ if (!isset($_SESSION['user'][0]['id_user'])) {
     header('Location: /connexion');
     exit();
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -17,8 +19,10 @@ if (!isset($_SESSION['user'][0]['id_user'])) {
     <style>
         .chat-container {
             display: flex;
-            height: calc(100vh - 80px);
-            margin: 20px;
+            height: 95vh;
+            margin: 0;
+            max-width: 1200px;
+            width: 100vw;
             background: var(--card-bg);
             border-radius: var(--border-radius-lg);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -93,6 +97,7 @@ if (!isset($_SESSION['user'][0]['id_user'])) {
             display: flex;
             flex-direction: column;
             background: var(--card-bg);
+            min-height: 600px;
         }
 
         .chat-header {
@@ -202,10 +207,28 @@ if (!isset($_SESSION['user'][0]['id_user'])) {
         .send-button i {
             font-size: 1.2rem;
         }
+
+        @media (max-width: 900px) {
+            .chat-container {
+                flex-direction: column;
+                height: 90vh;
+                max-width: 100vw;
+            }
+            .chat-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
     </style>
 </head>
-<body class="dark-theme">
+<body>
     <div class="app-container">
+        
+        <?php
+           require __DIR__ . '/sidebar.php';
+        ?>
+
         <header class="main-header">
             <div class="header-left">
                 <img src="/img/logo.png" alt="Logo" class="logo">
@@ -256,6 +279,7 @@ if (!isset($_SESSION['user'][0]['id_user'])) {
         </div>
     </div>
 
+    <script src="/js/script.js" defer></script>
     <script>
         function loadMessages() {
             fetch('/chat/messages')
@@ -263,17 +287,17 @@ if (!isset($_SESSION['user'][0]['id_user'])) {
                 .then(messages => {
                     const chatMessages = document.getElementById('chatMessages');
                     chatMessages.innerHTML = '';
-                    console.log(messages);
+                    const myId = <?php echo $_SESSION['user'][0]['id_user']; ?>;
                     messages.forEach(message => {
                         const messageDiv = document.createElement('div');
-                        messageDiv.className = `message ${message.sender_id === <?php echo $_SESSION['user'][0]['id_user']; ?> ? 'sent' : 'received'}`;
+                        messageDiv.className = `message ${message.sender_id === myId ? 'sent' : 'received'}`;
                         
                         const messageHeader = document.createElement('div');
                         messageHeader.className = 'message-header';
                         
                         const sender = document.createElement('span');
                         sender.className = 'message-sender';
-                        sender.textContent = message.username;
+                        sender.textContent = (message.sender_id === myId) ? 'Moi' : message.prenoms;
                         
                         const time = document.createElement('span');
                         time.className = 'message-time';

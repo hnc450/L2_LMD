@@ -5,9 +5,10 @@
             use App\Controllers\User\User;
             use App\Controllers\Action\Action;
             use App\Controllers\Admin\Admin;
-                
+use App\Models\Database\Database;
+
             $routes->map("GET","/test", function($action) {
-                Page::getPage("mark");
+         
             });
 
             $routes->map("GET","/", function() {
@@ -45,6 +46,10 @@
                 Page::getPage("explorations");
             });
 
+            $routes->map("GET","/user/start-game", function() {
+                Page::getPage("start-game");
+            });
+
             /*--------------*/
 
            /*     Route for User && Admin in GET*/
@@ -69,23 +74,14 @@
                Page::getPage("utilisateurs");
             });
 
-            // Message route à supprimer ne sert plus à rien
-
-            // $routes->map("GET","/error/[a:message]",function($message){
-            //    // echo $message['message'];
-            //     //echo  "<br/>";
-            //    echo str_replace("0"," ",$message['message']);
-            // });
 
             $routes->map("GET","/delete/account/[i:id]", function($id) {
                 echo Component::P($id['id'],null,"color: white; font-size: 20px;text-align: center;");
                 User::supprimer_mon_compte((int)$id['id']);
             });
 
-            $routes->map("GET","/sidebard", function() {
-                Page::getPage(ltrim($_SERVER['REQUEST_URI'],"/"));
-            });
-
+            //Route en POST pour soummettre les formulaires de connexion et d'inscription
+        
             $routes->map("POST","/sign", function() {
                 Formulaire::sign_in($_POST,$_SERVER['REQUEST_METHOD']);
             });
@@ -103,9 +99,9 @@
             });
 
             // route pour ajouter un jeu , une exploaration, un module
-            $routes->map("POST","/administration/add/expoloration",function(){
-                \App\Middlewares\Security\Security::require_role('administrateur');
-                Admin::ajouter_un_exploration($_POST,$_SERVER['REQUEST_METHOD']);
+            $routes->map("POST","/administration/add/exploration",function(){
+               //\App\Middlewares\Security\Security::require_role($_SESSION['user'][0]['role']);
+               Admin::ajouter_un_exploration($_POST,$_SERVER['REQUEST_METHOD']);
             });
 
             $routes->map("POST","/administration/add/quiz",function(){
@@ -115,29 +111,27 @@
 
             $routes->map("PUT","/administration/quiz/[i:id]",function($id){
                 \App\Middlewares\Security\Security::require_role('administrateur');
-                Admin::modifier_jeu($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
+               // Admin::modifier_jeu($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
             });
 
             $routes->map("DELETE","/administration/quiz/[i:id]",function($id){
                 \App\Middlewares\Security\Security::require_role('administrateur');
-                Admin::supprimer_jeu((int)$id['id']);
+                //Admin::supprimer_jeu((int)$id['id']);
             });
 
             $routes->map("POST","/administration/add/category",function(){
-                \App\Middlewares\Security\Security::require_role('administrateur');
+                //\App\Middlewares\Security\Security::require_role('administrateur');
                 Admin::ajouter_une_categorie($_POST);
             });
 
             $routes->map("DELETE","/administration/category/[i:id]",function($id){
-                \App\Middlewares\Security\Security::require_role('administrateur');
+                //\App\Middlewares\Security\Security::require_role('administrateur');
                 Admin::supprimer_une_categorie((int)$id['id']);
             });
 
-            $routes->map("DELETE","/clean/user/[i:id]",function($id){
-                echo "<pre>";
-                 var_dump($id);
-                echo "</pre>";
-             
+            $routes->map("DELETE","/administration/delete/user/[i:id]",function($id){
+                // \App\Middlewares\Security\Security::require_role('administrateur');
+                  Admin::delete_user_by_id((int)$id['id']);
             });
 
             //chemin vers la dashboard d ou /administration route
@@ -151,6 +145,19 @@
             });
         
             $routes->map("GET","/administration/contenus",function() {
+                // echo "<pre>";
+                // $test = Database::QueryRequest(
+                // 'SELECT  explorations.id_exploration as id,
+                //  explorations.titre_exploration as titre,
+                //  explorations.description_exploration as description,
+                //  explorations.slug_exploration as slug ,
+                //  categories.categorie 
+                //  FROM categories INNER JOIN explorations 
+                //  ON explorations.category_id = categories.id_categorie'
+                //  ,2);
+                // var_dump(\App\Models\Exploration\Exploration::getAll());
+                //    echo "<pre>";
+                // die();
                 Page::dashboard("contenu");
             });
 
@@ -186,8 +193,7 @@
             });
 
             $routes->map("GET", "/chat/messages", function() {
-                $messages = User::recuperer_messages();
-               // var_dump($messages);
+                 $messages = User::recuperer_messages();
                  header("Access-Control-Allow-Headers: Content-Type, Authorization");
                  header('Content-Type: application/json');
                  echo json_encode($messages);
@@ -210,17 +216,17 @@
 
             $routes->map("POST","/administration/add/module",function(){
                 \App\Middlewares\Security\Security::require_role('administrateur');
-                Admin::ajouter_un_module($_POST,$_SERVER['REQUEST_METHOD']);
+               // Admin::ajouter_un_module($_POST,$_SERVER['REQUEST_METHOD']);
             });
 
             $routes->map("PUT","/administration/module/[i:id]",function($id){
                 \App\Middlewares\Security\Security::require_role('administrateur');
-                Admin::modifier_module($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
+               // Admin::modifier_module($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
             });
 
             $routes->map("DELETE","/administration/module/[i:id]",function($id){
                 \App\Middlewares\Security\Security::require_role('administrateur');
-                Admin::supprimer_module((int)$id['id']);
+               // Admin::supprimer_module((int)$id['id']);
             });
 
             $routes->map("PUT","/administration/exploration/[i:id]",function($id){
@@ -231,6 +237,51 @@
             $routes->map("DELETE","/administration/exploration/[i:id]",function($id){
                 \App\Middlewares\Security\Security::require_role('administrateur');
                 Admin::supprimer_exploration((int)$id['id']);
+            });
+
+            $routes->map("GET","/api/jeu/[i:id]", function($id) {
+                // Tableau simulant la base de données des jeux
+                $jeux = [
+                    1 => [
+                        'id' => 1,
+                        'categorie' => 'Géographie',
+                        'age' => '6-8 ans',
+                        'titre' => 'Quiz Géographie : Europe',
+                        'desc' => "Découvre les pays et capitales d'Europe dans ce quiz amusant et interactif !",
+                        'img' => '/img/game1.jpg'
+                    ],
+                    2 => [
+                        'id' => 2,
+                        'categorie' => 'Histoire',
+                        'age' => '9-11 ans',
+                        'titre' => 'Quiz Histoire : Moyen Âge',
+                        'desc' => "Voyage dans le temps à l'époque médiévale !",
+                        'img' => '/img/game2.jpg'
+                    ],
+                    3 => [
+                        'id' => 3,
+                        'categorie' => 'Sciences',
+                        'age' => '12-14 ans',
+                        'titre' => 'Quiz Sciences : Espace',
+                        'desc' => "Explore les mystères de l'univers !",
+                        'img' => '/img/game3.jpg'
+                    ],
+                    4 => [
+                        'id' => 4,
+                        'categorie' => 'Culture',
+                        'age' => '15+ ans',
+                        'titre' => 'Quiz Culture : Asie',
+                        'desc' => "Découvre les traditions et coutumes asiatiques !",
+                        'img' => '/img/game4.jpg'
+                    ]
+                ];
+                $jeu = $jeux[$id['id']] ?? null;
+                header('Content-Type: application/json');
+                echo json_encode($jeu);
+            });
+
+            $routes->map("POST","/user/profile/avatar", function() {
+                \App\Controllers\User\User::modifier_profile($_SERVER['REQUEST_METHOD'], $_FILES);
             });
 
             $match = $routes->match();

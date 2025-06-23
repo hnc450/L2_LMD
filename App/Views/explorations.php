@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explorations - Le Monde Dans Ma Poche</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/exploration.js" defer></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/exploration.js" defer></script>
+    <script src="/js/script.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
-<body class="dark-theme">
+<body>
     <div class="app-container">
+        <?php
+           require __DIR__ . '/sidebar.php';
+        ?>
         <main class="main-content">
             <div class="page-header">
                 <h2><i class="fas fa-compass"></i> Toutes les explorations</h2>
@@ -226,7 +231,5 @@
             </ul>
         </nav>
     </div>
-
- 
 </body>
 </html>

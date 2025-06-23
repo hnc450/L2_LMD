@@ -343,92 +343,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>#1</td>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="<?= $image_uri ?>" alt="Avatar" class="user-avatar">
-                                        <div>
-                                            <p class="user-name">Jean Dupont</p>
-                                            <p class="user-email">jean.dupont@example.com</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="role-badge admin">Admin</span></td>
-                                <td><span class="status-badge active">Actif</span></td>
-                                <td>01/01/2024</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-icon edit" title="Modifier">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn-icon ban" title="Bannir">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                        <button class="btn-icon delete" title="Supprimer">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#2</td>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="<?= $image_uri ?>" alt="Avatar" class="user-avatar">
-                                        <div>
-                                            <p class="user-name">Marie Martin</p>
-                                            <p class="user-email">marie.martin@example.com</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="role-badge player">utilisateur</span></td>
-                                <td><span class="status-badge active">Actif</span></td>
-                                <td>15/01/2024</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-icon edit" title="Modifier">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn-icon ban" title="Bannir">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                        <button class="btn-icon delete" title="Supprimer">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#3</td>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="<?= $image_uri ?>" alt="Avatar" class="user-avatar">
-                                        <div>
-                                            <p class="user-name">Pierre Durand</p>
-                                            <p class="user-email">pierre.durand@example.com</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="role-badge player">Joueur</span></td>
-                                <td><span class="status-badge inactive">Inactif</span></td>
-                                <td>20/01/2024</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-icon edit" title="Modifier">
-                                            <i class="fas fa-edit" style="color: #fff;"></i>
-                                        </button>
-                                        <button class="btn-icon ban" title="Bannir">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                        <button class="btn-icon delete" title="Supprimer">
-                                            <i class="fa-solid fa-trash" style="color: #fff;"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            
                         <?php foreach (\App\Controllers\Admin\Admin::get_all_users() as $users) : ?>
-                            <?= $users['prenoms'] ?>
+                        
                                 <tr>
                                     <td>#<?= $users['id_user'] ?></td>
                                     <td>
@@ -445,18 +362,24 @@
                                     <td><?= $users['pseudo'] ?></td>
                                     <td>
                                       <div class="action-buttons">
+                                      
                                           <button class="btn-icon edit" title="Modifier">
                                               <i class="fas fa-edit" style="color: #fff;"></i>
                                           </button>
-                                          <button class="btn-icon ban" title="Bannir">
-                                              <i class="fas fa-ban"></i>
-                                          </button>
-                                          <button class="btn-icon delete" title="Supprimer">
-                                              <i class="fa-solid fa-trash" style="color: #fff;"></i>
+                                          
+                                          <a href="/administration/user/<?= $users['id_user'] ?>" style="text-decoration: none;">
+                                                 <button class="btn-icon ban" title="Bannir" >
+                                                     <i class="fas fa-eye" ></i>
+                                                 </button>
+                                          </a>
+                                       
+
+                                          <button class="btn-icon delete" title="Supprimer" data-user-id="<?= $users['id_user'] ?>" style="color: #fff;">
+                                              <i class="fa-solid fa-trash"></i>
                                           </button>
                                       </div>
                                     </td>
-                                </tr>
+                                </tr>=""
                          <?php endforeach ?>
                         </tbody>
                     </table>
@@ -476,6 +399,7 @@
     <script src="/js/theme.js"></script>
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
+    <script src="/js/request.js"></script>
     <!-- <script src="/js/admin-users.js"></script> -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -505,5 +429,6 @@
             updateSlider();
         });
     </script>
+    <script src="/js/script.js" defer></script>
 </body>
 </html> 

@@ -313,9 +313,6 @@
                     </div>
                 </div>
             </header>
-        <pre>
-              <?= var_dump( $stats) ?>
-        </pre>
         
             <div class="dashboard-content">
                 <!-- Statistiques -->
@@ -538,6 +535,7 @@
     <script src="/js/theme.js"></script>
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
+    <script src="/js/script.js" defer></script>
     <!-- js link boostrap -->
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </body>

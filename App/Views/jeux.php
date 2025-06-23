@@ -200,7 +200,9 @@
 <body class="dark-theme">
     <div class="app-container">
         <!-- Sidebar pour Desktop -->
-        
+        <?php
+           require __DIR__ . '/sidebar.php';
+        ?>
         <!-- Contenu principal -->
         <main class="main-content">
             <!-- Header mobile -->
@@ -408,7 +410,36 @@
         </nav>
     </div>
 
-    <script src="js/script.js"></script>
-    <script src="js/jeu.js"></script>
+    <script src="/js/script.js" defer></script>
+    <script>
+    // Remplace le comportement des boutons 'Jouer' pour utiliser l'API
+    const playButtons = document.querySelectorAll('.btn-play');
+    if (playButtons.length > 0) {
+        playButtons.forEach((button, idx) => {
+            button.addEventListener('click', function () {
+                // L'index du jeu correspond à l'id simulé (1-based)
+                const jeuId = idx + 1;
+                fetch(`/api/jeu/${jeuId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.id) {
+                            // Redirige vers la page de démarrage du jeu avec les infos en paramètres
+                            const params = new URLSearchParams({
+                                categorie: data.categorie,
+                                age: data.age,
+                                titre: data.titre,
+                                desc: data.desc,
+                                img: data.img
+                            });
+                            window.location.href = `/user/start-game?${params.toString()}`;
+                        } else {
+                            alert('Jeu non trouvé !');
+                        }
+                    })
+                    .catch(() => alert('Erreur lors de la récupération du jeu.'));
+            });
+        });
+    }
+    </script>
 </body>
 </html>

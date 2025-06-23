@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  
     <div class="app-container">
         <!-- Sidebar will be loaded here -->
         <div class="sidebar-container"></div>
@@ -170,5 +171,6 @@
     <script src="../assets/js/theme.js"></script>
     <script src="../assets/js/dashboard.js"></script>
     <script src="../assets/js/include.js"></script>
+    <script src="/js/script.js" defer></script>
 </body>
 </html> 

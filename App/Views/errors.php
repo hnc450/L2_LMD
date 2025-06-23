@@ -95,5 +95,6 @@ http_response_code($code);
         <div class="error-subtitle"><?= $subtitle ?></div>
         <a href="/" class="btn-home"><i class="fas fa-home"></i> Retour à l'accueil</a>
     </div>
+    <script src="/js/script.js" defer></script>
 </body>
 </html>
