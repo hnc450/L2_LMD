@@ -1,3 +1,7 @@
+<?php 
+   \App\Middlewares\Security\Security::require_auth();
+   use App\Models\Jeu\Jeu;
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -47,7 +51,7 @@
                 <div class="quick-actions">
                     <button class="action-btn primary">
                         <i class="fas fa-plus"></i>
-                        Nouveau Quiz
+                        Nouveau Jeu
                     </button>
                     <button class="action-btn secondary">
                         <i class="fas fa-book"></i>
@@ -70,7 +74,7 @@
                             <i class="fas fa-question-circle"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>Quiz Actifs</h3>
+                            <h3>Jeu</h3>
                             <p class="stat-number">156</p>
                             <span class="stat-change positive">+12 cette semaine</span>
                         </div>
@@ -110,7 +114,7 @@
                 <!-- Content Management Tabs -->
                 <div class="content-tabs">
                     <div class="tab-buttons">
-                        <button class="tab-btn active" data-tab="quiz">Quiz</button>
+                        <button class="tab-btn active" data-tab="quiz">Jeu</button>
                         <button class="tab-btn" data-tab="modules">Modules</button>
                         <button class="tab-btn" data-tab="explorations">Explorations</button>
                         <button class="tab-btn" data-tab="media">Médias</button>
@@ -147,92 +151,41 @@
                                     <tr>
                                         <th>Titre</th>
                                         <th>Catégorie</th>
-                                        <th>Niveau</th>
-                                        <th>Questions</th>
-                                        <th>Statut</th>
-                                        <th>Créé le</th>
+                                        <th>Age</th>
+                                        <!-- <th>Questions</th> -->
+                                        <!-- <th>Statut</th> -->
+                                        <th>Date de publication</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach(Jeu::recuperer_tous_les_jeux() as $jeu): ?>
+                                       
                                     <tr>
                                         <td>
                                             <div class="content-title">
-                                                <img src="img/geography.jpg" alt="Quiz" class="content-thumb">
-                                                <span>Capitales d'Europe</span>
+                                                <img src="<?= htmlspecialchars($jeu['slug_img'] ?? 'img/placeholder.svg') ?>" alt="Quiz" class="content-thumb">
+                                                <span><?= htmlspecialchars($jeu['titre'] ?? '') ?></span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge geography">Géographie</span></td>
-                                        <td>9-11 ans</td>
-                                        <td>15</td>
-                                        <td><span class="status-badge active">Actif</span></td>
-                                        <td>15/11/2024</td>
+                                        <td><span class="category-badge"><?= htmlspecialchars($jeu['categorie'] ?? '') ?></span></td>
+                                        <td><?= htmlspecialchars($jeu['age'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($jeu['date_post'] ?? '') ?></td>
                                         <td>
                                             <div class="action-buttons">
-                                                <button class="btn-icon edit" title="Modifier">
+                                                <button class="btn-icon edit" title="Modifier" data-id="<?= htmlspecialchars($jeu['id_jeu'] ?? '') ?>" data-type="quiz">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn-icon view" title="Prévisualiser">
+                                                <button class="btn-icon view" title="Prévisualiser" data-id="<?= htmlspecialchars($jeu['id_jeu'] ?? '') ?>" data-type="quiz">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
-                                                <button class="btn-icon delete" title="Supprimer">
+                                                <button class="btn-icon delete" title="Supprimer" data-id="<?= htmlspecialchars($jeu['id_jeu'] ?? '') ?>" data-type="quiz">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="content-title">
-                                                <img src="img/history.jpg" alt="Quiz" class="content-thumb">
-                                                <span>Rois de France</span>
-                                            </div>
-                                        </td>
-                                        <td><span class="category-badge history">Histoire</span></td>
-                                        <td>12-14 ans</td>
-                                        <td>20</td>
-                                        <td><span class="status-badge draft">Brouillon</span></td>
-                                        <td>14/11/2024</td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <button class="btn-icon edit" title="Modifier">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn-icon view" title="Prévisualiser">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn-icon delete" title="Supprimer">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="content-title">
-                                                <img src="img/science.jpg" alt="Quiz" class="content-thumb">
-                                                <span>Système Solaire</span>
-                                            </div>
-                                        </td>
-                                        <td><span class="category-badge science">Sciences</span></td>
-                                        <td>6-8 ans</td>
-                                        <td>12</td>
-                                        <td><span class="status-badge active">Actif</span></td>
-                                        <td>13/11/2024</td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <button class="btn-icon edit" title="Modifier">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn-icon view" title="Prévisualiser">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn-icon delete" title="Supprimer">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -296,7 +249,7 @@
 
                     <!-- Explorations Tab -->
                     <div class="tab-content" id="explorations-tab">
-                        <div class="explorations-admin-grid">
+                        <div class="modules-grid">
                             <?php foreach( \App\Models\Exploration\Exploration::getAll() as $exploration): ?>
                                 <div class="module-card-admin">
                                     <div class="module-header">
@@ -313,8 +266,8 @@
                                             <span><i class="fas fa-hashtag"></i> ID: <?= htmlspecialchars($exploration['id']) ?></span>
                                         </div>
                                         <div class="module-actions">
-                                            <button class="btn-small edit" type="submit">Modifier</button>
-                                            <button class="btn-small delete" type="submit">Supprimer</button>
+                                            <button class="btn-small edit" data-id="<?= htmlspecialchars($exploration['id']) ?>" data-type="exploration">Modifier</button>
+                                            <button class="btn-small delete" data-id="<?= htmlspecialchars($exploration['id']) ?>" data-type="exploration">Supprimer</button>
                                         </div>
                                     </div>
                                 </div>
@@ -353,39 +306,49 @@
         </main>
     </div>
 
-    <script src="/js/theme.js"></script>
-    <script src="/js/dashboard.js"></script>
-    <script src="/js/include.js"></script>
-    <script src="/js/popup.js"></script>
-    <script src="/js/script.js" defer></script>
-    <script src="/js/analytics.js"></script>
-    <script src="/js/admin-dashboard.js"></script>
+
 
     <!-- FORMULAIRES POPUP MASQUÉS -->
     <div id="form-quiz" style="display:none">
         <form id="contentFormQuiz" method="POST" action="/administration/add/quiz">
             <div class="form-group">
                 <label for="title-quiz">Titre</label>
-                <input type="text" id="title-quiz" required>
+                <input type="text" id="title-quiz" required name="titre">
             </div>
+
+            <div class="form-group">
+                <label for="title-quiz">Image or Link-Image</label>
+                <input type="text" id="slug-quiz" require name="slug">
+            </div>
+
+            <div class="form-group">
+                <label for="title-quiz">Durée</label>
+                <input type="text" id="slug-quiz" require name="duration">
+            </div>
+
             <div class="form-group">
                 <label for="description-quiz">Description</label>
-                <textarea id="description-quiz" rows="3"></textarea>
+                <textarea id="description-quiz" rows="3" name="description"></textarea>
             </div>
+            
+            <div class="form-group">
+                <label for="contenu-quiz">Contenu</label>
+                <textarea id="contenu-quiz" rows="3" name="contenu"></textarea>
+            </div>
+
             <div class="form-group">
                 <label for="category-quiz">Catégorie</label>
-                <select id="category-quiz" required>
+                <select id="category-quiz" required name="category">
                     <option value="">Sélectionner une catégorie</option>
-                    <option value="geography">Géographie</option>
-                    <option value="history">Histoire</option>
-                    <option value="science">Sciences</option>
-                    <option value="culture">Culture</option>
+                    <?php foreach(\App\Models\Category\Category::categories() as $category):?>
+                     <option value="<?=$category['id_categorie']?>"><?=$category['categorie']?></option>
+                    <?php endforeach ?>
                 </select>
             </div>
             <div class="form-group">
-                <label for="level-quiz">Niveau</label>
+                <label for="level-quiz">Tranche d'age</label>
               
-                <select id="level-quiz" required>
+                <select id="level-quiz" required name="age">
                     <option value="">Sélectionner un niveau</option>
                     <option value="6-8">6-8 ans</option>
                     <option value="9-11">9-11 ans</option>
@@ -413,10 +376,9 @@
                 <label for="category-module">Catégorie</label>
                 <select id="category-module" required>
                     <option value="">Sélectionner une catégorie</option>
-                    <option value="geography">Géographie</option>
-                    <option value="history">Histoire</option>
-                    <option value="science">Sciences</option>
-                    <option value="culture">Culture</option>
+                    <?php foreach(\App\Models\Category\Category::categories() as $category):?>
+                    <option value="<?=$category['id_categorie']?>"><?=$category['categorie']?></option>
+                    <?php endforeach ?>
                 </select>
             </div>
             <div class="form-group">
@@ -435,6 +397,7 @@
             </div>
         </form>
     </div>
+    
     <div id="form-exploration" style="display:none">
         <form id="contentFormExploration" action="/administration/add/exploration" method="POST" >
             <div class="form-group">
@@ -468,5 +431,62 @@
             </div>
         </form>
     </div>    
+
+
+    <script src="/js/theme.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/include.js"></script>
+    <script src="/js/popup.js"></script>
+    <script src="/js/script.js" defer></script>
+    <script src="/js/analytics.js"></script>
+    <script src="/js/admin-dashboard.js"></script>
+    <script>
+    document.querySelectorAll('.btn-small.delete, .btn-icon.delete').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const type = this.getAttribute('data-type');
+            let url = '';
+            if (type === 'exploration') {
+                url = `/administration/exploration/${id}`;
+            } else if (type === 'module') {
+                url = `/administration/module/${id}`;
+            } else if (type === 'quiz') {
+                url = `/administration/quiz/${id}`;
+            }
+            if (confirm('Voulez-vous vraiment supprimer cet élément ?')) {
+                fetch(url, {
+                    method: 'DELETE'
+                })
+                .then(res => {
+                    if (res.ok) {
+                        location.reload();
+                    } else {
+                        alert('Erreur lors de la suppression');
+                    }
+                });
+            }
+        });
+    });
+
+    function modifierExploration(id, data) {
+        fetch(`/administration/exploration/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            if (res.ok) {
+                location.reload();
+            } else {
+                alert('Erreur lors de la modification');
+            }
+        });
+    }
+    </script>
 </body>
 </html>
+<?php
+ require __DIR__ .'/view.php';
+?>

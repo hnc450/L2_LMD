@@ -9,6 +9,7 @@
        private static string $user;
        private static string $password;
        private static mixed $statement;
+       private static  $instance = null;
 
 
        public function __construct(string $dns, string $port, string $database,string $user,string $password)
@@ -114,5 +115,12 @@
        {
          self::executeQuery("INSERT INTO ".$generic_table_with_column." VALUES (".str_repeat('?,', count($datas) - 1)."?)", $datas, 1);
        }
+
+      //  public static function Database():Database{
+      //      if(is_null(static::$instance)){
+      //         static::$instance = new Database();
+      //      }
+      //      return static::$instance;
+      //  }
     }
 ?>

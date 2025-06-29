@@ -1,22 +1,23 @@
 <?php
-// Détection du code d'erreur (par défaut 404)
-$code = $_GET['code'] ?? 404;
 $message = '';
 $subtitle = '';
 
-switch($code) {
+switch($value) {
+    case 401:
+        $message = "non autorisé";
+        $subtitle = "pour acceder a cette ressource vous devez vous authentifié";
     case 403:
         $message = "Accès interdit";
         $subtitle = "Vous n'avez pas la permission d'accéder à cette page.";
         break;
     case 404:
+
     default:
         $message = "Page non trouvée";
         $subtitle = "La page que vous cherchez n'existe pas ou a été déplacée.";
-        $code = 404;
         break;
 }
-http_response_code($code);
+http_response_code($value);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -90,8 +91,8 @@ http_response_code($code);
         <div class="error-icon">
             <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
-        <div class="error-code"><?= $code ?></div>
-        <div class="error-message"><?= $message ?></div>
+        <div class="error-code"><?= $value ?></div>
+        <div class="error-message"><?=  $message ?></div>
         <div class="error-subtitle"><?= $subtitle ?></div>
         <a href="/" class="btn-home"><i class="fas fa-home"></i> Retour à l'accueil</a>
     </div>

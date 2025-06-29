@@ -5,6 +5,7 @@ use App\Models\Database\Database;
 
 class Exploration
 {
+    private static $instance;
     // Créer une exploration
     public static function create(string $titre, string $slug, string $categorie_id,string $contenu,string $description)
     {
@@ -19,6 +20,15 @@ class Exploration
         ];
         Database::executeQuery($query, $params, 1);
     }
+     
+    public static function getInstanceExploration():Exploration{
+          if(is_null(self::$instance))
+          {
+                self::$instance = new Exploration();
+                return static::$instance;
+          }
+          return self::$instance;
+    }
 
     // Lire toutes les explorations
     public static function getAll()
@@ -30,6 +40,7 @@ class Exploration
                  categories.categorie 
                  FROM categories INNER JOIN explorations 
                  ON explorations.category_id = categories.id_categorie
+                 ORDER BY explorations.id_exploration ASC
         ";
         return Database::QueryRequest($query, 2); 
     }
@@ -45,30 +56,32 @@ class Exploration
     // Lire une exploration par ID
     public static function getById($id)
     {
-        $query = "SELECT * FROM explorations WHERE id = :id";
-        $params = ['id' => $id];
-        return Database::QueryRequest($query, 2);
+        $query = "SELECT * FROM explorations WHERE id_exploration =:id";
+        $params = [':id' => $id];
+        return Database::executeQuery($query,$params,2);
     }
 
     // Mettre à jour une exploration (avec vérification user_id)
     public static function update($id, $titre, $categorie, $info, $user_id)
     {
-        $query = "UPDATE explorations SET titre = :titre, categorie = :categorie, info = :info WHERE id = :id AND user_id = :user_id";
+        $query = "UPDATE explorations SET titre_exploration = :titre, categorie = :categorie, info = :info WHERE id = :id AND user_id = :user_id";
         $params = [
-            'id' => $id,
-            'titre' => $titre,
-            'categorie' => $categorie,
-            'info' => $info,
-            'user_id' => $user_id
+            ':id' => $id,
+            ':titre' => $titre,
+            ':categorie' => $categorie,
+            ':info' => $info,
+            ':user_id' => $user_id
         ];
         return Database::executeQuery($query, $params, 1);
     }
 
     // Supprimer une exploration (avec vérification user_id)
-    public static function delete($id, $user_id)
+    public static function delete($id)
     {
-        $query = "DELETE FROM explorations WHERE id = :id AND user_id = :user_id";
-        $params = ['id' => $id, 'user_id' => $user_id];
+        $query = "DELETE FROM explorations WHERE id_exploration=:id";
+        $params = ['id' => $id];
         return Database::executeQuery($query, $params, 4);
     }
+
+
 } 

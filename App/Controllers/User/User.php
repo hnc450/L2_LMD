@@ -10,9 +10,9 @@
         public  static function se_deconnecter()
         {
           $id = $_SESSION['user'][0]['id_user'];
+          Database::QueryRequest("UPDATE users SET status=0 WHERE id_user=$id",3);
           session_destroy();
           unset($_SESSION['user']);
-          Database::QueryRequest("UPDATE users SET status=0 WHERE id_user=$id",3);
           header("Location: /");
         }
 
@@ -60,7 +60,7 @@
             if (!empty($user[0]['avatar']) && strpos($user[0]['avatar'], 'default') === false) {
                \App\Middlewares\Upload\Upload::delete_image($user[0]['avatar']);
             }
-            $default = 'public/uploads/avatars/default.png';
+            $default = '/assets/avatar.png';
             Database::executeQuery("UPDATE users SET avatar=:avatar WHERE id_user=:id", [
                 ':avatar' => $default,
                 ':id' => $id
@@ -175,7 +175,7 @@
               {
                 if(!Action::check_existence("users","id_user",$id))
                 {
-                 header("Location: /error/ce0compte0est0inexistant0ou0n0est0pas0a0vous");
+                 header("Location: /user/paramettres?error=error&&color=red");
                 }
                 else
                 {

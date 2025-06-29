@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil - Le Monde Dans Ma Poche</title>
+    
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -24,7 +25,7 @@
         <main class="main-content">
             <!-- Header mobile -->
             <header class="mobile-header">
-                <img src="img/logo.png" alt="Logo" class="logo">
+                <img src="/assets/logo.jpeg" alt="Logo" class="logo">
                 <h1>Profil</h1>
                 <button class="menu-toggle" id="menuToggle">
                     <i class="fas fa-bars"></i>
@@ -45,9 +46,7 @@
                             <div style="color:red; font-size:14px; margin-top:5px;"> <?= $uploadError ?> </div>
                         <?php endif; ?>
                         <!-- Bouton de suppression d'avatar -->
-                        <form action="/profile/avatar/delete" method="POST" style="margin-top:5px;">
-                            <button type="submit" class="btn-danger">Supprimer l'avatar</button>
-                        </form>
+                        <button id="delete-avatar-btn" class="btn-danger" style="margin-top:5px;">Supprimer l'avatar</button>
                     </div>
                     <div class="profile-info">
                         <h2><?= $_SESSION['user'][0]['status'] ? "<i class='fa-solid fa-circle' style='color: green;'></i>" : "<i class='fa-solid fa-circle' style='color: red;'></i>" ?> <?= $_SESSION['user'][0]['prenoms'] ?></h2>
@@ -192,35 +191,34 @@
             </div>
         </main>
 
-        <!-- Navigation mobile -->
         <nav class="mobile-nav">
             <ul>
                 <li>
-                    <a href="index.html">
+                    <a href="/user/home">
                         <i class="fas fa-home"></i>
                         <span>Accueil</span>
                     </a>
                 </li>
                 <li>
-                    <a href="jeux.html">
+                    <a href="/user/jeux">
                         <i class="fas fa-gamepad"></i>
                         <span>Jeux</span>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="profile.html">
+                    <a href="/user/profile">
                         <i class="fas fa-user"></i>
                         <span>Profil</span>
                     </a>
                 </li>
                 <li>
-                    <a href="ligue.html">
+                    <a href="/user/ligue">
                         <i class="fas fa-trophy"></i>
                         <span>Ligues</span>
                     </a>
                 </li>
                 <li>
-                    <a href="parametres.html">
+                    <a href="/user/parametres">
                         <i class="fas fa-cog"></i>
                         <span>Paramètres</span>
                     </a>
@@ -230,5 +228,25 @@
     </div>
 
     <script src="/js/script.js" defer></script>
+    <script>
+    document.getElementById('delete-avatar-btn').addEventListener('click', function() {
+        if(confirm('Voulez-vous vraiment supprimer votre avatar ?')) {
+            fetch('/user/delete/avatar', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if(response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Erreur lors de la suppression de l\'avatar.');
+                }
+            })
+            .catch(() => alert('Erreur lors de la suppression de l\'avatar.'));
+        }
+    });
+    </script>
 </body>
 </html>

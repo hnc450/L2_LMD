@@ -25,17 +25,15 @@
             <!-- Filtres pour les explorations -->
             <div class="explorations-filters">
                 <div class="filter-tabs">
+                   
                     <button class="filter-tab active" data-category="all">
-                        Tous
+                         All
                     </button>
-                    <button class="filter-tab" data-category="geography">
-                        Géographie
+                    <?php foreach(\App\Models\Category\Category::categories() as $category): ?>
+                    <button class="filter-tab" data-category="<?= $category['categorie'] ?>">
+                        <?= $category['categorie'] ?>
                     </button>
-                    <button class="filter-tab" data-category="history">
-                      Histoire
-                    </button>
-                    <button class="filter-tab" data-category="science">Sciences</button>
-                    <button class="filter-tab" data-category="culture">Culture</button>
+                    <?php endforeach; ?>
                 </div>
                 <div class="search-filter">
                     <input type="text" placeholder="Rechercher une exploration...">
@@ -45,153 +43,27 @@
 
             <!-- Liste des explorations -->
             <div class="explorations-grid">
-                <!-- Géographie -->
-                <div class="exploration-card" data-category="geography">
+                <!-- test de la recuperation des explorations -->
+                <?php foreach(\App\Models\Exploration\Exploration::getAll() as $explorations): ?>
+                <div class="exploration-card" data-category="<?= $explorations['categorie'] ?>">
                     <div class="exploration-image">
-                        <img src="img/europe.jpg" alt="Europe">
-                        <div class="exploration-badge geography">Géographie</div>
+                        <img src="<?= $explorations['slug'] ?>" alt="<?= $explorations['titre'] ?>">
+                        <div class="exploration-badge geography"><?= $explorations['categorie'] ?></div>
                     </div>
                     <div class="exploration-content">
-                        <h3>L'Europe</h3>
-                        <p>Découvre les pays, capitales et cultures du continent européen</p>
+                        <h3><?=$explorations['titre'] ?></h3>
+                        <p><?=$explorations['description'] ?></p>
                         <div class="exploration-meta">
-                            <span><i class="fas fa-map-marker-alt"></i> 45 pays</span>
+                            <span><i class="fas fa-map-marker-alt"></i> <?=$explorations['categorie'] ?></span>
                             <span><i class="fas fa-clock"></i> 3h</span>
                         </div>
-                        <button class="btn-explore">Explorer</button>
+                       
+                        <a href="/user/exploration/start/<?= $explorations['id']?>">
+                               <button class="btn-explore">Explorer</button>
+                        </a>
                     </div>
                 </div>
-
-                <div class="exploration-card" data-category="geography">
-                    <div class="exploration-image">
-                        <img src="img/africa.jpg" alt="Afrique">
-                        <div class="exploration-badge geography">Géographie</div>
-                    </div>
-                    <div class="exploration-content">
-                        <h3>L'Afrique</h3>
-                        <p>Explore la diversité des paysages et cultures africaines</p>
-                        <div class="exploration-meta">
-                            <span><i class="fas fa-map-marker-alt"></i> 54 pays</span>
-                            <span><i class="fas fa-clock"></i> 4h</span>
-                        </div>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-
-                <div class="exploration-card" data-category="geography">
-                    <div class="exploration-image">
-                        <img src="img/asia.jpg" alt="Asie">
-                        <div class="exploration-badge geography">Géographie</div>
-                    </div>
-                    <div class="exploration-content">
-                        <h3>L'Asie</h3>
-                        <p>Découvre le plus grand continent du monde et ses civilisations</p>
-                        <div class="exploration-meta">
-                            <span><i class="fas fa-map-marker-alt"></i> 48 pays</span>
-                            <span><i class="fas fa-clock"></i> 5h</span>
-                        </div>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-
-                <!-- Histoire -->
-                <div class="exploration-card" data-category="history">
-                    <div class="exploration-image">
-                        <img src="img/ancient.jpg" alt="Antiquité">
-                        <div class="exploration-badge history">Histoire</div>
-                    </div>
-                    <div class="exploration-content">
-                        <h3>L'Antiquité</h3>
-                        <p>Voyage dans le temps à la découverte des premières civilisations</p>
-                        <div class="exploration-meta">
-                            <span><i class="fas fa-landmark"></i> 5 civilisations</span>
-                            <span><i class="fas fa-clock"></i> 3h</span>
-                        </div>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-
-                <div class="exploration-card" data-category="history">
-                    <div class="exploration-image">
-                        <img src="img/medieval.jpg" alt="Moyen Âge">
-                        <div class="exploration-badge history">Histoire</div>
-                    </div>
-                    <div class="exploration-content">
-                        <h3>Le Moyen Âge</h3>
-                        <p>Découvre la vie au temps des châteaux forts et des chevaliers</p>
-                        <div class="exploration-meta">
-                            <span><i class="fas fa-landmark"></i> 10 périodes</span>
-                            <span><i class="fas fa-clock"></i> 4h</span>
-                        </div>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-
-                <!-- Sciences -->
-                <div class="exploration-card" data-category="science">
-                    <div class="exploration-image">
-                        <img src="img/space.jpg" alt="Espace">
-                        <div class="exploration-badge science">Sciences</div>
-                    </div>
-                    <div class="exploration-content">
-                        <h3>L'Espace</h3>
-                        <p>Explore les mystères de l'univers, des planètes aux galaxies</p>
-                        <div class="exploration-meta">
-                            <span><i class="fas fa-planet-ringed"></i> 8 planètes</span>
-                            <span><i class="fas fa-clock"></i> 3h</span>
-                        </div>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-
-                <div class="exploration-card" data-category="science">
-                    <div class="exploration-image">
-                        <img src="img/animals.jpg" alt="Animaux">
-                        <div class="exploration-badge science">Sciences</div>
-                    </div>
-                    <div class="exploration-content">
-                        <h3>Le Règne Animal</h3>
-                        <p>Découvre la diversité des espèces animales sur notre planète</p>
-                        <div class="exploration-meta">
-                            <span><i class="fas fa-paw"></i> 100+ espèces</span>
-                            <span><i class="fas fa-clock"></i> 4h</span>
-                        </div>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-
-                <!-- Culture -->
-                <div class="exploration-card" data-category="culture">
-                    <div class="exploration-image">
-                        <img src="img/food.jpg" alt="Cuisine">
-                        <div class="exploration-badge culture">Culture</div>
-                    </div>
-                    <div class="exploration-content">
-                        <h3>Cuisines du Monde</h3>
-                        <p>Voyage culinaire à travers les saveurs des cinq continents</p>
-                        <div class="exploration-meta">
-                            <span><i class="fas fa-utensils"></i> 50 plats</span>
-                            <span><i class="fas fa-clock"></i> 3h</span>
-                        </div>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-
-                <div class="exploration-card" data-category="culture">
-                    <div class="exploration-image">
-                        <img src="img/festivals.jpg" alt="Festivals">
-                        <div class="exploration-badge culture">Culture</div>
-                    </div>
-                    <div class="exploration-content">
-                        <h3>Fêtes et Traditions</h3>
-                        <p>Découvre les célébrations et traditions à travers le monde</p>
-                        <div class="exploration-meta">
-                            <span><i class="fas fa-calendar-day"></i> 30 fêtes</span>
-                            <span><i class="fas fa-clock"></i> 3h</span>
-                        </div>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </main>
 

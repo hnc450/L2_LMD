@@ -53,7 +53,7 @@
                     <p>Rejoignez des milliers d'explorateurs du monde entier</p>
                     <div class="welcome-buttons">
                         <a href="/login" class="btn-welcome">Se connecter</a>
-                        <a href="/" class="btn-welcome primary">Commencer</a>
+                        <a href="/user/home" class="btn-welcome primary">Commencer</a>
                     </div>
                 </div>
             </div>

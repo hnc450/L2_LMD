@@ -66,13 +66,25 @@
 
         public static function ajouter_un_jeu(array $datas , string $methode) 
         {
-            var_dump($datas);
+            $params = [
+                ':titre' => $datas['titre'],
+                ':age'=> $datas['age'],
+                ':id_cat'=> $datas['category'],
+                ':duration'=> $datas['duration'],
+                ':descr'=> $datas['description'],
+                ':slug'=> $datas['slug'],
+                ':contenu'=> $datas['contenu']
+            ];
+          
             if($methode ==="POST")
             {
-
-            //   Database::executeQuery("INSERT INTO jeux (titre, niveau, categorie, duration,description) VALUES (:t,:n,:c,:d,:dc)", $datas,1);
-            //   header("Location: /dahsboard");
+           
+              Database::executeQuery("INSERT INTO jeux(titre,age,id_categorie, duration,description,slug_img,contenu)
+              VALUES (:titre,:age,:id_cat,:duration,:descr,:slug,:contenu)", $params,1);
+         
+              header("Location:/administration/contenus");
             }
+        
             else
             {
                 header("Location: /home");
@@ -95,12 +107,12 @@
 
         public static function modifier_exploration(array $datas, string $methode, int $id)
         {
-            if($methode === "POST")
+            if($methode === "PUT")
             {
                 $titre = $datas['titre'] ?? '';
                 $categorie = $datas['categorie'] ?? '';
                 $info = $datas['info'] ?? '';
-               // Exploration::update($id, $titre, $categorie, $info);
+                Exploration::update($id, $titre, $categorie, $info);
                 header("Location: /administration/contenus");
             }
             else
@@ -111,7 +123,7 @@
 
         public static function supprimer_exploration(int $id)
         {
-          //  ExplorationModel::delete($id);
+            Exploration::delete($id);
             header("Location: /administration/contenus");
         }
 
@@ -185,6 +197,71 @@
             } catch (\PDOException $e) {
                 error_log("Erreur lors du bannissement de l'utilisateur: " . $e->getMessage());
                 return false;
+            }
+        }
+
+        public static function supprimer_jeu(int $id)
+        {
+            try {
+                $query = "DELETE FROM jeux WHERE id_jeu = :id";
+                $params = [':id' => $id];
+                Database::executeQuery($query, $params, 4);
+                header("Location: /administration/contenus");
+                exit();
+            } catch (\PDOException $e) {
+                error_log("Erreur lors de la suppression du jeu: " . $e->getMessage());
+                return false;
+            }
+        }
+
+        public static function modifier_jeu(int $id, array $datas, string $methode)
+        {
+            if ($methode === "PUT" || $methode === "POST") {
+                try {
+                    $params = [
+                        ':id' => $id,
+                        ':titre' => $datas['titre'],
+                        ':slug_img' => $datas['slug_img'],
+                        ':duration' => $datas['duration'],
+                        ':description' => $datas['description'],
+                        ':contenu' => $datas['contenu'],
+                        ':age' => $datas['age'],
+                        ':id_categorie' => $datas['category'] ?? $datas['id_categorie']
+                    ];
+                    $query = "UPDATE jeux SET titre = :titre, slug_img = :slug_img, duration = :duration, description = :description, contenu = :contenu, age = :age, id_categorie = :id_categorie WHERE id_jeu = :id";
+                    Database::executeQuery($query, $params, 1);
+                    header("Location: /administration/contenus");
+                    exit();
+                } catch (\PDOException $e) {
+                    error_log("Erreur lors de la modification du jeu: " . $e->getMessage());
+                    return false;
+                }
+            } else {
+                header("Location: /user/home");
+            }
+        }
+
+        public static function modifier_module(int $id, array $datas, string $methode)
+        {
+            if ($methode === "PUT" || $methode === "POST") {
+                try {
+                    $params = [
+                        ':id' => $id,
+                        ':titre' => $datas['titre'],
+                        ':description' => $datas['description'],
+                        ':categorie' => $datas['categorie'],
+                        ':niveau' => $datas['niveau']
+                    ];
+                    $query = "UPDATE modules SET titre = :titre, description = :description, categorie = :categorie, niveau = :niveau WHERE id_module = :id";
+                    \App\Models\Database\Database::executeQuery($query, $params, 1);
+                    header("Location: /administration/contenus");
+                    exit();
+                } catch (\PDOException $e) {
+                    error_log("Erreur lors de la modification du module: " . $e->getMessage());
+                    return false;
+                }
+            } else {
+                header("Location: /home");
             }
         }
 

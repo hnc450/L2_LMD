@@ -1,3 +1,6 @@
+<?php
+use App\Models\Jeu\Jeu;
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -5,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeux - Le Monde Dans Ma Poche</title>
     <link rel="stylesheet" href="/css/styles.css">
-      <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Styles pour les filtres */
@@ -207,7 +210,7 @@
         <main class="main-content">
             <!-- Header mobile -->
             <header class="mobile-header">
-                <img src="img/logo.png" alt="Logo" class="logo">
+                <img src="/assets/logo.jpeg" alt="Logo" class="logo">
                 <h1>Jeux</h1>
                 <button class="menu-toggle" id="menuToggle">
                     <i class="fas fa-bars"></i>
@@ -249,126 +252,25 @@
                 </section>
 
                 <section class="games-grid">
+                    <?php foreach(Jeu::recuperer_tous_les_jeux() as $jeu): ?>
                     <div class="game-card">
                         <div class="game-image">
-                            <img src="img/game1.jpg" alt="Quiz Géographie">
-                            <div class="game-badge">6-8 ans</div>
+                            <img src="<?= htmlspecialchars($jeu['slug_img'] ?? 'img/placeholder.svg') ?>" alt="Quiz <?= htmlspecialchars($jeu['titre'] ?? '') ?>">
+                            <div class="game-badge"><?= htmlspecialchars($jeu['age'] ?? '') ?></div>
                         </div>
                         <div class="game-info">
-                            <h3>Quiz Géographie: Europe</h3>
-                            <p>Découvre les pays et capitales d'Europe</p>
+                            <h3><?= htmlspecialchars($jeu['titre'] ?? '') ?></h3>
+                            <p><?= htmlspecialchars($jeu['description'] ?? '') ?></p>
                             <div class="game-meta">
-                                <span><i class="fas fa-star"></i> 4.8</span>
-                                <span><i class="fas fa-clock"></i> 10 min</span>
+                                <span><i class="fas fa-layer-group"></i> <?= htmlspecialchars($jeu['categorie'] ?? '') ?></span>
+                                <span><i class="fas fa-clock"></i> <?= htmlspecialchars($jeu['duration'] ?? '') ?></span>
                             </div>
-                            <button class="btn-play">Jouer</button>
+                            <a  href="/user/jeu/<?= htmlspecialchars($jeu['id_jeu']) ?>">
+                                <button  class="btn-play"> Jouer</button>
+                            </a>
                         </div>
                     </div>
-                    <div class="game-card">
-                        <div class="game-image">
-                            <img src="img/game2.jpg" alt="Quiz Histoire">
-                            <div class="game-badge">9-11 ans</div>
-                        </div>
-                        <div class="game-info">
-                            <h3>Quiz Histoire: Moyen Âge</h3>
-                            <p>Voyage dans le temps à l'époque médiévale</p>
-                            <div class="game-meta">
-                                <span><i class="fas fa-star"></i> 4.6</span>
-                                <span><i class="fas fa-clock"></i> 15 min</span>
-                            </div>
-                            <button class="btn-play">Jouer</button>
-                        </div>
-                    </div>
-                    <div class="game-card">
-                        <div class="game-image">
-                            <img src="img/game3.jpg" alt="Quiz Sciences">
-                            <div class="game-badge">12-14 ans</div>
-                        </div>
-                        <div class="game-info">
-                            <h3>Quiz Sciences: Espace</h3>
-                            <p>Explore les mystères de l'univers</p>
-                            <div class="game-meta">
-                                <span><i class="fas fa-star"></i> 4.9</span>
-                                <span><i class="fas fa-clock"></i> 12 min</span>
-                            </div>
-                            <button class="btn-play">Jouer</button>
-                        </div>
-                    </div>
-                    <div class="game-card">
-                        <div class="game-image">
-                            <img src="img/game4.jpg" alt="Quiz Culture">
-                            <div class="game-badge">15+ ans</div>
-                        </div>
-                        <div class="game-info">
-                            <h3>Quiz Culture: Asie</h3>
-                            <p>Découvre les traditions et coutumes asiatiques</p>
-                            <div class="game-meta">
-                                <span><i class="fas fa-star"></i> 4.7</span>
-                                <span><i class="fas fa-clock"></i> 20 min</span>
-                            </div>
-                            <button class="btn-play">Jouer</button>
-                        </div>
-                    </div>
-                    <div class="game-card">
-                        <div class="game-image">
-                            <img src="img/game5.jpg" alt="Quiz Géographie">
-                            <div class="game-badge">6-8 ans</div>
-                        </div>
-                        <div class="game-info">
-                            <h3>Quiz Géographie: Afrique</h3>
-                            <p>Découvre les pays et paysages d'Afrique</p>
-                            <div class="game-meta">
-                                <span><i class="fas fa-star"></i> 4.5</span>
-                                <span><i class="fas fa-clock"></i> 10 min</span>
-                            </div>
-                            <button class="btn-play">Jouer</button>
-                        </div>
-                    </div>
-                    <div class="game-card">
-                        <div class="game-image">
-                            <img src="img/game6.jpg" alt="Quiz Histoire">
-                            <div class="game-badge">9-11 ans</div>
-                        </div>
-                        <div class="game-info">
-                            <h3>Quiz Histoire: Antiquité</h3>
-                            <p>Découvre les civilisations anciennes</p>
-                            <div class="game-meta">
-                                <span><i class="fas fa-star"></i> 4.4</span>
-                                <span><i class="fas fa-clock"></i> 15 min</span>
-                            </div>
-                            <button class="btn-play">Jouer</button>
-                        </div>
-                    </div>
-                    <div class="game-card">
-                        <div class="game-image">
-                            <img src="img/game7.jpg" alt="Quiz Sciences">
-                            <div class="game-badge">12-14 ans</div>
-                        </div>
-                        <div class="game-info">
-                            <h3>Quiz Sciences: Animaux</h3>
-                            <p>Découvre le monde fascinant des animaux</p>
-                            <div class="game-meta">
-                                <span><i class="fas fa-star"></i> 4.8</span>
-                                <span><i class="fas fa-clock"></i> 12 min</span>
-                            </div>
-                            <button class="btn-play">Jouer</button>
-                        </div>
-                    </div>
-                    <div class="game-card">
-                        <div class="game-image">
-                            <img src="img/game8.jpg" alt="Quiz Culture">
-                            <div class="game-badge">15+ ans</div>
-                        </div>
-                        <div class="game-info">
-                            <h3>Quiz Culture: Amérique</h3>
-                            <p>Explore les cultures du continent américain</p>
-                            <div class="game-meta">
-                                <span><i class="fas fa-star"></i> 4.6</span>
-                                <span><i class="fas fa-clock"></i> 20 min</span>
-                            </div>
-                            <button class="btn-play">Jouer</button>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </section>
             </div>
         </main>
@@ -377,31 +279,31 @@
         <nav class="mobile-nav">
             <ul>
                 <li>
-                    <a href="index.html">
+                    <a href="/user/home">
                         <i class="fas fa-home"></i>
                         <span>Accueil</span>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="jeux.html">
+                    <a href="/user/jeux">
                         <i class="fas fa-gamepad"></i>
                         <span>Jeux</span>
                     </a>
                 </li>
                 <li>
-                    <a href="profile.html">
+                    <a href="/user/profile">
                         <i class="fas fa-user"></i>
                         <span>Profil</span>
                     </a>
                 </li>
                 <li>
-                    <a href="ligue.html">
+                    <a href="/user/ligue">
                         <i class="fas fa-trophy"></i>
                         <span>Ligues</span>
                     </a>
                 </li>
                 <li>
-                    <a href="parametres.html">
+                    <a href="/user/parametres">
                         <i class="fas fa-cog"></i>
                         <span>Paramètres</span>
                     </a>
@@ -411,35 +313,5 @@
     </div>
 
     <script src="/js/script.js" defer></script>
-    <script>
-    // Remplace le comportement des boutons 'Jouer' pour utiliser l'API
-    const playButtons = document.querySelectorAll('.btn-play');
-    if (playButtons.length > 0) {
-        playButtons.forEach((button, idx) => {
-            button.addEventListener('click', function () {
-                // L'index du jeu correspond à l'id simulé (1-based)
-                const jeuId = idx + 1;
-                fetch(`/api/jeu/${jeuId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.id) {
-                            // Redirige vers la page de démarrage du jeu avec les infos en paramètres
-                            const params = new URLSearchParams({
-                                categorie: data.categorie,
-                                age: data.age,
-                                titre: data.titre,
-                                desc: data.desc,
-                                img: data.img
-                            });
-                            window.location.href = `/user/start-game?${params.toString()}`;
-                        } else {
-                            alert('Jeu non trouvé !');
-                        }
-                    })
-                    .catch(() => alert('Erreur lors de la récupération du jeu.'));
-            });
-        });
-    }
-    </script>
 </body>
 </html>

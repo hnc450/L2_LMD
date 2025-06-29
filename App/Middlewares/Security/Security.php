@@ -2,11 +2,7 @@
     namespace App\Middlewares\Security;
     class Security
     {
-        private static function is_empty(mixed $value):bool
-        {
-            return empty($value) ? true : false;
-        }
-        
+
         public static function verify_role($roles)
         {
             if($roles === 'administrateur')
@@ -21,9 +17,6 @@
             }
         }
         
-        /**
-         * Vérifie si l'utilisateur est connecté. Redirige vers /login sinon.
-         */
         public static function require_auth() {
             if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
                 header('Location: /login');
@@ -37,18 +30,20 @@
          */
         public static function require_role($roles) {
             self::require_auth();
-            $userRole = $_SESSION['user'][0]['role'] ?? null;
+            $role = $_SESSION['user'][0]['role'] ?? null;
             if (is_array($roles)) {
-                if (!in_array($userRole, $roles)) {
+                if (!in_array($role, $roles)) {
                     header('Location: /login');
                     exit;
                 }
             } else {
-                if ($userRole !== $roles) {
+                if ($role !== $roles) {
                     header('Location: /login');
                     exit;
                 }
             }
         }
+
+
     }
 ?>

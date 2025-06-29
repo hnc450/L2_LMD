@@ -1,88 +1,88 @@
-# Le Monde Dans Ma Poche - Interface d'Administration
+# 🌍 Le Monde Dans Ma Poche – Interface d'Administration
 
-## Structure du Projet
-## pour retirer  un dossier ou un fichier du versionning 
+Bienvenue ! Ce dépôt contient l'interface d'administration du projet **Le Monde Dans Ma Poche**.
+
+---
+
+## 📌 Objectif du projet
+
+Ce projet vise à développer une interface d'administration pour gérer les contenus, utilisateurs, modules et statistiques de l'application éducative "Le Monde Dans Ma Poche".
+
+---
+
+## 🛠️ Technologies utilisées
+
+- Langage principal : `PHP`, `JavaScript`
+- Framework : (aucun framework majeur, architecture MVC maison)
+- Base de données : `MySQL`
+- Outils : `Composer`, `Font Awesome`, `Erusev/Parsedown`, `Altorouter`, `GitHub`
+
+---
+
+## 🚀 Etapes pour lancer le projet
+
+1. Cloner ce dépôt :
+
+```bash
+   git clone <url-du-repo>
+   cd l2_LMD
 ```
-     git rm --cached -r vendor composer.lock
-```
-```
-admin_front_end/
-├── assets/
-│   ├── css/          # Fichiers CSS
-│   ├── js/           # Fichiers JavaScript
-│   ├── img/          # Images
-│   └── fonts/        # Polices
-├── pages/            # Pages HTML
-├── components/       # Composants réutilisables
-└── README.md
+
+2. Installer les dépendances PHP :
+
+```bash
+   composer install
 ```
 
-## Organisation des Fichiers
+3. Configurer la base de données :
+   - Créez une base de données MySQL.
+   - Renseignez les identifiants dans `App/Models/Database/Database.php`.
+   - Importez le schéma si besoin.
 
-### Assets
-- `css/` : Contient tous les fichiers de style
-  - `theme.css` : Thème principal
-  - `dashboard.css` : Styles du tableau de bord
-  - `analytics.css` : Styles des graphiques et statistiques
-  - `popup.css` : Styles des fenêtres modales
+4. Lancer le serveur local :
 
-- `js/` : Contient tous les fichiers JavaScript
-  - `theme.js` : Gestion du thème
-  - `dashboard.js` : Fonctionnalités du tableau de bord
-  - `analytics.js` : Gestion des graphiques et statistiques
-  - `popup.js` : Gestion des fenêtres modales
-  - `include.js` : Fonctions utilitaires communes
+```bash
+   php -S localhost:8000 -t public
+```
 
-### Pages
-- `contenu.html` : Gestion du contenu
-- `analytics.html` : Statistiques et analyses
-- `accueil.html` : Page d'accueil
-- `ligues.html` : Gestion des ligues
-- `logs.html` : Journal des activités
-- `feedbacks.html` : Gestion des retours
-- `utilisateurs.html` : Gestion des utilisateurs
-- `parametres.html` : Paramètres de l'application
-- `statistiques.html` : Statistiques détaillées
+5. Accéder à l'interface :
+   - Ouvrez [http://localhost:8000](http://localhost:8000) dans votre navigateur.
 
-## Fonctionnalités Principales
+---
 
-1. **Gestion du Contenu**
-   - Création et modification de quiz
-   - Gestion des modules
-   - Gestion des explorations
+## 📁 Structure du projet
 
-2. **Analytics**
-   - Graphiques interactifs
-   - Filtres de date
-   - Statistiques en temps réel
+```
+l2_LMD/
+  ┣ App/
+  ┃ ┣ Controllers/      # Contrôleurs MVC
+  ┃ ┣ Middlewares/      # Middlewares (sécurité, requêtes, upload)
+  ┃ ┣ Models/           # Modèles (BDD, entités)
+  ┃ ┗ Views/            # Vues (pages HTML/PHP)
+  ┣ public/             # Fichiers publics (assets, index.php)
+  ┣ route/              # Fichiers de routage
+  ┣ routes/             # Définition des routes
+  ┣ vendor/             # Dépendances Composer
+  ┣ README.md           # Présentation du projet
+  ┗ composer.json       # Dépendances PHP
+```
 
-3. **Interface Utilisateur**
-   - Thème clair/sombre
-   - Design responsive
-   - Animations fluides
+---
 
-## Dépendances
+## 🔁 Gestion du dépôt Git
 
-- Font Awesome 6.4.0
-- Chart.js (pour les graphiques)
-- Altorouter (pour les routes)
+Pour sauvegarder votre travail :
 
-## Installation
+```bash
+git add .
+git commit -m "Votre message"
+git push origin main
+```
 
-1. Clonez le dépôt
-2. Ouvrez les fichiers HTML dans votre navigateur
-3. Pour le développement, utilisez un serveur local
+---
 
-## Développement
+## 📄 Licence
 
-Pour ajouter de nouvelles fonctionnalités :
-1. Créez les fichiers nécessaires dans les dossiers appropriés
-2. Mettez à jour les chemins dans les fichiers HTML
-3. Testez sur différents navigateurs 
+Projet académique – Usage Strictement Pédagogique.
+© 2025 – Université Protestante au Congo - CRIAGI
 
-## Amélioration Sidebar (2024)
-- La sidebar affiche désormais dynamiquement les liens selon le rôle de l'utilisateur (joueur ou administrateur).
-- L'avatar affiché est celui de l'utilisateur (ou un avatar par défaut).
-- Les liens d'administration (dashboard, gestion utilisateurs, contenus, ligues, plaintes, paramètres admin) n'apparaissent que pour les administrateurs.
-- Les liens vers les modules, explorations, jeux, chat, etc. sont accessibles à tous les utilisateurs connectés.
-- Le nom/prénom et le rôle de l'utilisateur sont affichés dans le footer de la sidebar.

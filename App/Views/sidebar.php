@@ -3,7 +3,7 @@
 ?>
 <aside class="sidebar">
     <div class="sidebar-header">
-        <img src="img/logo.png" alt="Logo" class="logo">
+        <img src="/assets/logo.jpeg" alt="Logo" class="logo">
         <h1>Le Monde<br>Dans Ma Poche</h1>
     </div>
     <nav class="sidebar-nav">
@@ -63,8 +63,7 @@
     </nav>
     <div class="sidebar-footer">
         <div class="user-info">
-            <!-- Affichage de l'avatar réel de l'utilisateur -->
-            <img src="<?php echo isset($_SESSION['user'][0]['avatar']) && !empty($_SESSION['user'][0]['avatar']) ? '/' . $_SESSION['user'][0]['avatar'] : '/public/uploads/avatars/default.png'; ?>" alt="Avatar" class="avatar">
+            <img src="<?= $_SESSION['user'][0]['avatar'] ?? '/assets/avatar.png'?>" alt="Avatar" class="avatar">
             <div>
                 <p class="username"><?php echo isset($_SESSION['user'][0]['prenoms']) ? $_SESSION['user'][0]['prenoms'] : 'Invité'; ?></p>
                 <p class="rank"><?php echo isset($_SESSION['user'][0]['role']) ? ucfirst($_SESSION['user'][0]['role']) : ''; ?></p>

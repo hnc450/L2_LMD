@@ -1,7 +1,6 @@
 <?php
-
 if (!isset($_SESSION['user'][0]['id_user'])) {
-    header('Location: /connexion');
+    header('Location: /login');
     exit();
 }
 

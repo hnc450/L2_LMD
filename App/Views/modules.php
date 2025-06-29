@@ -16,29 +16,7 @@
         <?php
            require __DIR__ . '/sidebar.php';
         ?>
-        <header class="main-header">
-            <div class="header-left">
-                <img src="img/logo.png" alt="Logo" class="logo">
-                <h1>Le Monde Dans Ma Poche</h1>
-            </div>
-            <div class="header-right">
-                <div class="theme-toggle">
-                    <input type="checkbox" id="themeSwitch" class="theme-switch">
-                    <label for="themeSwitch" class="theme-switch-label">
-                        <i class="fas fa-sun"></i>
-                        <i class="fas fa-moon"></i>
-                        <span class="switch-ball"></span>
-                    </label>
-                </div>
-                <div class="user-info-header">
-                    <img src="img/avatar.png" alt="Avatar" class="avatar">
-                    <div>
-                        <p class="username">John Doe</p>
-                        <p class="rank">Ligue Émeraude</p>
-                    </div>
-                </div>
-            </div>
-        </header>
+       
 
         <!-- Contenu principal -->
         <main class="main-content">
@@ -279,17 +257,6 @@
                         <span>Paramètres</span>
                     </a>
                 </li>
-            </ul>
-        </nav>
-
-        <!-- Navigation desktop (tabs en haut) -->
-        <nav class="desktop-nav">
-            <ul>
-                <li><a href="/"><i class="fas fa-home"></i> Accueil</a></li>
-                <li><a href="/jeux"><i class="fas fa-gamepad"></i> Jeux</a></li>
-                <li><a href="/profile"><i class="fas fa-user"></i> Profil</a></li>
-                <li><a href="/ligue"><i class="fas fa-trophy"></i> Ligues</a></li>
-                <li><a href="/parametres"><i class="fas fa-cog"></i> Paramètres</a></li>
             </ul>
         </nav>
     </div>

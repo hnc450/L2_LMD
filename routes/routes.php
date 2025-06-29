@@ -5,14 +5,10 @@
             use App\Controllers\User\User;
             use App\Controllers\Action\Action;
             use App\Controllers\Admin\Admin;
-use App\Models\Database\Database;
+            use App\Models\Database\Database;
 
             $routes->map("GET","/test", function($action) {
-         
-            });
-
-            $routes->map("GET","/", function() {
-                Page::getPage("welcome");
+                Page::getPage('sidebar');
             });
 
              /* Route for User in GET*/
@@ -46,7 +42,7 @@ use App\Models\Database\Database;
                 Page::getPage("explorations");
             });
 
-            $routes->map("GET","/user/start-game", function() {
+            $routes->map("GET","/user/jeu/[i:id]", function() {
                 Page::getPage("start-game");
             });
 
@@ -63,6 +59,9 @@ use App\Models\Database\Database;
                 User::se_deconnecter();
             });
 
+            $routes->map("GET","/", function() {
+                Page::getPage("welcome");
+            });
             /*Route for Admin in GET*/ 
             // route pour voir un utilisateur
 
@@ -105,18 +104,19 @@ use App\Models\Database\Database;
             });
 
             $routes->map("POST","/administration/add/quiz",function(){
-                \App\Middlewares\Security\Security::require_role('administrateur');
+                //\App\Middlewares\Security\Security::require_role('administrateur');
                 Admin::ajouter_un_jeu($_POST,$_SERVER['REQUEST_METHOD']);
             });
 
             $routes->map("PUT","/administration/quiz/[i:id]",function($id){
-                \App\Middlewares\Security\Security::require_role('administrateur');
-               // Admin::modifier_jeu($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
+               // \App\Middlewares\Security\Security::require_role('administrateur');
+                $datas = json_decode(file_get_contents('php://input'),true);
+                Admin::modifier_jeu((int)$id['id'],$datas,$_SERVER['REQUEST_METHOD']);
             });
 
             $routes->map("DELETE","/administration/quiz/[i:id]",function($id){
-                \App\Middlewares\Security\Security::require_role('administrateur');
-                //Admin::supprimer_jeu((int)$id['id']);
+                //\App\Middlewares\Security\Security::require_role('administrateur');
+                Admin::supprimer_jeu((int)$id['id']);
             });
 
             $routes->map("POST","/administration/add/category",function(){
@@ -145,19 +145,6 @@ use App\Models\Database\Database;
             });
         
             $routes->map("GET","/administration/contenus",function() {
-                // echo "<pre>";
-                // $test = Database::QueryRequest(
-                // 'SELECT  explorations.id_exploration as id,
-                //  explorations.titre_exploration as titre,
-                //  explorations.description_exploration as description,
-                //  explorations.slug_exploration as slug ,
-                //  categories.categorie 
-                //  FROM categories INNER JOIN explorations 
-                //  ON explorations.category_id = categories.id_categorie'
-                //  ,2);
-                // var_dump(\App\Models\Exploration\Exploration::getAll());
-                //    echo "<pre>";
-                // die();
                 Page::dashboard("contenu");
             });
 
@@ -199,6 +186,12 @@ use App\Models\Database\Database;
                  echo json_encode($messages);
             });
 
+            $routes->map("GET","/api/categories", function() {
+                header("Access-Control-Allow-Headers: Content-Type, Authorization");
+                header('Content-Type: application/json');
+                echo json_encode(\App\Models\Category\Category::categories());
+            });
+
             $routes->map("POST","/user/explorations", function() {
                 \App\Middlewares\Security\Security::require_role('joueur');
                 \App\Controllers\User\User::ajouter_une_exploration($_POST, $_SERVER['REQUEST_METHOD']);
@@ -216,72 +209,74 @@ use App\Models\Database\Database;
 
             $routes->map("POST","/administration/add/module",function(){
                 \App\Middlewares\Security\Security::require_role('administrateur');
-               // Admin::ajouter_un_module($_POST,$_SERVER['REQUEST_METHOD']);
+              //  Admin::ajouter_un_module($_POST,$_SERVER['REQUEST_METHOD']);
             });
 
             $routes->map("PUT","/administration/module/[i:id]",function($id){
                 \App\Middlewares\Security\Security::require_role('administrateur');
-               // Admin::modifier_module($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
+              // Admin::modifier_module($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
             });
 
             $routes->map("DELETE","/administration/module/[i:id]",function($id){
                 \App\Middlewares\Security\Security::require_role('administrateur');
-               // Admin::supprimer_module((int)$id['id']);
+               //Admin::supprimer_module((int)$id['id']);
             });
 
             $routes->map("PUT","/administration/exploration/[i:id]",function($id){
                 \App\Middlewares\Security\Security::require_role('administrateur');
-                Admin::modifier_exploration($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
+                $datas = json_decode(file_get_contents('php://input'),true);
+                Admin::modifier_exploration($datas,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
             });
 
             $routes->map("DELETE","/administration/exploration/[i:id]",function($id){
-                \App\Middlewares\Security\Security::require_role('administrateur');
+                //\App\Middlewares\Security\Security::require_role('administrateur');
                 Admin::supprimer_exploration((int)$id['id']);
             });
-
+          // api pour le site 
             $routes->map("GET","/api/jeu/[i:id]", function($id) {
-                // Tableau simulant la base de données des jeux
-                $jeux = [
-                    1 => [
-                        'id' => 1,
-                        'categorie' => 'Géographie',
-                        'age' => '6-8 ans',
-                        'titre' => 'Quiz Géographie : Europe',
-                        'desc' => "Découvre les pays et capitales d'Europe dans ce quiz amusant et interactif !",
-                        'img' => '/img/game1.jpg'
-                    ],
-                    2 => [
-                        'id' => 2,
-                        'categorie' => 'Histoire',
-                        'age' => '9-11 ans',
-                        'titre' => 'Quiz Histoire : Moyen Âge',
-                        'desc' => "Voyage dans le temps à l'époque médiévale !",
-                        'img' => '/img/game2.jpg'
-                    ],
-                    3 => [
-                        'id' => 3,
-                        'categorie' => 'Sciences',
-                        'age' => '12-14 ans',
-                        'titre' => 'Quiz Sciences : Espace',
-                        'desc' => "Explore les mystères de l'univers !",
-                        'img' => '/img/game3.jpg'
-                    ],
-                    4 => [
-                        'id' => 4,
-                        'categorie' => 'Culture',
-                        'age' => '15+ ans',
-                        'titre' => 'Quiz Culture : Asie',
-                        'desc' => "Découvre les traditions et coutumes asiatiques !",
-                        'img' => '/img/game4.jpg'
-                    ]
-                ];
-                $jeu = $jeux[$id['id']] ?? null;
+                //header("Access-Control-Allow-Headers: Content-Type, Authorization");
                 header('Content-Type: application/json');
-                echo json_encode($jeu);
+                echo json_encode(\App\Models\Jeu\Jeu::recuperer_un_jeu($id['id']));
             });
 
+            $routes->map("GET","/api/exploration/[i:id]", function($id) {
+               // header("Access-Control-Allow-Headers: Content-Type, Authorization");
+                header('Content-Type: application/json');
+                $exploration = \App\Models\Exploration\Exploration::getById($id['id']);
+                echo json_encode($exploration ? $exploration : null);
+            });
+
+            $routes->map("GET","/api/module/[i:id]", function($id) {
+                header('Content-Type: application/json');
+                $sql = "SELECT * FROM modules WHERE id_module = :id";
+                $params = [':id' => $id['id']];
+                $result = \App\Models\Database\Database::executeQuery($sql, $params, 2);
+                echo json_encode($result ? $result : null);
+            });
+
+           /*----------------*/ 
             $routes->map("POST","/user/profile/avatar", function() {
                 \App\Controllers\User\User::modifier_profile($_SERVER['REQUEST_METHOD'], $_FILES);
+            });
+
+            $routes->map("GET","/user/exploration/start/[i:id]",function($id){
+                 echo 
+                 App\Controllers\App\App::App()
+                ->Parsedown()
+                ->text(\App\Models\Exploration\Exploration::getById($id['id'])[0]['contenu_exploration']);
+            });
+
+            $routes->map("DELETE","/user/delete/avatar", function() {
+                if(isset($_SESSION['user'][0]['id_user'])) {
+                    \App\Controllers\User\User::supprimer_avatar($_SESSION['user'][0]['id_user']);
+                } else {
+                    http_response_code(401);
+                    echo json_encode(['error' => 'Non autorisé']);
+                }
+            });
+
+            $routes->map("GET","/error/[i:id]",function($id){
+                Page::getPageWithId('errors',$id['id']);
             });
 
             $match = $routes->match();
@@ -299,6 +294,10 @@ use App\Models\Database\Database;
                     $controller = new $controllerName();
                     call_user_func_array([$controller,$method],$match['params']);
                 }       
+            }
+            else{
+                http_response_code(404);
+                header("Location: /error/404");
             }
 
 ?>

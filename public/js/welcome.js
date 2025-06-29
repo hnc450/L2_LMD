@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showSlide(currentSlide + 1)
       } else {
         // Last slide, redirect to home page
-        window.location.href = "/home"
+        window.location.href = "/user/home";
       }
     })
 

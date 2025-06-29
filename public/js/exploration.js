@@ -1,6 +1,53 @@
+let categories = [];
+
+function fetchCategories() {
+    fetch('http://localhost:8000/api/categories')
+        .then(response => response.json())
+        .then(data => {
+            categories = data; // Supposons que data est un tableau d'objets {id, nom}
+            updateCategoryTabs();
+            updateCategoryCount();
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des catégories:', error);
+        });
+}
+
+function updateCategoryTabs() {
+    const tabsContainer = document.querySelector('.filter-tabs-container'); // à adapter selon ta structure HTML
+    if (!tabsContainer) return;
+
+    tabsContainer.innerHTML = ''; // Vide les anciens onglets
+
+    // Onglet "Tous"
+    const allTab = document.createElement('button');
+    allTab.className = 'filter-tab active';
+    allTab.setAttribute('data-category', 'all');
+    allTab.textContent = 'Tous';
+    tabsContainer.appendChild(allTab);
+
+    // Onglets pour chaque catégorie
+    categories.forEach(cat => {
+        const tab = document.createElement('button');
+        tab.className = 'filter-tab';
+        tab.setAttribute('data-category', cat.id);
+        tab.textContent = cat.nom;
+        tabsContainer.appendChild(tab);
+    });
+
+    // Re-attacher les listeners
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            applyAllFilters();
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Éléments du DOM
-    const filterTabs = document.querySelectorAll('.filter-tab');
     const searchInput = document.querySelector('.search-filter input');
     const explorationCards = document.querySelectorAll('.exploration-card');
 
@@ -8,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function filterByCategory(category) {
         explorationCards.forEach(card => {
             const cardCategory = card.getAttribute('data-category');
-            
             if (category === 'all' || cardCategory === category) {
                 card.style.display = 'block';
                 card.style.animation = 'fadeIn 0.3s ease-in';
@@ -21,16 +67,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fonction pour filtrer par recherche
     function filterBySearch(searchTerm) {
         const term = searchTerm.toLowerCase().trim();
-        
         explorationCards.forEach(card => {
             const title = card.querySelector('h3').textContent.toLowerCase();
             const description = card.querySelector('p').textContent.toLowerCase();
             const category = card.querySelector('.exploration-badge').textContent.toLowerCase();
-            
             const matches = title.includes(term) || 
                           description.includes(term) || 
                           category.includes(term);
-            
             if (matches || term === '') {
                 card.style.display = 'block';
                 card.style.animation = 'fadeIn 0.3s ease-in';
@@ -43,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fonction pour filtrer par catégorie ET recherche
     function applyAllFilters() {
         const activeTab = document.querySelector('.filter-tab.active');
-        const activeCategory = activeTab.getAttribute('data-category');
+        const activeCategory = activeTab ? activeTab.getAttribute('data-category') : 'all';
         const searchTerm = searchInput.value.toLowerCase().trim();
 
         explorationCards.forEach(card => {
@@ -51,16 +94,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const title = card.querySelector('h3').textContent.toLowerCase();
             const description = card.querySelector('p').textContent.toLowerCase();
             const category = card.querySelector('.exploration-badge').textContent.toLowerCase();
-            
             // Vérifier la catégorie
             const categoryMatch = activeCategory === 'all' || cardCategory === activeCategory;
-            
             // Vérifier la recherche
             const searchMatch = searchTerm === '' || 
                               title.includes(searchTerm) || 
                               description.includes(searchTerm) || 
                               category.includes(searchTerm);
-            
             if (categoryMatch && searchMatch) {
                 card.style.display = 'block';
                 card.style.animation = 'fadeIn 0.3s ease-in';
@@ -68,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.style.display = 'none';
             }
         });
-
         // Afficher un message si aucun résultat
         showNoResultsMessage();
     }
@@ -78,13 +117,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const visibleCards = Array.from(explorationCards).filter(card => 
             card.style.display !== 'none'
         );
-
         // Supprimer le message existant s'il y en a un
         const existingMessage = document.querySelector('.no-results-message');
         if (existingMessage) {
             existingMessage.remove();
         }
-
         // Afficher le message si aucune carte n'est visible
         if (visibleCards.length === 0) {
             const noResultsMessage = document.createElement('div');
@@ -100,28 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Gestionnaire d'événements pour les onglets de filtre
-    filterTabs.forEach(tab => {
-        tab.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Retirer la classe active de tous les onglets
-            filterTabs.forEach(t => t.classList.remove('active'));
-            
-            // Ajouter la classe active à l'onglet cliqué
-            this.classList.add('active');
-            
-            // Appliquer tous les filtres
-            applyAllFilters();
-        });
-    });
-
     // Gestionnaire d'événements pour la recherche
     searchInput.addEventListener('input', function() {
         applyAllFilters();
     });
-
-    // Gestionnaire d'événements pour la recherche en temps réel (optionnel)
     searchInput.addEventListener('keyup', function(e) {
         if (e.key === 'Enter') {
             applyAllFilters();
@@ -130,34 +149,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fonction pour compter les explorations par catégorie
     function updateCategoryCount() {
-        const categories = ['all', 'geography', 'history', 'science', 'culture'];
-        
-        categories.forEach(category => {
-            const tab = document.querySelector(`[data-category="${category}"]`);
+        if (categories.length === 0) return;
+        categories.forEach(cat => {
+            const tab = document.querySelector(`[data-category="${cat.id}"]`);
             if (tab) {
-                let count;
-                if (category === 'all') {
-                    count = explorationCards.length;
-                } else {
-                    count = document.querySelectorAll(`[data-category="${category}"]`).length;
-                }
-                
-                // Ajouter le compteur au texte de l'onglet (optionnel)
-                const tabText = tab.textContent.replace(/\(\d+\)/, '').trim();
-                // tab.innerHTML = `${tabText} <span class="count">(${count})</span>`;
+                const count = Array.from(explorationCards).filter(card => card.getAttribute('data-category') === cat.id).length;
+                // tab.innerHTML = `${cat.nom} <span class="count">(${count})</span>`;
             }
         });
     }
-
-    // Initialiser les compteurs (optionnel)
-    // updateCategoryCount();
 
     // Animation d'entrée pour les cartes
     function animateCards() {
         explorationCards.forEach((card, index) => {
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
-            
             setTimeout(() => {
                 card.style.transition = 'all 0.3s ease-in-out';
                 card.style.opacity = '1';
@@ -165,7 +171,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }, index * 100);
         });
     }
-
-    // Lancer l'animation au chargement
     animateCards();
+    fetchCategories();
+
+    const filterTabs = document.querySelectorAll('.filter-tab');
+
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            // Retirer la classe active de tous les boutons
+            filterTabs.forEach(t => t.classList.remove('active'));
+            // Ajouter la classe active au bouton cliqué
+            this.classList.add('active');
+
+            const category = this.getAttribute('data-category');
+
+            explorationCards.forEach(card => {
+                // Si "all" est sélectionné, tout afficher
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
 });

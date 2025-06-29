@@ -21,6 +21,7 @@
     
       if (file_exists(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . $page.".php"))
       {
+        $value;
         require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . $page.".php";
       }
       else 

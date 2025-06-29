@@ -18,7 +18,7 @@
         <main class="main-content">
             <!-- Header mobile -->
             <header class="mobile-header">
-                <img src="img/logo.png" alt="Logo" class="logo">
+                <img src="/assets/logo.jpeg" alt="Logo" class="logo">
                 <h1>Ligues</h1>
                 <button class="menu-toggle" id="menuToggle">
                     <i class="fas fa-bars"></i>
@@ -136,7 +136,7 @@
                                     <td>1</td>
                                     <td>
                                         <div class="player-info">
-                                            <img src="img/avatar1.png" alt="Avatar" class="small-avatar">
+                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
                                             <span>Sophie Martin</span>
                                         </div>
                                     </td>
@@ -147,7 +147,7 @@
                                     <td>2</td>
                                     <td>
                                         <div class="player-info">
-                                            <img src="img/avatar2.png" alt="Avatar" class="small-avatar">
+                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
                                             <span>Lucas Bernard</span>
                                         </div>
                                     </td>
@@ -158,7 +158,7 @@
                                     <td>3</td>
                                     <td>
                                         <div class="player-info">
-                                            <img src="img/avatar3.png" alt="Avatar" class="small-avatar">
+                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
                                             <span>Emma Petit</span>
                                         </div>
                                     </td>
@@ -169,7 +169,7 @@
                                     <td>4</td>
                                     <td>
                                         <div class="player-info">
-                                            <img src="img/avatar4.png" alt="Avatar" class="small-avatar">
+                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
                                             <span>Hugo Leroy</span>
                                         </div>
                                     </td>
@@ -180,7 +180,7 @@
                                     <td>5</td>
                                     <td>
                                         <div class="player-info">
-                                            <img src="img/avatar5.png" alt="Avatar" class="small-avatar">
+                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
                                             <span>Chloé Dubois</span>
                                         </div>
                                     </td>
@@ -191,7 +191,7 @@
                                     <td>42</td>
                                     <td>
                                         <div class="player-info">
-                                            <img src="img/avatar.png" alt="Avatar" class="small-avatar">
+                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
                                             <span>Thomas Dupont</span>
                                         </div>
                                     </td>
@@ -252,31 +252,31 @@
         <nav class="mobile-nav">
             <ul>
                 <li>
-                    <a href="index.html">
+                    <a href="/user/home">
                         <i class="fas fa-home"></i>
                         <span>Accueil</span>
                     </a>
                 </li>
                 <li>
-                    <a href="jeux.html">
+                    <a href="/user/jeux">
                         <i class="fas fa-gamepad"></i>
                         <span>Jeux</span>
                     </a>
                 </li>
                 <li>
-                    <a href="profile.html">
+                    <a href="/user/profile">
                         <i class="fas fa-user"></i>
                         <span>Profil</span>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="ligue.html">
+                    <a href="/user/ligue">
                         <i class="fas fa-trophy"></i>
                         <span>Ligues</span>
                     </a>
                 </li>
                 <li>
-                    <a href="parametres.html">
+                    <a href="/user/parametres">
                         <i class="fas fa-cog"></i>
                         <span>Paramètres</span>
                     </a>

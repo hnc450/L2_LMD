@@ -51,7 +51,7 @@ class Upload
      */
     public static function delete_image(string $filepath): bool
     {
-        if (file_exists($filepath) && strpos($filepath, 'uploads') !== false) {
+        if (file_exists($filepath) && (strpos($filepath, 'assets') !== false || strpos($filepath, 'assets') !== false)) {
             return unlink($filepath);
         }
         return false;

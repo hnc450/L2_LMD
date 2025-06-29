@@ -24,7 +24,7 @@
         <main class="main-content">
             <!-- Header mobile -->
             <header class="mobile-header">
-                <img src="img/logo.png" alt="Logo" class="logo">
+                <img src="/assets/logo.jpeg" alt="Logo" class="logo">
                 <h1>Paramètres</h1>
                 <button class="menu-toggle" id="menuToggle">
                     <i class="fas fa-bars"></i>
@@ -45,10 +45,7 @@
                             <label for="email">Email</label>
                             <input type="email" id="email" value="<?= $_SESSION['user'][0]['mails'] ?? '' ?>" name="email">
                         </div>
-                        <!-- <div class="form-group">
-                            <label for="nom">Nom</label>
-                            <input type="text" id="nom" value="Dupont">
-                        </div> -->
+                   
                         <div class="form-group">
                             <label for="prenom">Prénom</label>
                             <input type="text" id="prenom" value="<?= $_SESSION['user'][0]['prenoms'] ?? '' ?>" name="prenom">
@@ -147,31 +144,31 @@
         <nav class="mobile-nav">
             <ul>
                 <li>
-                    <a href="index.html">
+                    <a href="/user/home">
                         <i class="fas fa-home"></i>
                         <span>Accueil</span>
                     </a>
                 </li>
                 <li>
-                    <a href="jeux.html">
+                    <a href="/user/jeux">
                         <i class="fas fa-gamepad"></i>
                         <span>Jeux</span>
                     </a>
                 </li>
                 <li>
-                    <a href="profile.html">
+                    <a href="/user/profile">
                         <i class="fas fa-user"></i>
                         <span>Profil</span>
                     </a>
                 </li>
                 <li>
-                    <a href="ligue.html">
+                    <a href="/user/ligue">
                         <i class="fas fa-trophy"></i>
                         <span>Ligues</span>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="parametres.html">
+                    <a href="/user/parametres">
                         <i class="fas fa-cog"></i>
                         <span>Paramètres</span>
                     </a>
