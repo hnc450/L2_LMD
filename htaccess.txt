@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Si la ressource demandée existe dans le dossier public, on la sert directement
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Sinon, on redirige tout vers public/index.php en conservant le chemin
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Optionnel : forcer l'accès à la racine à aller sur public/
+DirectoryIndex public/index.php

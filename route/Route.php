@@ -18,7 +18,6 @@
             self::getRouter()->map('DELETE', $path, $callback);
         }   
 
-        
         public static function getRouter(){
             if(static::$router === null){
                 static::$router = new Router();
