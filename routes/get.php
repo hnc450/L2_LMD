@@ -8,6 +8,11 @@
     Route::get('/login',function(){
       \App\Controllers\Page\Page::getPage('login');
     });
+
+    Route::get('/deconnexion',function(){
+      App\Controllers\User\User::se_deconnecter();
+    });
+    
     Route::get('/user/chat',function(){
       \App\Controllers\Page\Page::getPage('chat');
     });

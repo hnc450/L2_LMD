@@ -9,7 +9,7 @@
    {
         public  static function se_deconnecter()
         {
-          $id = $_SESSION['user'][0]['id_user'];
+          $id = $_SESSION['user']['id_user'];
           Database::QueryRequest("UPDATE users SET status=0 WHERE id_user=$id",3);
           unset($_SESSION['user']);
           session_destroy();

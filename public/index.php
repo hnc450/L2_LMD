@@ -12,6 +12,6 @@
 
   require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'routes.php';
  Route\Route::matcher();
-
+var_dump($_SESSION)
 ?>
 
