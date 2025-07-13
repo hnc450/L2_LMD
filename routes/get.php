@@ -73,8 +73,25 @@
         \App\Controllers\Page\Page::dashboard('contenu');
     });
 
+    Route::get('/administration/ligue',function(){
+         \App\Controllers\Page\Page::dashboard('ligues');
+    });
+
+    Route::get('/administration/settings',function(){
+           \App\Controllers\Page\Page::dashboard('parametres');
+    });
 
     Route::get('/administration/user/[i:id]',function($id){
        \App\Controllers\Page\Page::getPageWithId('user',$id['id']);
     });
+
+    Route::get('/error/[i:code]',function($error){
+       \App\Controllers\Page\Page::getPageWithId('errors',$error['code']);
+    });
+
+    Route::get('/test',function(){
+      \App\Controllers\Page\Page::getPage('sms');
+    });
+
+   
 ?>

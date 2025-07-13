@@ -41,7 +41,7 @@
 
     public static function dashboard(string $page)
     {
-      if (file_exists(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "administration" . DIRECTORY_SEPARATOR . $page.".php"))
+      if(file_exists(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "administration" . DIRECTORY_SEPARATOR . $page.".php"))
       {
         require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "administration" . DIRECTORY_SEPARATOR.$page.".php";
       }

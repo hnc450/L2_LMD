@@ -297,6 +297,8 @@
                     <a href="/administration/contenus">contenu</a>
                     <a href="/administration/plaintes">logs</a>
                     <a href="/administration/users">utilisateurs</a>
+                    <a href="/administration/ligue">ligues</a>
+                    <a href="/administration/settings">parametres</a>
                     <a href="#"></a>
                 </div>
                 <div class="header-right">

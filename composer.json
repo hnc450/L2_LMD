@@ -4,12 +4,14 @@
             "App\\Controllers\\": "app/controllers/",
             "App\\Models\\": "app/models/",
             "App\\Middlewares\\": "app/middlewares/",
-            "Route\\": "route/"
+            "Route\\": "route/",
+            "Messages\\": "messages/"
         }
     },
     "require": {
         "altorouter/altorouter": "^2.0",
         "erusev/parsedown": "^1.7",
-        "webeweb/smsmode-library": "^4.8"
+        "webeweb/smsmode-library": "^4.8",
+        "phpmailer/phpmailer": "^6.10"
     }
 }

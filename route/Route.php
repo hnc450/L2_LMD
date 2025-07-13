@@ -36,7 +36,8 @@
                     call_user_func($match['target'], $match['params']);
                 }
             }else{
-                echo "404";
+               http_response_code(404);
+               header("Location: /error/404");
             }
         }
     }
