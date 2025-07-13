@@ -529,6 +529,24 @@
         </div>
     </form>
 
+    <form action="/admin/add/user" method="post">
+           <input type="text" name="prenom" placeholder="prenom utilisateur">
+           <input type="text" name="pseudo" placeholder="pseudo utilisateur">
+           <input type="email" name="email" placeholder="email utilisateur">
+           <input type="text" name="age" placeholder="age utilisateur">
+           <input type="password" name="password" placeholder="mot de passe utilisateur">
+           <input type="password" name="confirmPassword" placeholder="confirmation du mdp">
+           <select name="role" id="">
+               <option value="utilisateur">utilisateur</option>
+               <option value="administrateur">administrateur</option>
+           </select>
+           <button type="submit">ajouter</button>
+           <select name="sexe" id="">
+            <option value="masculin">masculin</option>
+            <option value="feminin">feminin</option>
+           </select>
+    </form>
+ 
     <script src="/js/theme.js"></script>
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>

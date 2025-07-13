@@ -107,6 +107,10 @@
             }
         }
 
+        public static function add_user(array $datas){
+            \App\Controllers\Formulaire\Formulaire::sign_up($datas,'POST');
+        }
+
         public static function modifier_exploration(array $datas, string $methode, int $id)
         {
             if($methode === "PUT")
@@ -242,6 +246,7 @@
                 header("Location: /user/home");
             }
         }
+
 
         public static function modifier_module(int $id, array $datas, string $methode)
         {

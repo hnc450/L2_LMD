@@ -6,12 +6,12 @@
   use AltoRouter as Router;
   use App\Controllers\App\App;
 
-  $routes = new Router();
+  // $routes = new Router();
   //$databse = new Database("mysql:host","3306","QuizWorld","root","");
   App::App()->getDb();
 
   require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'routes.php';
  Route\Route::matcher();
-var_dump($_SESSION)
+
 ?>
 

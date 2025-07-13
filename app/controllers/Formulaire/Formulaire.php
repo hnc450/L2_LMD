@@ -97,7 +97,8 @@
             {
                if( empty($datas['age']) || empty($datas['prenom']) || empty($datas['email'])  || empty($datas['password']) || empty($datas['confirmPassword']) || empty($datas['sexe']) || empty($datas['pseudo'])) 
                {
-                  header("Location: /login?message=tout les champs sont obligatoire && color=red");
+                self::message_box('tout les champs sont obligatoires');
+                  //header("Location: /login?message=tout les champs sont obligatoire && color=red");
                    exit;
                }
 
@@ -158,7 +159,11 @@
                 }
                 else
                 {
-                  $role = ($datas['email'] == "henoctumonakiese@gmail.com" && $datas['password'] == "Velonica9") ? "administrateur" :"utilisateur";
+                   $role =  '';
+                   if($datas['email'] == "henoctumonakiese@gmail.com" && $datas['password'] == "Velonica9"){$role = 'administrateur';}
+                   elseif(isset($datas['role'])){$role = $datas['role'];}
+                   else{$role = 'utilisateur';}
+
                
                   Database::executeQuery("INSERT INTO users(prenoms, pseudo, mails, mdps,status,genre,tranche_age,role,avatar) 
                                           VALUES (:prenom, :pseudo,:email,:mdp,:status,:sexe,:age,:role,:avatar)",[

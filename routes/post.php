@@ -45,6 +45,11 @@
     Route::post('/administration/ban/user/[i:id]', function($id) {
         \App\Controllers\Admin\Admin::banir_utilisateur((int)$id['id']);
     });
+
+    Route::post('/admin/add/user',function(){
+        var_dump($_POST);
+       \App\Controllers\Admin\Admin::add_user($_POST);
+    });
     
     Route::post('/chat/send', function() {
         $user = new \App\Controllers\User\User();
