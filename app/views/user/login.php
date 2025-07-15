@@ -64,7 +64,7 @@
                             <span class="checkmark"></span>
                             Se souvenir de moi
                         </label>
-                        <a href="#" class="forgot-password">Mot de passe oublié?</a>
+                        <a href="/forget/password" class="forgot-password">Mot de passe oublié?</a>
                     </div>
                     <button type="submit" class="btn-auth">Se connecter</button>
                 </form>

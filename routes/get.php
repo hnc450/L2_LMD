@@ -93,5 +93,17 @@
       \App\Controllers\Page\Page::getPage('sms');
     });
 
+
+    Route::get('/forget/password',function(){
+      \App\Controllers\Page\Page::getPage('form');
+    });
+    
+    Route::get('/reset/password',function(){
+      \App\Controllers\Page\Page::getPage('sms');
+    });
+
+    Route::get('/update/password',function(){
+        \App\Controllers\Page\Page::getPage('mail');
+    })
    
 ?>

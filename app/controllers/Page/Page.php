@@ -6,6 +6,7 @@
     public static function getPage(string $page)
     {
    
+   
       if (file_exists(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR.'user'. DIRECTORY_SEPARATOR . $page.".php"))
       {
         require dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR.'user'. DIRECTORY_SEPARATOR . $page.".php";
@@ -49,6 +50,10 @@
       {
         return;
       }
+    }
+
+    public function view($fichier, $niveau){
+
     }
 
   }

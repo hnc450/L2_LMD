@@ -62,4 +62,21 @@
     Route::post('/user/profile/avatar', function() {
         \App\Controllers\User\User::modifier_profile($_SERVER['REQUEST_METHOD'], $_FILES);
     });
-?>
+
+    Route::post('/send/mail',function(){
+    \App\Models\PasswordReset\PasswordReset::instancePasswordReset($_POST['mail'])
+    ->insertTokken();
+    });
+
+    Route::post('/valide/tokken',function(){
+        $results =[];
+        $tokken= '';
+        foreach($_POST as $numbers){
+            $results[]=implode('',$numbers);
+        }
+     
+        $tokken = implode('',$results);
+        echo $tokken;
+    
+    });
+?> 

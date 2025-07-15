@@ -1,4 +1,3 @@
-
 <style>
     .otp-container {
   max-width: 400px;
@@ -49,17 +48,17 @@ button:disabled {
 
 </style>
 
-<form action="" method="get">
+<form action="/valide/tokken" method="POST">
     <div class="otp-container">
       <h2>🔐 Vérification OTP</h2>
       <p>Entrez le code reçu :</p>
       <div class="otp-inputs">
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" disabled />
-        <input type="text" maxlength="1" disabled />
-        <input type="text" maxlength="1" disabled />
-        <input type="text" maxlength="1" disabled />
-        <input type="text" maxlength="1" disabled />
+        <input type="text" maxlength="1" name="number[]" />
+        <input type="text" maxlength="1" disabled  name="number[]"/>
+        <input type="text" maxlength="1" disabled  name="number[]" />
+        <input type="text" maxlength="1" disabled name="number[]" />
+        <input type="text" maxlength="1" disabled name="number[]" />
+        <input type="text" maxlength="1" disabled  name="number[]"/>
       </div>
       <button id="confirmBtn" disabled>✅ Confirmer</button>
     </div>
@@ -94,5 +93,9 @@ confirmBtn.addEventListener("click", () => {
   const otp = Array.from(inputs).map(inp => inp.value).join("");
   alert("✅ OTP vérifié : " + otp);
 });
+
+// setTimeout(()=>{
+ 
+// },3000)
 
 </script>

@@ -23,4 +23,8 @@
        $datas = json_decode(file_get_contents('php://input'), true);
        \App\Controllers\Admin\Admin::modifier_exploration($datas, $_SERVER['REQUEST_METHOD'], (int)$id['id']);
    });
+
+   Route::put('/update/password',function(){
+
+   });
 ?>
