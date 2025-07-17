@@ -69,14 +69,20 @@
     });
 
     Route::post('/valide/tokken',function(){
-        $results =[];
+        $i = 0;
+        echo "<pre>";
+        var_dump($_POST['number']);
+           echo "</pre>";
+        $results ='';
         $tokken= '';
-        foreach($_POST as $numbers){
-            $results[]=implode('',$numbers);
+        while($i <= 5){
+            $results .= $_POST['number'][$i];
+            $i++;
         }
      
-        $tokken = implode('',$results);
+        $tokken = $results;
         echo $tokken;
+        \App\Models\PasswordReset\PasswordReset::instancePasswordReset($_POST['email'])->valideTokken($tokken);
     
     });
 ?> 

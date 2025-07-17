@@ -141,9 +141,9 @@
                  ':prenom' => $prenom, 
                  ':id' => $id], 3);
 
-                $_SESSION['user'][0]['mails'] = $email;
-                $_SESSION['user'][0]['pseudo'] = $pseudo;
-                $_SESSION['user'][0]['prenoms'] = $prenom;
+                $_SESSION['user']['mails'] = $email;
+                $_SESSION['user']['pseudo'] = $pseudo;
+                $_SESSION['user']['prenoms'] = $prenom;
                  header("Location: /profile");
               }
           }
@@ -153,24 +153,24 @@
         public static function modifier_mot_de_passe(array $datas, string $methode , int $id)
         {
          
-          if($methode ==="POST")
+          if($methode ==="PUT")
           {
-              if(empty($datas['current_password']) ||empty($datas['new_password']) || empty($datas['confirm_password']))
+              if(empty($datas['mdp']) || empty($datas['confirm']))
               {
-                header("Location: /error/tout0les0champs0sont0obligatoires");
+           
               }
 
-              if(strlen($datas['current_password'] < 9 || strlen($datas['new_password']) < 9|| strlen($datas['confirm_password']) < 9))
+              if(strlen($datas['mdp']) < 9|| strlen($datas['confirm']) < 9)
               { 
-                header("Location: /error/le0mot0de0passe0doit0avoir0plus0de090caracteres");
+
               }
 
-              if($datas['new_password'] !== $datas['confirm_password'])
+              if($datas['mdp'] !== $datas['confirm'])
               {
-                header("Location: /error/le0nouveau0mot0de0passe0et0la0confirmation0ne0correspondent0pas");
+
               }
 
-              // if(!preg_match('/^[a-zA-Z0-9]$/',$datas['current_password']) || !preg_match('/^[a-zA-Z0-9]$/',$datas['new_password'])  || !preg_match('/^[a-zA-Z0-9]$/',$datas['confirm_password']))
+              // if(!preg_match('/^[a-zA-Z0-9]$/',$datas['mdp'])  || !preg_match('/^[a-zA-Z0-9]$/',$datas['confirm']))
               // {
               //    header("Location: /error/le0mot0de0passe0doit0avoir0des0chiffres0et0des0lettres");
               // }
@@ -179,14 +179,14 @@
               {
                 if(!Action::check_existence("users","id_user",$id))
                 {
-                 header("Location: /user/paramettres?error=error&&color=red");
+              
                 }
                 else
                 {
-                  $mdp = $datas['new_password'];
-                  Database::QueryRequest("UPDATE users SET mdps='$mdp' WHERE id_user=$id",3);
-                  $_SESSION['user'][0]['mdps'] = $mdp;
-                  header("Location: /user/parametres");
+                  
+                  $mdp = password_hash($datas['mdp'],PASSWORD_DEFAULT);
+                  Database::executeQuery('UPDATE users SET mdps=:mdp WHERE id_user=:id',[':mdp'=>$mdp,':id'=>$id],3);
+                  $_SESSION['user']['mdps'] = $mdp;
                 }
 
               }
@@ -195,21 +195,7 @@
         }
 
         public function envoyer_message($contenu) {
-            try {
-                if (empty($contenu)) {
-                    throw new Exception("Le message ne peut pas être vide");
-                }
-
-                $user_id = $_SESSION['user']['id_user'];
-                $sql = "INSERT INTO messages (sender_id, content, created_at) VALUES (?, ?, NOW())";
-                $params = [$user_id, $contenu];
-                
-                Database::executeQuery($sql, $params,1);
-                return true;
-            } catch (Exception $e) {
-                error_log("Erreur lors de l'envoi du message : " . $e->getMessage());
-                return false;
-            }
+            \Messages\Messages::getInstance()->sendMessage($contenu);
         }
 
         public static function recuperer_messages($limit = 50) {
@@ -243,7 +229,7 @@
                 $categorie = $datas['categorie'] ?? '';
                 $info = $datas['info'] ?? '';
                 $user_id = $_SESSION['user'][0]['id_user'];
-                //ExplorationModel::create($titre, $categorie, $info, $user_id);
+                //Exploration::create($titre, $categorie, $info, $user_id);
                 header("Location: /explorations?success=1");
             }
         }

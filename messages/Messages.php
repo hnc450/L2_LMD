@@ -12,7 +12,22 @@
         }
         return static::$instance;
     }
-
+    public function sendMessage($contenu){
+        try {
+              if (empty($contenu)) {
+                  throw new \Exception("Le message ne peut pas être vide");
+              }
+              $user_id = $_SESSION['user']['id_user'];
+              $sql = "INSERT INTO messages (sender_id, content, created_at) VALUES (?, ?, NOW())";
+              $params = [$user_id, $contenu];
+              
+              \App\Models\Database\Database::executeQuery($sql, $params,1);
+              return true;
+        } catch (\Exception $e) {
+                error_log("Erreur lors de l'envoi du message : " . $e->getMessage());
+                return false;
+        }
+    }
     public function success(string $sujet ,string $email, string $name, string $message){
       $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
       try {

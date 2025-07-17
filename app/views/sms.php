@@ -60,9 +60,9 @@ button:disabled {
         <input type="text" maxlength="1" disabled name="number[]" />
         <input type="text" maxlength="1" disabled  name="number[]"/>
       </div>
+      <input type="email" name="email" value="<?= $_GET['m'] ?>" hidden>
       <button id="confirmBtn" disabled>✅ Confirmer</button>
     </div>
-
 </form>
 
 

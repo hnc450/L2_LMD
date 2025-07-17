@@ -52,8 +52,8 @@
                     <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/plaintes" ? "active" : null ?>">
                         <a href="/administration/plaintes"><i class="fa-solid fa-flag"></i> Plaintes</a>
                     </li>
-                    <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/parametres" ? "active" : null ?>">
-                        <a href="/administration/parametres"><i class="fa-solid fa-cogs"></i> Paramètres Admin</a>
+                    <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/settings" ? "active" : null ?>">
+                        <a href="/administration/settings"><i class="fa-solid fa-cogs"></i> Paramètres Admin</a>
                     </li>
                 <?php endif; ?>
             <?php else: ?>
@@ -63,10 +63,10 @@
     </nav>
     <div class="sidebar-footer">
         <div class="user-info">
-            <img src="<?= $_SESSION['user'][0]['avatar'] ?? '/assets/avatar.png'?>" alt="Avatar" class="avatar">
+            <img src="<?= $_SESSION['user']['avatar'] ?? '/assets/avatar.png'?>" alt="Avatar" class="avatar">
             <div>
-                <p class="username"><?php echo isset($_SESSION['user'][0]['prenoms']) ? $_SESSION['user'][0]['prenoms'] : 'Invité'; ?></p>
-                <p class="rank"><?php echo isset($_SESSION['user'][0]['role']) ? ucfirst($_SESSION['user'][0]['role']) : ''; ?></p>
+                <p class="username"><?php echo isset($_SESSION['user']['prenoms']) ? $_SESSION['user']['prenoms'] : 'Invité'; ?></p>
+                <p class="rank"><?php echo isset($_SESSION['user']['role']) ? ucfirst($_SESSION['user']['role']) : ''; ?></p>
             </div>
         </div>
     </div>

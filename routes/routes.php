@@ -1,45 +1,4 @@
 <?php 
-            // use App\Models\Component\Component;
-            // use App\Controllers\Page\Page;
-            // use App\Controllers\Formulaire\Formulaire;
-            // use App\Controllers\User\User;
-            // use App\Controllers\Action\Action;
-            // use App\Controllers\Admin\Admin;
-            // use App\Models\Database\Database;
-
-
-        //      /* Route for User in GET*/
-        //     $routes->map("GET","/user/chat", function() {
-        //         Page::getPage("chat");
-        //     });
-        //     $routes->map("GET","/user/home", function() {
-        //         Page::getPage("home");
-        //     });
-
-        //     $routes->map("GET","/user/jeux", function() {
-        //         Page::getPage("jeux");
-        //     });
-        //     $routes->map("GET","/user/modules",function(){
-        //         Page::getPage("modules");
-        //     });
-
-        //     $routes->map("GET","/user/profile", function() {
-        //         \App\Middlewares\Security\Security::require_auth();
-        //          Page::getPage("profile");
-        //     });
-
-        //     $routes->map("GET","/user/ligue", function() {
-        //           Page::getPage("ligue");
-        //     });
-
-        //     $routes->map("GET","/user/parametres", function() {
-        //         Page::getPage("parametres");
-        //     });
-            
-        //     $routes->map("GET","/user/explorations", function() {
-        //         Page::getPage("explorations");
-        //     });
-
         //     $routes->map("GET","/user/jeu/[i:id]", function($id) {
         //         Page::getPageWithId("start-game", $id['id']);
         //     });
@@ -47,19 +6,8 @@
         //     /*--------------*/
 
         //    /*     Route for User && Admin in GET*/
-            
+        
 
-        //     $routes->map("GET","/login",function(){
-        //          Page::getPage("login");
-        //     });
-                     
-        //     $routes->map("GET","/deconnexion",function(){
-        //         User::se_deconnecter();
-        //     });
-
-        //     $routes->map("GET","/", function() {
-        //         Page::getPage("welcome");
-        //     });
         //     /*Route for Admin in GET*/ 
         //     // route pour voir un utilisateur
 
@@ -67,9 +15,6 @@
         //       Page::getPageWithId("user",$id['id']);
         //     });
 
-        //     $routes->map("GET","/users",function(){
-        //        Page::getPage("utilisateurs");
-        //     });
 
 
         //     $routes->map("DELETE","/delete/account/[i:id]", function($id) {
@@ -82,13 +27,6 @@
 
         //     //Route en POST pour soummettre les formulaires de connexion et d'inscription
         
-        //     $routes->map("POST","/sign", function() {
-        //         Formulaire::sign_in($_POST,$_SERVER['REQUEST_METHOD']);
-        //     });
-
-        //     $routes->map("POST","/register", function() {
-        //         Formulaire::sign_up($_POST,$_SERVER['REQUEST_METHOD']);
-        //     });
         
         //     $routes->map("POST","/modifier/information/[i:id]", function($id) {
         //         User::modifier_information_compte($_POST,$_SERVER['REQUEST_METHOD'],(int)$id['id']);
@@ -135,31 +73,6 @@
         //           Admin::delete_user_by_id((int)$id['id']);
         //     });
 
-        //     //chemin vers la dashboard d ou /administration route
-        //     $routes->map("GET","/administration/dashboard", function() {
-        //         Page::dashboard("dashboard");
-        //     });
-
-        //     $routes->map("GET","/administration/users",function() {
-        //        // Page::getPage("utilisateurs");
-        //        Page::dashboard("users");
-        //     });
-        
-        //     $routes->map("GET","/administration/contenus",function() {
-        //         Page::dashboard("contenu");
-        //     });
-
-        //     $routes->map("GET","/administration/plaintes",function() {
-        //         Page::dashboard("feedbacks");
-        //     });
-
-        //     $routes->map("GET","/administration/ligues",function() {
-        //         Page::dashboard("ligues");
-        //     });
-            
-        //     $routes->map("GET","/administration/parametres",function() {
-        //         Page::dashboard("parametres");
-        //     });
             
         //     // Routes pour le bannissement des utilisateurs
         //     $routes->map("POST", "/administration/ban/user/[i:id]", function($id) {
@@ -309,7 +222,7 @@
         //         http_response_code(404);
         //         header("Location: /error/404");
         //     }
-
+     
        require __DIR__ . '/get.php';
        require __DIR__ .'/post.php';
        require __DIR__ .'/put.php';

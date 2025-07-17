@@ -9,7 +9,7 @@
        {
         echo "<script>window.alert('" . $message . "');</script>";
        }
-            /** 
+        /** 
         * @param string $cookie_name : nom cookie
         * @param array $datas :  tableau a stocker dans le cookie
        */
@@ -19,12 +19,7 @@
           if(!empty($isActive))
           {
             setcookie($cookie_name,serialize($datas),time() + 84600 * 60);
-          }
-          else
-          {
-            return;
-          }
-     
+          }     
         }
 
         public static function sign_in(array $datas, string $methode):void
@@ -163,7 +158,6 @@
                    if($datas['email'] == "henoctumonakiese@gmail.com" && $datas['password'] == "Velonica9"){$role = 'administrateur';}
                    elseif(isset($datas['role'])){$role = $datas['role'];}
                    else{$role = 'utilisateur';}
-
                
                   Database::executeQuery("INSERT INTO users(prenoms, pseudo, mails, mdps,status,genre,tranche_age,role,avatar) 
                                           VALUES (:prenom, :pseudo,:email,:mdp,:status,:sexe,:age,:role,:avatar)",[

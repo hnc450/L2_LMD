@@ -24,7 +24,9 @@
        \App\Controllers\Admin\Admin::modifier_exploration($datas, $_SERVER['REQUEST_METHOD'], (int)$id['id']);
    });
 
-   Route::put('/update/password',function(){
-
+   Route::put('/reset/password/[i:id]',function($id){
+    //  header('Content-Type: application/json');
+      $datas = json_decode(file_get_contents('php://input'), true);
+      \App\Controllers\User\User::modifier_mot_de_passe($datas, $_SERVER['REQUEST_METHOD'],$id['id']);
    });
 ?>

@@ -1,6 +1,6 @@
 <?php 
   if(isset($_SESSION['user'])){
-    \App\Middlewares\Security\Security::verify_role($_SESSION['user'][0]['role']);
+    \App\Middlewares\Security\Security::verify_role($_SESSION['user']['role']);
     exit();
   }
 ?>

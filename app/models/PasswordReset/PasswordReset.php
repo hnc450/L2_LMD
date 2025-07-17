@@ -39,8 +39,18 @@
             header("Location:/reset/password?m={$this->email}");
         } 
 
-        public function returnTokken(){
-            return \App\Models\Database\Database::executeQuery('SELECT * FROM password_resets WHERE email=:mail',[':mail' => $this->email],2);
+        private function returnTokken($tokken){
+            return \App\Models\Database\Database::executeQuery('SELECT * FROM password_resets WHERE token=:tokken',[':tokken' => $tokken],2);
+        }
+
+        public function valideTokken($tokken){
+          $validity = $this->returnTokken($tokken);
+
+          if(count($validity) > 0){
+            echo "tokken valide";
+            header("Location:/update/password?m={$this->email}");
+          }
+          //header('Location: /');
         }
     }
 ?>

@@ -18,7 +18,7 @@
     <div class="app-container">
         <!-- Sidebar pour Desktop -->
         <?php
-           require dirname(__DIR__) . '/sidebar.php';
+           require __DIR__ . '/sidebar.php';
         ?>
         <!-- Contenu principal -->
         <main class="main-content">

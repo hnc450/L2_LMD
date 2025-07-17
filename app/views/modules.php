@@ -14,7 +14,7 @@
         <!-- Header pour toutes les tailles d'écran -->
 
         <?php
-           require dirname(__DIR__) . '/sidebar.php';
+           require __DIR__ . '/sidebar.php';
         ?>
        
 

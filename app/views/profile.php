@@ -13,7 +13,7 @@
     <div class="app-container">
         <!-- Sidebar pour Desktop -->
         <?php
-           require dirname(__DIR__) . '/sidebar.php';
+           require (__DIR__) . '/sidebar.php';
         ?>
         <!-- Contenu principal -->
         <main class="main-content">
@@ -74,7 +74,7 @@
                 </section>
 
                 <section class="trophies-section">
-                    <div class="section-header">j
+                    <div class="section-header">
                         <h2>Mes Trophées</h2>
                     </div>
                     
@@ -253,7 +253,7 @@
 
     document.getElementById('delete-account-btn').addEventListener('click', function() {
         if(confirm('Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.')) {
-            fetch(`/delete/account/${<?= $_SESSION['user'][0]['id_user'] ?>}`, {
+            fetch(`/delete/account/${<?php echo $_SESSION['user']['id_user'] ?>}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

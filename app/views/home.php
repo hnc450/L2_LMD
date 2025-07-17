@@ -12,7 +12,7 @@
 
 <body>
 <?php 
-     require dirname(__DIR__).'/sidebar.php';
+     require __DIR__.'/sidebar.php';
 ?>
 <main class="main-content">
     

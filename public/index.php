@@ -2,16 +2,12 @@
   session_start();
   require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
   
- // use App\Models\Database\Database; 
   use AltoRouter as Router;
   use App\Controllers\App\App;
 
-  // $routes = new Router();
-  //$databse = new Database("mysql:host","3306","QuizWorld","root","");
-  App::App()->getDb();
+  $databse = App::App()->getDb();
+  $view = \App\Controllers\Page\Page::instance();
 
   require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'routes.php';
- Route\Route::matcher();
-
+  Route\Route::matcher();
 ?>
-

@@ -224,7 +224,7 @@ if (!isset($_SESSION['user']['id_user'])) {
     <div class="app-container">
         
         <?php
-           require dirname(__DIR__) . '/sidebar.php';
+           require (__DIR__) . '/sidebar.php';
         ?>
 
         <header class="main-header">
