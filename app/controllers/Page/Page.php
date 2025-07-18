@@ -76,7 +76,13 @@
       }
     }
 
-    private function render($fichier,$valeur){}
+    private function render($fichier,$valeur){
+      if($this->existence_file($fichier))
+      {
+          extract($valeur);
+          require dirname(__DIR__,2) . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $fichier.".php";
+      }
+    }
 
     public function contenus()
     {
@@ -96,6 +102,13 @@
     public function feedbacks()
     {
       $this->view('plaintes');
+    }
+
+    public function game($id)
+    {
+     $jeu =  \App\Models\Jeu\Jeu::recuperer_un_jeu($id);
+      //var_dump($jeu);
+      $this->render('game',compact('id','jeu'));
     }
     
     public function home()
@@ -150,9 +163,11 @@
     {
           $this->view('users');
     }
-    public function user()
+
+    public function user($id)
     {
-      $this->view('user');
+      $user = \App\Models\FactoryModel::Factory('User')->getUser($id);
+      $this->render('user',compact('user'));
     }
   }
 ?>

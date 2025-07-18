@@ -2,11 +2,11 @@
     use Route\Route;
 
     Route::post('/sign', function() {
-        \App\Controllers\Formulaire\Formulaire::sign_in($_POST, $_SERVER['REQUEST_METHOD']);
+      \App\Controllers\Formulaire\Formulaire::instance()->sign_in($_POST,$_SERVER['REQUEST_METHOD']);
     });
     
     Route::post('/register', function() {
-        \App\Controllers\Formulaire\Formulaire::sign_up($_POST, $_SERVER['REQUEST_METHOD']);
+        \App\Controllers\Formulaire\Formulaire::instance()->sign_up($_POST,$_SERVER['REQUEST_METHOD']);
     });
     
     Route::post('/modifier/information/[i:id]', function($id) {

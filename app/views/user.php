@@ -307,15 +307,7 @@
         }
     </style>
 </head>
-<body>
-    <?php
-        use App\Models\Database\Database;
-        $user = Database::executeQuery(
-            "SELECT * FROM users WHERE id_user= :id",
-            ['id' => $value],
-            2);
-    ?>
-    <?= $user[0]['nom']  ?? ''?>
+<body>   
     <div class="container">
         <div class="header">
             <div class="header-content">
@@ -327,11 +319,11 @@
 
         <div class="main-content">
             <div class="user-overview">
-                <div class="avatar"><?=$user[0]['id_user']?></div>
+                <div class="avatar"><?=$valeur['user']['id_user']?></div>
                 <div class="user-info">
-                    <h2> <?= $user[0]['prenoms'] ?? '' ?></h2>
-                    <p> <?= $user[0]['mails'] ?? '' ?></p>
-                    <p>ID:#<?= $user[0]['id_user'] ?? ''?></p>
+                    <h2> <?= $valeur['user']['prenoms'] ?? '' ?></h2>
+                    <p> <?= $valeur['user']['mails'] ?? '' ?></p>
+                    <p>ID:#<?= $valeur['user']['id_user'] ?? ''?></p>
                     <p>Membre depuis le 15 janvier 2023</p>
                 </div>
                 <div class="status-badge status-active">Actif</div>
@@ -349,15 +341,15 @@
                     </div>
                     <div class="info-row">
                         <span class="info-label">Nom complet</span>
-                        <span class="info-value"> <?= $user[0]['nom'] ?? ''?></span>
+                        <span class="info-value"> <?= $valeur['user']['nom'] ?? ''?></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Email</span>
-                        <span class="info-value"> <?= $user[0]['email']  ?? ''  ?></span>
+                        <span class="info-value"> <?= $valeur['user']['mails']  ?? ''  ?></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Rang</span>
-                        <span class="info-value"> <?= $user[0]['phone'] ?? '' ?></span>
+                        <span class="info-value"> <?= $valeur['user']['phone'] ?? '' ?></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Date de naissance</span>
@@ -377,14 +369,14 @@
                     <div class="info-row">
                         <span class="info-label">Statut</span>
                         <span class="info-value"> 
-                            <?php if(isset($user[0]['status'])): ?>
-                              <?= (int)$user[0]['status']  ? 'Online' : 'Offline'  ?>
+                            <?php if(isset($valeur['user']['status'])): ?>
+                              <?= (int)$valeur['user']['status']  ? 'Online' : 'Offline'  ?>
                             <?php endif;?>
                         </span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Rôle</span>
-                        <span class="info-value"><?=$user[0]['role'] ??''?></span>
+                        <span class="info-value"><?=$valeur['user']['role'] ??''?></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Dernière connexion</span>

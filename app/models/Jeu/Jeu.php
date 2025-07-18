@@ -20,10 +20,10 @@
            categories.categorie,
            questions.id_question,
            questions.questions,
-           reponses.answer_1,
-           reponses.answer_2,
+           reponses.answer_1 ,
+           reponses.answer_2 ,
            reponses.answer_3,
-           reponses.correct_answer
+           reponses.correct_answer as correct
            FROM jeux 
            INNER JOIN categories ON jeux.id_categorie = categories.id_categorie
            INNER JOIN questions ON jeux.id_jeu = questions.id_jeu

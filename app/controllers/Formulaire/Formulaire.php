@@ -4,27 +4,40 @@
     
     class Formulaire
     { 
+       private static $instance ;
 
-       private static function message_box(string $message):void
+       public static function instance():Formulaire
        {
-        echo "<script>window.alert('" . $message . "');</script>";
+         if(is_null(static::$instance)){
+            static::$instance =  new Formulaire();
+         }
+         return static::$instance;
+       }
+      
+       private  function filter_array( string $value):string
+       {
+          return strip_tags(htmlspecialchars(trim($value)));
+       }
+
+       private  function message_box(string $message):void
+       {
+         echo "<script>window.alert('" . $message . "');</script>";
        }
         /** 
         * @param string $cookie_name : nom cookie
         * @param array $datas :  tableau a stocker dans le cookie
-       */
-        private static function souviens_toi_de_moi(string $cookie_name, array $datas , string $isActive)
+        */
+        private  function souviens_toi_de_moi(string $cookie_name, array $datas , string $isActive)
         {
-        
           if(!empty($isActive))
           {
             setcookie($cookie_name,serialize($datas),time() + 84600 * 60);
           }     
         }
 
-        public static function sign_in(array $datas, string $methode):void
+        public  function sign_in(array $datas, string $methode):void
         {
-        
+      
            if($methode === "POST")
            {
              if(empty($datas['email']) || empty($datas['password']))
@@ -56,8 +69,8 @@
              else
              {
               
-              $email = $datas['email'];
-              $mdp = $datas['password'];
+              $email = strip_tags(htmlspecialchars(trim($datas['email'])));
+              $mdp = strip_tags(htmlspecialchars(trim($datas['password']))) ;
               $user_exists =  Database::executeQuery('SELECT * FROM users  WHERE mails=:mail',[':mail' => $email],2);
                           
               if(count($user_exists) > 0)
@@ -65,8 +78,8 @@
                if(password_verify($mdp,$user_exists[0]['mdps'])){
                   Database::executeQuery('UPDATE users SET status=1 WHERE mails=:email',[':email' =>$email],3);
                   $_SESSION['user'] = Database::executeQuery('SELECT * FROM users  WHERE mails=:mail',[':mail' => $email],2)[0];
-                  self::souviens_toi_de_moi("Tokken",$datas,$datas['remember']?? '');
-                  self::message_box('connexion reussi');
+                  $this->souviens_toi_de_moi("Tokken",$datas,$datas['remember']?? '');
+                  $this->message_box('connexion reussi');
                   \App\Middlewares\Security\Security::verify_role($_SESSION['user']['role']);
                }
                else{
@@ -86,15 +99,15 @@
           else{}
         }
 
-        public  static function sign_up(array $datas, string $methode):void
+        public  function sign_up(array $datas, string $methode):void
         {     
             if($methode === "POST")
             {
                if( empty($datas['age']) || empty($datas['prenom']) || empty($datas['email'])  || empty($datas['password']) || empty($datas['confirmPassword']) || empty($datas['sexe']) || empty($datas['pseudo'])) 
                {
                 self::message_box('tout les champs sont obligatoires');
-                  //header("Location: /login?message=tout les champs sont obligatoire && color=red");
-                   exit;
+                header("Location: /login?message=tout les champs sont obligatoire && color=red");
+                exit;
                }
 
                if(strlen($datas['email']) < 9)
@@ -142,14 +155,14 @@
               else
               {
                 $user_exists = Database::executeQuery("SELECT * FROM users WHERE mails=:email AND mdps=:mdp",[
-                  ':email' => $datas['email'],
-                  ':mdp' => $datas['password']
+                  ':email' => $this->filter_array($datas['email']),
+                  ':mdp' => $this->filter_array( $datas['password'])
                 ],2);
 
               
                 if(count($user_exists) > 0)
                 {
-                 echo  self::message_box("ce compte existe déjà");
+                 echo  $this->message_box("ce compte existe déjà");
                   header("Location: /login");
                 }
                 else
@@ -161,17 +174,17 @@
                
                   Database::executeQuery("INSERT INTO users(prenoms, pseudo, mails, mdps,status,genre,tranche_age,role,avatar) 
                                           VALUES (:prenom, :pseudo,:email,:mdp,:status,:sexe,:age,:role,:avatar)",[
-                    ':prenom' => $datas['prenom'],
-                    ':pseudo' => $datas['pseudo'],
-                    ':email' => $datas['email'],
-                    ':mdp' => password_hash($datas['password'],PASSWORD_DEFAULT),
+                    ':prenom' => $this->filter_array($datas['prenom']),
+                    ':pseudo' => $this->filter_array( $datas['pseudo']),
+                    ':email' => $this->filter_array( $datas['email']),
+                    ':mdp' => password_hash($this->filter_array($datas['password']),PASSWORD_DEFAULT),
                     ':status' => 0,
-                    ':sexe' => $datas['sexe'],
-                    ':age' => $datas['age'],
+                    ':sexe' => $this->filter_array($datas['sexe'] ),
+                    ':age' =>  $this->filter_array($datas['age']),
                     ':role' => $role,
                     ':avatar' => '/assets/avatar.png'
                   ],1);
-                  self::message_box("compte crée avec success");
+                  $this->message_box("compte crée avec success");
                   header("Location: /login");
                   exit;
                 }

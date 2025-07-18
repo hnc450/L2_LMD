@@ -1,6 +1,6 @@
 <?php 
   namespace App\Controllers\App;
-  
+
   use Parsedown;
 
  class App
@@ -8,6 +8,7 @@
    private $parsedown;
    private static $app;
    private $db;
+  
 
       public  function Parsedown():Parsedown
       {
@@ -34,6 +35,5 @@
          }
          return $this->db;
       }
-
 }
 ?>

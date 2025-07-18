@@ -1,5 +1,9 @@
 <?php 
     use Route\Route;
+    Route::get('/test',function(){
+        $factory = \App\Models\FactoryModel::Factory('module');
+        var_dump($factory);
+    });
 
     Route::get('/',function() use ($view){
       $view->welcome();
@@ -45,8 +49,8 @@
       $view->profile();
     });
 
-    Route::get('/user/jeu/[i:id]',function($id){
-        \App\Controllers\Page\Page::getPage('start-game');
+    Route::get('/user/jeu/[i:id]',function($id) use($view){
+        $view->game((int)$id['id']);
     });
 
 
@@ -58,7 +62,6 @@
     });
 
     Route::get('/administration/dashboard',function() use ($view){
-
       $view->dashboard();
     });
 
@@ -67,7 +70,6 @@
     });
 
     Route::get('/administration/users',function() use($view){
-      //  \App\Controllers\Page\Page::dashboard('users');
         $view->users();
     });
 
@@ -76,17 +78,16 @@
     });
 
     Route::get('/administration/ligue',function() use($view){
-        //  \App\Controllers\Page\Page::dashboard('ligues');
         $view->ligues();
     });
 
     Route::get('/administration/settings',function() use($view){
-          //  \App\Controllers\Page\Page::dashboard('settings');
           $view->settings();
     });
 
-    Route::get('/administration/user/[i:id]',function($id){
-       \App\Controllers\Page\Page::getPageWithId('user',$id['id']);
+    Route::get('/administration/user/[i:id]',function($id) use ($view){
+      // \App\Controllers\Page\Page::getPageWithId('user',$id['id']);
+       $view->user((int)$id['id']);
     });
 
     Route::get('/error/[i:code]',function($error){
@@ -105,7 +106,7 @@
     Route::get('/reset/password',function(){
       \App\Controllers\Page\Page::getPage('sms');
     });
-
+    
     Route::get('/update/password',function(){
         \App\Controllers\Page\Page::getPage('mail');
     })
