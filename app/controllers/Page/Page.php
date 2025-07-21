@@ -107,7 +107,6 @@
     public function game($id)
     {
      $jeu =  \App\Models\Jeu\Jeu::recuperer_un_jeu($id);
-      //var_dump($jeu);
       $this->render('game',compact('id','jeu'));
     }
     

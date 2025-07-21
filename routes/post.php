@@ -50,7 +50,10 @@
         var_dump($_POST);
        \App\Controllers\Admin\Admin::add_user($_POST);
     });
-    
+    Route::post('/administration/add/settings',function(){
+        var_dump($_POST);
+        \App\Controllers\Admin\Admin::save_admin_setting($_POST['setting_name'], $_POST['setting_value'],$_POST['id']);
+    });
     Route::post('/chat/send', function() {
         $user = new \App\Controllers\User\User();
         $data = json_decode(file_get_contents('php://input'), true);
@@ -66,6 +69,12 @@
     Route::post('/send/mail',function(){
     \App\Models\PasswordReset\PasswordReset::instancePasswordReset($_POST['mail'])
     ->insertTokken();
+    });
+
+    Route::post('/administration/edit/user/[i:id]',function($id){
+        var_dump($id['id']);
+    
+        \App\Controllers\Admin\Admin::update_user($_POST,(int)$id['id']);
     });
 
     Route::post('/valide/tokken',function(){

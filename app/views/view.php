@@ -120,7 +120,7 @@
 document.querySelectorAll('.btn-icon.edit[data-type="quiz"]').forEach(btn => {
     btn.addEventListener('click', function() {
         const quizId = this.getAttribute('data-id');
-        fetch(`/api/jeu/${quizId}`)
+        fetch(`/api/game/${quizId}`)
             .then(res => res.json())
             .then(quiz => {
               

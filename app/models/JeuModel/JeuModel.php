@@ -1,12 +1,20 @@
 <?php 
- namespace App\Models\Jeu;
-   class Jeu
+ namespace App\Models\JeuModel;
+   class JeuModel
    {
       public static function recuperer_tous_les_jeux()
       {
          $query = "SELECT jeux.*,categories.categorie as categorie FROM
           jeux INNER JOIN categories ON jeux.id_categorie = categories.id_categorie";
          return \App\Models\Database\Database::QueryRequest($query,2);
+      }
+
+      public function see_one(int $id)
+      {
+         return \App\Models\Database\Database::executeQuery('SELECT jeux.*,categories.categorie as categorie FROM jeux INNER JOIN categories 
+         ON jeux.id_categorie = categories.id_categorie
+         WHERE id_jeu=:id',[':id' => $id],2);
+
       }
 
       public static function recuperer_un_jeu($id)

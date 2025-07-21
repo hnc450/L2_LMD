@@ -104,11 +104,24 @@
             else
             {
                 header("Location: /home");
-            }
+            } 
         }
 
         public static function add_user(array $datas){
-            \App\Controllers\Formulaire\Formulaire::sign_up($datas,'POST');
+            \App\Controllers\Formulaire\Formulaire::instance()->sign_up($datas,'POST');
+        }
+        public static function update_user(array $datas, int $id){
+            if((int)$datas['id_user'] === $id){
+               \App\Models\Database\Database::executeQuery('UPDATE users SET prenoms=:pr,pseudo=:ps,mails=:m,genre=:g,role=:r WHERE id_user=:i',[
+                   ':i' => $id,
+                   ':pr' => htmlspecialchars(trim($datas['prenom'])),
+                   ':ps' => strip_tags(htmlspecialchars(trim($datas['pseudo']))),
+                   ':m' => strip_tags(htmlspecialchars(trim($datas['email']))),
+                   ':g' => strip_tags(htmlspecialchars(trim($datas['genre']))),
+                   ':r' => strip_tags(htmlspecialchars(trim($datas['role'])))
+               ],4);
+               header('Location: /administration/users');
+            }
         }
 
         public static function modifier_exploration(array $datas, string $methode, int $id)
@@ -135,7 +148,6 @@
 
         public static function ajouter_une_categorie(array $datas) 
         {
-            var_dump($datas);
             Database::executeQuery("INSERT INTO categories (id_categorie, categorie) VALUES (:id,:category)", [
                 'id' => $datas['categoryId'],
                 'category' => $datas['categoryName']
@@ -271,6 +283,23 @@
                 header("Location: /home");
             }
         }
+
+            // ... existing code ...
+
+    // Afficher tous les paramètres admin
+    public static function get_admin_settings() {
+        return \App\Models\SettingModel::getAllAdminSettings();
+    }
+
+    // Ajouter ou modifier un paramètre admin
+    public static function save_admin_setting($name, $value,$id) {
+        return \App\Models\SettingModel::saveSetting($name, $value, $id); 
+    }
+
+    // Supprimer un paramètre admin
+    public static function delete_admin_setting($id) {
+        return \App\Models\SettingModel::deleteSetting($id);
+    }
 
     }
 

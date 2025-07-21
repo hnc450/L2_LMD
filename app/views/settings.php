@@ -1,3 +1,6 @@
+<?php 
+     $settings = \App\Controllers\Admin\Admin::get_admin_settings();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -132,17 +135,17 @@
             <!-- Header pour toutes les tailles d'écran -->
             <header class="main-header">
                 <div class="header-left">
-                    <img src="img/logo.png" alt="Logo" class="logo">
+                    <img src="" alt="Logo" class="logo">
                     <h1>Paramètres du Jeu</h1>
                 </div>
                 <div class="header-right">
                     <!-- Theme Toggle will be loaded here -->
                     <div class="theme-toggle-container"></div>
                     <div class="user-info-header">
-                        <img src="img/avatar.png" alt="Avatar" class="avatar">
+                        <img src="<?= $_SESSION['user']['avatar']?>" alt="Avatar" class="avatar">
                         <div>
-                            <p class="username">Admin</p>
-                            <p class="rank">Administrateur</p>
+                            <p class="username"><?= $_SESSION['user']['prenoms'] ?></p>
+                            <p class="rank"><?= $_SESSION['user']['role'] ?></p>
                         </div>
                     </div>
                 </div>
@@ -152,6 +155,14 @@
             <div class="dashboard-content">
                 <!-- Page Header -->
                 <div class="page-header">
+                  <?php if(isset($_SESSION['message']) && !empty($_SESSION['message'])): ?>
+                    <div class="save-settings" >
+                        <button  class="action-btn primary" id="pop-up" >
+                            <?= $_SESSION['message'] ?>
+                        </button>
+                    </div>
+                  <?php endif?>
+                   
                     <h2><i class="fas fa-cog"></i> Paramètres du Jeu</h2>
                     <p>Gérez les règles, fonctionnalités et notifications du jeu</p>
                 </div>
@@ -213,10 +224,27 @@
                 </div>
             </div>
         </main>
+        <!-- ajout du formulaire pour les paramètres -->
+        <form action="/administration/add/settings" method="post">
+            <input type="hidden" name="action" value="save">
+            <input type="hidden" name="id" value="<?= $_SESSION['user']['id_user']?>">
+            <input type="text" name="setting_name" placeholder="Nom du paramètre">
+            <input type="text" name="setting_value" placeholder="Valeur du paramètre 1 ou 0 (active ou inactive)">
+            <button type="submit" class="action-btn primary">Enregistrer</button>
+        </form>
 
+        <?=count($settings) ?>
         <!-- Navigation mobile admin -->
  
     </div>
+    <?php if(isset($_SESSION['message']) && !empty($_SESSION['message'])):?>
+        <script>
+                setTimeout(()=>{
+                    document.getElementById('pop-up').style.display = 'none'
+                },6000)
+        </script>
+        <?php $_SESSION['message'] = '';?>
+    <?php endif ?>
     <script src="/js/theme.js"></script>
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>

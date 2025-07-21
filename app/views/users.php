@@ -228,6 +228,114 @@
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
         }
+
+#edit-user-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.25);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+#edit-user-modal.active {
+  display: flex;
+}
+#edit-user-modal .modal-content {
+  background: #fff;
+  padding: 32px 28px 24px 28px;
+  border-radius: 18px;
+  min-width: 340px;
+  max-width: 95vw;
+  margin: auto;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 8px rgba(0,0,0,0.10);
+  animation: modalPop 0.25s cubic-bezier(.4,2,.6,1);
+}
+@keyframes modalPop {
+  from { transform: scale(0.92) translateY(40px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+#edit-user-modal .modal-header {
+  background: var(--primary-color, #3b82f6);
+  color: #fff;
+  padding: 16px 24px 12px 24px;
+  border-radius: 12px 12px 0 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: -32px -28px 24px -28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#edit-user-modal .close-modal {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 12px;
+  transition: color 0.15s;
+}
+#edit-user-modal .close-modal:hover {
+  color: #ff5252;
+}
+#edit-user-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--primary-color, #3b82f6);
+}
+#edit-user-form input[type="text"],
+#edit-user-form input[type="email"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 7px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  margin-bottom: 18px;
+  background: #f8fafc;
+  transition: border 0.2s;
+}
+#edit-user-form input:focus {
+  border: 1.5px solid var(--primary-color, #3b82f6);
+  outline: none;
+  background: #fff;
+}
+#edit-user-form .btn-primary {
+  background: var(--primary-color, #3b82f6);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-right: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+  transition: background 0.18s, transform 0.15s;
+}
+#edit-user-form .btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-2px) scale(1.04);
+}
+#edit-user-form .btn-danger {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.15s;
+}
+#edit-user-form .btn-danger:hover {
+  background: #b91c1c;
+  transform: translateY(-2px) scale(1.04);
+}
+
         .pagination {
             display: flex;
             justify-content: center;
@@ -343,9 +451,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+                       
                         <?php foreach (\App\Controllers\Admin\Admin::get_all_users() as $users) : ?>
-                        
+                            
                                 <tr>
                                     <td>#<?= $users['id_user'] ?></td>
                                     <td>
@@ -362,28 +470,83 @@
                                     <td><?= $users['pseudo'] ?></td>
                                     <td>
                                       <div class="action-buttons">
-                                      
-                                          <button class="btn-icon edit" title="Modifier">
+                                          <button class="btn-icon edit edit-user-btn" title="Modifier"
+                                            data-user-id="<?= $users['id_user'] ?>"
+                                            data-user-prenoms="<?= htmlspecialchars($users['prenoms']) ?>"
+                                            data-user-pseudo="<?= htmlspecialchars($users['pseudo']) ?>"
+                                            data-user-email="<?= htmlspecialchars($users['mails']) ?>"
+                                            data-user-role="<?= htmlspecialchars($users['role']) ?>"
+                                            data-user-status="<?= htmlspecialchars($users['status']) ?>"
+                                            data-user-genre="<?= htmlspecialchars($users['genre']) ?>"
+                                            data-user-role="<?= htmlspecialchars($users['role'])?>"
+
+                                          >
                                               <i class="fas fa-edit" style="color: #fff;"></i>
                                           </button>
-                                          
                                           <a href="/administration/user/<?= $users['id_user'] ?>" style="text-decoration: none;">
                                                  <button class="btn-icon ban" title="Bannir" >
                                                      <i class="fas fa-eye" ></i>
                                                  </button>
                                           </a>
-                                       
-
                                           <button class="btn-icon delete" title="Supprimer" data-user-id="<?= $users['id_user'] ?>" style="color: #fff;">
                                               <i class="fa-solid fa-trash"></i>
                                           </button>
                                       </div>
                                     </td>
-                                </tr>=""
+                                </tr>
                          <?php endforeach ?>
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Formulaire de modification utilisateur (caché par défaut) -->
+          
+
+               <div id="edit-user-modal">
+                 <div class="modal-content">
+                   <div class="modal-header">
+                     Modifier l'utilisateur
+                     <button type="button" class="close-modal" id="close-edit-user-modal" title="Fermer">&times;</button>
+                   </div>
+                   <form id="edit-user-form" method="POST" action="">
+                     <div>
+                         <label for="edit-id-user">Id :</label>
+                          <input name="id_user" id="edit-id-user" type="text">
+                     </div>
+                   
+                     <div>
+                       <label for="edit-prenoms">Prénom :</label>
+                       <input type="text" id="edit-prenoms" name="prenom" value="" required>
+                     </div>
+                     <div>
+                       <label for="edit-pseudo">Pseudo :</label>
+                       <input type="text" id="edit-pseudo" name="pseudo" value="" required>
+                     </div>
+                     <div>
+                       <label for="edit-email">Email :</label>
+                       <input type="email" id="edit-email" name="email" value="" required>
+                     </div>
+
+                     <div>
+                        <label for="edit-genre">Genre :</label>
+                        <input type="text" id="edit-genre" name="genre" value="" required>
+                     </div>
+
+                     <div>
+                        <label for="edit-role">Role :</label>
+                        <input type="text" type="text" id="edit-role" name="role" value="" required>
+                     </div>
+
+                     <div>
+
+                     </div>
+                     <div style="margin-top:18px;">
+                       <button type="submit" class="btn-primary">Enregistrer</button>
+                       <button type="button" id="cancel-edit-user" class="btn-danger">Annuler</button>
+                     </div>
+                   </form>
+                 </div>
+               </div>
 
                 <!-- Pagination -->
                 <div class="pagination">
@@ -441,6 +604,33 @@
             updateSlider();
         });
     </script>
+    <script>
+document.querySelectorAll('.edit-user-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.getElementById('edit-id-user').value = btn.getAttribute('data-user-id');
+    document.getElementById('edit-prenoms').value = btn.getAttribute('data-user-prenoms');
+    document.getElementById('edit-pseudo').value = btn.getAttribute('data-user-pseudo');
+    document.getElementById('edit-email').value = btn.getAttribute('data-user-email');
+    document.getElementById('edit-genre').value = btn.getAttribute('data-user-genre');
+    document.getElementById('edit-role').value = btn.getAttribute('data-user-role');
+    document.getElementById('edit-user-form').action = '/administration/edit/user/' + btn.getAttribute('data-user-id');
+    document.getElementById('edit-user-modal').classList.add('active');
+  });
+});
+document.getElementById('cancel-edit-user').addEventListener('click', function() {
+  document.getElementById('edit-user-modal').classList.remove('active');
+});
+document.getElementById('close-edit-user-modal').addEventListener('click', function() {
+  document.getElementById('edit-user-modal').classList.remove('active');
+});
+// Fermer le modal si on clique en dehors du contenu
+window.addEventListener('click', function(e) {
+  const modal = document.getElementById('edit-user-modal');
+  if (e.target === modal) {
+    modal.classList.remove('active');
+  }
+});
+</script>
     <script src="/js/script.js" defer></script>
 </body>
 </html> 

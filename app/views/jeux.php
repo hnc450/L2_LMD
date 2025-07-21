@@ -1,5 +1,7 @@
 <?php
 use App\Models\Jeu\Jeu;
+use App\Models\JeuModel\JeuModel;
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -252,7 +254,7 @@ use App\Models\Jeu\Jeu;
                 </section>
 
                 <section class="games-grid">
-                    <?php foreach(Jeu::recuperer_tous_les_jeux() as $jeu): ?>
+                    <?php foreach(JeuModel::recuperer_tous_les_jeux() as $jeu): ?>
                     <div class="game-card">
                         <div class="game-image">
                             <img src="<?= htmlspecialchars($jeu['slug_img'] ?? 'img/placeholder.svg') ?>" alt="Quiz <?= htmlspecialchars($jeu['titre'] ?? '') ?>">

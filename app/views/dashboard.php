@@ -289,23 +289,22 @@
             <!-- Header pour toutes les tailles d'écran -->
             <header class="main-header">
                 <div class="header-left">
-                    <img src="img/logo.png" alt="Logo" class="logo">
+                    <img src="" alt="Logo" class="logo">
                     <h1>Tableau de Bord</h1>
                 </div>
                 <div>
                     <a href="/administration/dashboard">dashboard</a>
                     <a href="/administration/contenus">contenu</a>
-                    <a href="/administration/plaintes">logs</a>
+                    
                     <a href="/administration/users">utilisateurs</a>
-                    <a href="/administration/ligue">ligues</a>
                     <a href="/administration/settings">parametres</a>
-                    <a href="#"></a>
+                 
                 </div>
                 <div class="header-right">
                     <!-- Theme Toggle will be loaded here -->
                     <div class="theme-toggle-container"></div>
                     <div class="user-info-header">
-                        <img src="img/avatar.png" alt="Avatar" class="avatar">
+                        <img src="<?= $_SESSION['user']['avatar']?>" alt="Avatar" class="avatar">
                         <div>
                             <p class="username">Admin</p>
                             <p class="rank">Administrateur</p>

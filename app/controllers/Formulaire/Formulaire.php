@@ -42,28 +42,32 @@
            {
              if(empty($datas['email']) || empty($datas['password']))
              {
-               header("Location: /login?message=tout les champs sont obligatoire && color=red");
+               $_SESSION['message'] = "tout les champs sont obligatoire";
+               header("Location: /login");
              }
 
-             if(strlen($datas['email']) < 9)
+             elseif(strlen($datas['email']) < 9)
              {
-               header("Location: /login?message=l email doit avoir au moins 9 caracteres && color=red");
+              $_SESSION['message'] ="l' email doit avoir au moins 9 caracteres";
+               header("Location: /login");
              }
 
-             if(strlen($datas['password']) < 9)
+             elseif(strlen($datas['password']) < 9)
              {
-          
-               header('Location:/login?message=le mot de passe doit avoir 9 caracteres && color=red');
+              $_SESSION['message'] = "le mot de passe doit avoir 9 caracteres";
+               header('Location:/login');
              }
 
-             if(!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) 
+             elseif(!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) 
              {
-                header("Location:/login?message=addresse email invalide && color=danger");
+              $_SESSION['message'] = "addresse email invalide";
+                header("Location:/login");
              }
 
-             if(!preg_match("/^[a-zA-Z0-9]*$/",$datas['password']))
+             elseif(!preg_match("/^[a-zA-Z0-9]*$/",$datas['password']))
              {
-                header("Location: /login?message=le mot de passe doit contenir dea chiffres et des lettres && color=danger");
+                $_SESSION['message'] = "le mot de passe doit contenir des chiffres et des lettres";
+                header("Location: /login");
              }   
 
              else
@@ -83,7 +87,7 @@
                   \App\Middlewares\Security\Security::verify_role($_SESSION['user']['role']);
                }
                else{
-                self::message_box('mot de passe incorrect');
+                $_SESSION['message'] = "mot de passe incorrect";
                 header('Location:/login');
                }
 
@@ -91,7 +95,8 @@
 
               else
               {
-                header("Location: /login?message=veuillez creer un compte &&color=red");
+                $_SESSION['message'] = "veuillez creer un compte ";
+                header("Location: /login");
               }
 
              } 
@@ -105,50 +110,56 @@
             {
                if( empty($datas['age']) || empty($datas['prenom']) || empty($datas['email'])  || empty($datas['password']) || empty($datas['confirmPassword']) || empty($datas['sexe']) || empty($datas['pseudo'])) 
                {
-                self::message_box('tout les champs sont obligatoires');
-                header("Location: /login?message=tout les champs sont obligatoire && color=red");
-                exit;
+                $_SESSION['message'] = "tout les champs sont obligatoires";
+            
+                header("Location: /login");
+             
                }
 
-               if(strlen($datas['email']) < 9)
+               elseif(strlen($datas['email']) < 9)
                {
                  header("Location: /login?message=l email doit avoir au moins 9 caracteres && color=red");
                   exit;
                }
 
-               if(strlen($datas['password']) < 9)
+               elseif(strlen($datas['password']) < 9)
                {
-                  header('Location:/login?message=le mot de passe doit avoir 9 caracteres && color=red');
+                  $_SESSION['message'] ="le mot de passe doit avoir 9 caracteres";
+                  header('Location:/login');
                    exit;
                }
-               if(strlen($datas['pseudo']) < 6)
+               elseif(strlen($datas['pseudo']) < 6)
                {
-                 header("Location: /login?message=le pseudo doit avoir au moins 3 caracteres && color=red");
+                $_SESSION['message'] = "le pseudo doit avoir au moins 3 caracteres";
+                 header("Location: /login");
                   exit;
                }
 
-               if (!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) 
+               elseif (!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) 
                {
-                 header("Location :/login?message=addresse email invalide && color=red");
+                $_SESSION['message'] = "addresse email invalide";
+                 header("Location:/login");
                   exit;
                }
              
-               if ($datas['password'] !== $datas['confirmPassword'])
+               elseif ($datas['password'] !== $datas['confirmPassword'])
                {
-                  header("Location: /login?message = les mots de passe doivent etre similaire && color=red");
+                  $_SESSION['message'] = " les mots de passe doivent etre similaire";
+                  header("Location: /login");
                   exit;
                }
 
-               if(!preg_match("/^[a-zA-Z0-9]*$/",$datas['pseudo']))
+               elseif(!preg_match("/^[a-zA-Z0-9]*$/",$datas['pseudo']))
                {
-                header("Location:/login?message=le pseudo doit avoir des chiffres et des lettres");
+                $_SESSION['message'] = "le pseudo doit avoir des chiffres et des lettres";
+                header("Location:/login");
                 exit;
                }
  
-               if(!preg_match("/^[a-zA-Z]*$/",$datas['prenom']) || !preg_match("/^[a-zA-Z]*$/",$datas['sexe']))
+               elseif(!preg_match("/^[a-zA-Z]*$/",$datas['prenom']) || !preg_match("/^[a-zA-Z]*$/",$datas['sexe']))
                {
-
-                 header("Location: /register?message=le nom et genre doivent etre compose de lettre et chiffre && color=red");
+                $_SESSION['message'] = "le nom et genre doivent etre compose de lettre";
+                 header("Location: /register");
                   exit;
                }
                  
@@ -162,7 +173,7 @@
               
                 if(count($user_exists) > 0)
                 {
-                 echo  $this->message_box("ce compte existe déjà");
+                  $_SESSION['message'] = "ce compte existe déjà";
                   header("Location: /login");
                 }
                 else
@@ -184,7 +195,7 @@
                     ':role' => $role,
                     ':avatar' => '/assets/avatar.png'
                   ],1);
-                  $this->message_box("compte crée avec success");
+                  $_SESSION['message'] = "compte crée avec success";
                   header("Location: /login");
                   exit;
                 }

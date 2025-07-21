@@ -1,6 +1,13 @@
 <?php
 use Route\Route;
 
+Route::delete('/delete/account/[i:id]',function($id){
+   header('Content-Type: application/json');
+   \App\Controllers\User\User::supprimer_mon_compte((int)$id['id']);
+ 
+  echo json_encode(["success" => true, "message" => "Compte supprimé avec succès."]);
+});
+
 Route::delete('/administration/quiz/[i:id]', function($id) {
     //\App\Middlewares\Security\Security::require_role('administrateur');
     \App\Controllers\Admin\Admin::supprimer_jeu((int)$id['id']);

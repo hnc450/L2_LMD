@@ -13,7 +13,13 @@
 
    Route::get('/api/jeu/[i:id]',function($id){
       header('Content-Type: application/json');
-      echo json_encode(\App\Models\Jeu\Jeu::recuperer_un_jeu($id['id']) ??['void' => 'void'],JSON_PRETTY_PRINT);
+      echo json_encode(\App\Models\JeuModel\JeuModel::recuperer_un_jeu($id['id']) ??['void' => 'void'],JSON_PRETTY_PRINT);
+   });
+
+   Route::get('/api/game/[i:id]',function($id){
+      header('Content-Type: application/json');
+  
+       echo json_encode(\App\Models\FactoryModel::Factory('Jeu')->see_one((int)$id['id']));
    });
 
    Route::get('/api/module/[i:id]',function($id){

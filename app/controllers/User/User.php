@@ -79,22 +79,25 @@
           
           if(Action::check_existence("users","id_user",$id))
           {
-            if($_SESSION['user'][0]['id_user'] !== $id)
+            if($_SESSION['user']['id_user'] !== $id)
             {
-              header("Location: /error/ce0compte0n0est0pas0le0votre");
+              $_SESSION['message'] = "ce compte n est pas le votre";
+              header("Location: /user/profile");
               exit();
             }
             else
             {
               Database::executeQuery("DELETE FROM users WHERE id_user=:id",[':id'=> $id],4);
-              echo "<script>alert('Votre compte a été supprimé avec succès.');</script>";
+              setcookie('Tokken', '', time() - 3600, '/');
               User::se_deconnecter();
+              header('Location: /user/profile');
+         
             }
             
           }
           else
           {
-            header("Location: /error/ce0compte0est0inexistant0ou0il0a0deja0ete0supprime");
+            header("Location: /error/403");
           }
         }
         
@@ -105,27 +108,27 @@
           {
               if(empty($datas['email']) ||  empty($datas['pseudo']) || empty($datas['prenom']))
               {
-                header("Location: /error/tout0les0champs0sont0obligatoires");
+                //header("Location: /error/tout0les0champs0sont0obligatoires");
               }
 
               if(strlen($datas['email']) < 9)
               { 
-                header("Location: /error/l0email0doit0avoir0plus0de090caracteres");
+                //header("Location: /error/l0email0doit0avoir0plus0de090caracteres");
               }
 
               if(strlen($datas['pseudo']) < 3 || strlen($datas['pseudo']) > 20)
               { 
-                header("Location: /error/le0pseudo0do les it0avoir0entre060et020caracteres");
+               // header("Location: /error/le0pseudo0do les it0avoir0entre060et020caracteres");
               }
 
               if(!preg_match('/^[a-zA-Z]+$/', $datas['prenom'])) 
               {
-                header("Location: /error/le0prenom0doit0avoir0que0des0et0des0lettres");
+                //header("Location: /error/le0prenom0doit0avoir0que0des0et0des0lettres");
               }
              
               if(!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) 
               {
-                header("Location: /error/l0email0n0est0pas0valide");
+                //header("Location: /error/l0email0n0est0pas0valide");
               }
 
               else
@@ -157,7 +160,7 @@
           {
               if(empty($datas['mdp']) || empty($datas['confirm']))
               {
-           
+               
               }
 
               if(strlen($datas['mdp']) < 9|| strlen($datas['confirm']) < 9)
@@ -170,10 +173,10 @@
 
               }
 
-              // if(!preg_match('/^[a-zA-Z0-9]$/',$datas['mdp'])  || !preg_match('/^[a-zA-Z0-9]$/',$datas['confirm']))
-              // {
-              //    header("Location: /error/le0mot0de0passe0doit0avoir0des0chiffres0et0des0lettres");
-              // }
+              if(!preg_match('/^[a-zA-Z0-9]$/',$datas['mdp'])  || !preg_match('/^[a-zA-Z0-9]$/',$datas['confirm']))
+              {
+      
+              }
 
               else
               {

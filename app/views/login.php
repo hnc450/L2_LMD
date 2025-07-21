@@ -17,6 +17,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="auth-page">
+   <?php if(isset($_SESSION['message'])): ?>
+       <div class="container" id="pop-up">
+           <div class="alert alert-danger" style="background-color: #7851a9;color:white;border:#7851a9;text-align:center;">
+               <?= $_SESSION['message']?>
+           </div>
+       </div>
+    <?php endif ?>
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
@@ -33,14 +40,6 @@
                  <?php
                      $tokken = unserialize($_COOKIE['Tokken'] ?? '');
                  ?>
-                 <?php if(isset($_GET['message']) && isset($_GET['color'])): ?>
-                    <div class="container">
-                        <div class="alert alert-<?= $_GET['color']?>">
-                            <?= $_GET['message']?>
-                        
-                        </div>
-                    </div>
-                 <?php endif ?>
 
                 <!-- Formulaire de connexion -->
                 <form id="loginForm" class="auth-form active" action="/sign" method="POST">
@@ -153,7 +152,14 @@
             </div>
         </div>
     </div>
-
+    <?php if(isset($_SESSION['message'])):?>
+       <script>
+            const pop = document.getElementById("pop-up");
+            setTimeout(()=>{
+                pop.style.display = 'none'
+           },5000);
+       </script>
+    <?php endif?>
     <script src="js/auth.js"></script>
     <script src="/js/script.js" defer></script>
 </body>

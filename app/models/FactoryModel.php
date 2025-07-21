@@ -1,6 +1,5 @@
 <?php 
     namespace App\Models;
-   
     class FactoryModel{
 
         public static function Factory($class)

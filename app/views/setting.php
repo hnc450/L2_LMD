@@ -125,7 +125,7 @@
                 <section class="settings-section">
                     <h2>Session</h2>
                     <button class="btn-danger logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> <a href="/">Se déconnecter</a>
+                        <i class="fas fa-sign-out-alt"></i> <a href="/deconnexion">Se déconnecter</a>
                     </button>
                 </section>
             </div>

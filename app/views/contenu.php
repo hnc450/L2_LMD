@@ -1,6 +1,8 @@
 <?php 
    \App\Middlewares\Security\Security::require_auth();
    use App\Models\Jeu\Jeu;
+use App\Models\JeuModel\JeuModel;
+
    $contenus = \App\Controllers\Admin\Admin::voir_toutes_les_informations();
 ?>
 <!DOCTYPE html>
@@ -13,6 +15,101 @@
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/popup.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        #preview-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(30, 32, 41, 0.55);
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      transition: opacity 0.2s;
+   }
+   #preview-modal.active, #preview-modal[style*='display: block'] {
+      display: flex !important;
+   }
+   #preview-modal .modal-content {
+      background: #f9f9fb;
+      border-radius: 22px;
+      max-width: 650px;
+      min-width: 350px;
+      width: 90vw;
+      min-height: 380px;
+      max-height: 90vh;
+      margin: auto;
+      padding: 2.5rem 2.2rem 2rem 2.2rem;
+      box-shadow: 0 12px 48px rgba(30,32,41,0.18), 0 2px 8px rgba(0,0,0,0.08);
+      position: relative;
+      animation: popupIn 0.33s cubic-bezier(.4,1.4,.6,1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+   }
+   #preview-modal .close-btn {
+      position: absolute;
+      top: 18px;
+      right: 28px;
+      font-size: 2.2rem;
+      color: #e74c3c;
+      background: #fff;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+   }
+   #preview-modal .close-btn:hover {
+      background: #ffeaea;
+      color: #c0392b;
+   }
+   #preview-modal img {
+      display: block;
+      margin: 0 auto 1.2rem auto;
+      border-radius: 14px;
+      max-width: 96%;
+      max-height: 220px;
+      object-fit: cover;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      border: 2px solid #eaeaea;
+   }
+   #preview-modal h2 {
+      text-align: center;
+      margin-bottom: 0.7rem;
+      font-size: 1.7rem;
+      color: #222;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+   }
+   #preview-modal p {
+      margin: 0.4rem 0;
+      color: #444;
+      font-size: 1.08rem;
+      width: 100%;
+      text-align: left;
+   }
+   #preview-modal strong {
+      color: #222;
+      font-weight: 500;
+   }
+   #preview-modal .modal-content > p > span {
+      color: #2d6cdf;
+      font-weight: 500;
+   }
+   @keyframes popupIn {
+      from { transform: translateY(40px) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+   }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -24,14 +121,14 @@
             <!-- Header pour toutes les tailles d'écran -->
             <header class="main-header">
                 <div class="header-left">
-                    <img src="img/logo.png" alt="Logo" class="logo">
+                    <img src="" alt="Logo" class="logo">
                     <h1>Gestion du Contenu</h1>
                 </div>
                 <div class="header-right">
                     <!-- Theme Toggle will be loaded here -->
                     <div class="theme-toggle-container"></div>
                     <div class="user-info-header">
-                        <img src="img/avatar.png" alt="Avatar" class="avatar">
+                        <img src="<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" class="avatar">
                         <div>
                             <p class="username">Admin</p>
                             <p class="rank">Administrateur</p>
@@ -160,7 +257,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach(Jeu::recuperer_tous_les_jeux() as $jeu): ?>
+                                    <?php foreach(JeuModel::recuperer_tous_les_jeux() as $jeu): ?>
                                        
                                     <tr>
                                         <td>
@@ -320,7 +417,6 @@
     </div>
 
 
-
     <!-- FORMULAIRES POPUP MASQUÉS -->
     <div id="form-quiz" style="display:none">
         <form id="contentFormQuiz" method="POST" action="/administration/add/quiz">
@@ -445,6 +541,19 @@
         </form>
     </div>    
 
+   <div id="preview-modal" style="display:none;">
+     <div class="modal-content">
+       <span class="close-btn">&times;</span>
+       <img id="preview-img" src="" alt="Image du jeu" style="max-width:100%;">
+       <h2 id="preview-title"></h2>
+       
+       <p><strong>Catégorie :</strong> <span id="preview-category"></span></p>
+       <p><strong>Tranche d'âge :</strong> <span id="preview-age"></span></p>
+       <p><strong>Durée :</strong> <span id="preview-duration"></span></p>
+       <p><strong>Description :</strong> <span id="preview-description"></span></p>
+     </div>
+   </div>
+
 
     <script src="/js/theme.js"></script>
     <script src="/js/dashboard.js"></script>
@@ -497,6 +606,27 @@
             }
         });
     }
+
+    document.querySelectorAll('.btn-icon.view').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        fetch(`/api/game/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('preview-img').src = data[0].slug_img || 'img/placeholder.svg';
+                document.getElementById('preview-title').textContent = data[0].titre || '';
+                document.getElementById('preview-description').textContent = data[0].description || '';
+                document.getElementById('preview-category').textContent = data[0].categorie || '';
+                document.getElementById('preview-age').textContent = data[0].age || '';
+                document.getElementById('preview-duration').textContent = data[0].duration || '';
+               
+                document.getElementById('preview-modal').style.display = 'block';
+            });
+    });
+});
+document.querySelector('#preview-modal .close-btn').onclick = function() {
+    document.getElementById('preview-modal').style.display = 'none';
+};
     </script>
 </body>
 </html>

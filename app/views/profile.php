@@ -30,6 +30,7 @@
             <div class="profile-content">
                 <section class="profile-header">
                     <div class="profile-avatar">
+                  
                         <!-- Affichage de l'avatar utilisateur (ou avatar par défaut) -->
                         <img src="<?= $_SESSION['user']['avatar'] ? $_SESSION['user']['avatar'] : '/assets/avatar.png'?>" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
                         <form action="/user/profile/avatar" method="POST" enctype="multipart/form-data" style="margin-top:10px;">
@@ -230,6 +231,7 @@
 
     <script src="/js/script.js" defer></script>
     <script>
+
     document.getElementById('delete-avatar-btn').addEventListener('click', function() {
         if(confirm('Voulez-vous vraiment supprimer votre avatar ?')) {
             fetch('/user/delete/avatar', {
@@ -253,7 +255,7 @@
 
     document.getElementById('delete-account-btn').addEventListener('click', function() {
         if(confirm('Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.')) {
-            fetch(`/delete/account/${<?php echo $_SESSION['user']['id_user'] ?>}`, {
+            fetch(`http://localhost:8000/delete/account/<?php echo $_SESSION['user']['id_user'] ?>`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

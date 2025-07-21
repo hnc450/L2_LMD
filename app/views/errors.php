@@ -8,7 +8,7 @@ switch($value) {
         $subtitle = "pour acceder a cette ressource vous devez vous authentifié";
     case 403:
         $message = "Accès interdit";
-        $subtitle = "Vous n'avez pas la permission d'accéder à cette page.";
+        $subtitle = "Vous n'avez pas la permission d'accéder à cette ressource";
         break;
     case 404:
 
