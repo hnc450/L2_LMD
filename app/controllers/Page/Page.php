@@ -106,7 +106,7 @@
 
     public function game($id)
     {
-     $jeu =  \App\Models\Jeu\Jeu::recuperer_un_jeu($id);
+     $jeu =  \App\Models\JeuModel\JeuModel::recuperer_un_jeu($id);
       $this->render('game',compact('id','jeu'));
     }
     
@@ -167,6 +167,12 @@
     {
       $user = \App\Models\FactoryModel::Factory('User')->getUser($id);
       $this->render('user',compact('user'));
+    }
+
+    public function start_exploration($id)
+    {
+      $exploration = \App\Models\Exploration\Exploration::getById($id);
+      $this->render('start-exploration', compact('id', 'exploration'));
     }
   }
 ?>

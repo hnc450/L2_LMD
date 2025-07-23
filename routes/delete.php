@@ -46,4 +46,9 @@ Route::delete('/user/delete/avatar', function() {
         echo json_encode(['error' => 'Non autorisé']);
     }
 });
+
+Route::delete('/administration/settings/[i:id]', function($id) {
+    //\App\Middlewares\Security\Security::require_role('administrateur');
+    \App\Models\SettingModel::deleteSetting((int)$id['id']);
+});
 ?>

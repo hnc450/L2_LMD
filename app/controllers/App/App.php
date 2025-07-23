@@ -28,7 +28,7 @@
             return static::$app;
       }
        
-      public function getDb(){
+      public function getDb():\App\Models\Database\Database{
          if(is_null($this->db))
          {
              $this->db = new \App\Models\Database\Database("mysql:host","3306","QuizWorld","root","");

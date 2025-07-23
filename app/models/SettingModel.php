@@ -31,8 +31,7 @@ class SettingModel
     }
 
     public static function deleteSetting($id) {
-        // $db = Database::getInstance();
-        // $stmt = $db->prepare("DELETE FROM settings WHERE id = ?");
-        // return $stmt->execute([$id]);
+          $_SESSION['message'] = "parametre supprimé avec succès";
+          \App\Models\Database\Database::executeQuery('DELETE FROM settings WHERE id = ?',[$id],4);
     }
 }

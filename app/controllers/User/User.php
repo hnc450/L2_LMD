@@ -7,14 +7,14 @@
     
    class User
    {
-        public  static function se_deconnecter()
+        public  static function se_deconnecter(int $id)
         {
-          $id = $_SESSION['user']['id_user'];
-          Database::QueryRequest("UPDATE users SET status=0 WHERE id_user=$id",3);
-          unset($_SESSION['user']);
-          session_destroy();
-          $_SESSION = [];
-          header("Location: /login");
+        
+          Database::executeQuery('UPDATE users SET status=0 WHERE id_user=?',[$id],3);
+          // unset($_SESSION['user']);
+           session_destroy();
+          // $_SESSION = [];
+           header("Location: /login");
         }
   
         public static function modifier_profile(string $request, $fichier)
@@ -56,8 +56,8 @@
         public static function supprimer_avatar(int $id)
         {
             \App\Middlewares\Security\Security::require_auth();
-   
-            $user = Database::QueryRequest("SELECT avatar FROM users WHERE id_user=$id", 2);
+          
+            $user = Database::executeQuery("SELECT avatar FROM users WHERE id_user=:id", [':id' => $id], 2);
             if (!empty($user[0]['avatar'])) {
                 // Correction : utiliser le chemin absolu pour la suppression
                 $avatarPath = $_SERVER['DOCUMENT_ROOT'] . $user[0]['avatar'];
@@ -89,7 +89,7 @@
             {
               Database::executeQuery("DELETE FROM users WHERE id_user=:id",[':id'=> $id],4);
               setcookie('Tokken', '', time() - 3600, '/');
-              User::se_deconnecter();
+              // User::se_deconnecter();
               header('Location: /user/profile');
          
             }

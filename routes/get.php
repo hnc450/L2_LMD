@@ -1,9 +1,9 @@
 <?php 
     use Route\Route;
-    Route::get('/test',function(){
-        $factory = \App\Models\FactoryModel::Factory('module');
-        var_dump($factory);
-    });
+    // Route::get('/test',function(){
+    //     $factory = \App\Models\FactoryModel::Factory('module');
+    //     var_dump($factory);
+    // });
 
     Route::get('/',function() use ($view){
       $view->welcome();
@@ -13,8 +13,8 @@
        $view->login();
     });
 
-    Route::get('/deconnexion',function() use($view){
-      App\Controllers\User\User::se_deconnecter();
+    Route::get('/deconnexion/[i:id]',function($id) use($view){
+      App\Controllers\User\User::se_deconnecter((int)$id['id']);
     });
     
     Route::get('/user/chat',function() use($view){
@@ -54,12 +54,9 @@
     });
 
 
-    Route::get('/user/exploration/start/[i:id]',function($id){
-       echo 
-        App\Controllers\App\App::App()
-       ->Parsedown()
-       ->text(\App\Models\Exploration\Exploration::getById($id['id'])[0]['contenu_exploration']);
-    });
+    Route::get('/user/exploration/start/[i:id]',function($id) use($view){
+        $view->start_exploration((int)$id['id']);
+    }); 
 
     Route::get('/administration/dashboard',function() use ($view){
       $view->dashboard();
@@ -95,7 +92,17 @@
     });
 
     Route::get('/test',function(){
-      \App\Controllers\Page\Page::getPage('sms');
+      // \App\Controllers\Page\Page::getPage('sms');
+      $database = App\Controllers\App\App::App()->getDb();
+      var_dump(
+      $database
+      ->select()
+      ->column('id_user,pseudo,status')
+      ->from('users')
+      ->orderBy('pseudo','DESC')
+      ->run(2)
+    );
+      $database->getQuery();
     });
 
 
@@ -109,6 +116,8 @@
     
     Route::get('/update/password',function(){
         \App\Controllers\Page\Page::getPage('mail');
-    })
+    });
+
+
    
 ?>

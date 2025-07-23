@@ -71,7 +71,7 @@
                 <!-- Formulaire d'inscription -->
                 <form id="registerForm" class="auth-form" action="/register" method="POST">
                     <div class="form-group">
-                        <label for="registerName">Nom complet</label>
+                        <label for="registerName">Prenom complet</label>
                         <div class="input-with-icon">
                             <i class="fas fa-user"></i>
                             <input type="text" id="registerName" placeholder="Votre prenom" required name="prenom">

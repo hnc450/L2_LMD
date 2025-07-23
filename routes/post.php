@@ -94,4 +94,13 @@
         \App\Models\PasswordReset\PasswordReset::instancePasswordReset($_POST['email'])->valideTokken($tokken);
     
     });
+
+        Route::post('/jeu/get/point',function($id){
+           header('Content-Type: application/json');
+           $data = json_decode(file_get_contents('php://input'), true);
+           echo json_encode([
+            'reponse' =>  $data
+           ]);
+
+    });
 ?> 

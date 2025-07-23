@@ -10,6 +10,7 @@
        private static string $password;
        private static mixed $statement;
        private static  $instance = null;
+       private string $query = '';
 
 
        public function __construct(string $dns, string $port, string $database,string $user,string $password)
@@ -31,7 +32,11 @@
           }
        }
 
-        
+      public function getQuery()
+       {
+         echo $this->query;
+       }
+
        public static function setNewDatabase(string $database):void
        {
             self::$database = $database;
@@ -122,5 +127,88 @@
            }
            return static::$instance;
        }
+
+       public function select(){
+         $this->query .="SELECT";
+         return $this;
+       }
+
+       public function all(){
+         $this->query .=" * ";
+           return $this;
+       }
+
+      public function column(string $column){
+            $this->query .=" ".$column;
+          return $this;
+      }
+
+      public function from(string $table){
+         $this->query .=" FROM ".$table;
+         return $this;  
+       }
+       public function run(int $option){
+         return Database::QueryRequest($this->query,$option);
+       }
+
+       public function where(){
+         $this->query .= ' WHERE ';
+         return $this;
+       }
+
+       public function and(){
+         $this->query .= ' AND ';
+         return $this;
+       }
+
+      public function or()
+      {
+         $this->query .= ' OR ';
+         return $this;
+      }
+         
+         public function equal(string $column, string $value)
+         {
+            $this->query .= $column . ' = ' . $value;
+            return $this;
+         }
+   
+         public function like(string $column, string $value)
+         {
+            $this->query .= $column . ' LIKE ' . $value;
+            return $this;
+         }
+   
+         public function orderBy(string $column, string $order = 'ASC')
+         {
+            $this->query .= ' ORDER BY ' . $column . ' ' . strtoupper($order);
+            return $this;
+         }
+
+         public function limit(int $limit)
+         {
+            $this->query .= ' LIMIT ' . $limit;
+            return $this;
+         }
+
+         public function offset(int $offset)
+         {
+            $this->query .= ' OFFSET ' . $offset;
+            return $this;
+         }
+
+         public function groupBy(string $column)
+         {
+            $this->query .= ' GROUP BY ' . $column;
+            return $this;
+         }
+         
+         public function having(string $condition)
+         {
+            $this->query .= ' HAVING ' . $condition;
+            return $this;
+         }
+
+
     }
 ?>

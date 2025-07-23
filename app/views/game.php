@@ -248,28 +248,31 @@
     </div>
     
     <div class="quiz-content" id="quiz-content">
+    
     <?php foreach($valeur['jeu'] as $value):  ?>
+     <form action="/jeu/get/points/<?= $value['id_question']?>" method="get">
       <div class="slide" id="slide-<?= $value['id_question']?>">
         <div class="question-number">Question <?= $value['id_question']?></div>
         <div class="question"><?= $value['questions']?></div>
         
         <div class="choices" >
           <div class="choice">
-            <input type="radio" id="q<?= $value['id_question']?>-choice1"  value="0">
+            <input type="radio" id="q<?= $value['id_question']?>-choice1" name="q<?= $value['id_question']?>-answer"  value="<?= $value['answer_1']?><">
             <label for="q<?= $value['id_question']?>-choice1"><?= $value['answer_1']?></label>
           </div>
           
           <div class="choice">
-            <input type="radio" id="q<?= $value['id_question']?>-choice2" value="1">
+            <input type="radio" id="q<?= $value['id_question']?>-choice2" name="q<?= $value['id_question']?>-answer" value="<?= $value['answer_1']?><">
             <label for="q<?= $value['id_question']?>-choice2"><?= $value['answer_2']?></label>
           </div>
           
           <div class="choice">
-            <input type="radio" id="q<?= $value['id_question']?>-choice3" value="2">
+            <input type="radio" id="q<?= $value['id_question']?>-choice3" name="q<?= $value['id_question']?>-answer"value="<?= $value['answer_1']?><">
             <label for="q<?= $value['id_question']?>-choice3"><?= $value['answer_3']?></label>
           </div>
         </div>
       </div>
+      </form>
       <?php endforeach; ?>
     </div>
     
@@ -291,6 +294,11 @@
       const prevButton = document.getElementById('prev-button');
       const nextButton = document.getElementById('next-button');
       const questionProgress = document.getElementById('question-progress');
+
+      const timerMinutes = <?= isset($valeur['jeu'][0]['duration']) ? (int)$valeur['jeu'][0]['duration'] : 5 ?>;
+      let timeLeft = timerMinutes * 60; // en secondes
+      const timerDisplay = document.getElementById('timer-display');
+      let timerInterval;
       
       // Initialize
       function init() {
@@ -335,9 +343,32 @@
       
       // Go to next slide
       function goToNextSlide() {
-        if (currentSlideIndex < totalSlides - 1) {
-          showSlide(currentSlideIndex + 1);
-          updateNavButtons();
+   
+        // 1. Récupère le nom du groupe radio de la slide courante
+        const currentSlideName = `q${currentSlideIndex + 1}-answer`;
+        // 2. Récupère la valeur sélectionnée
+        const selected = document.querySelector(`input[name="${currentSlideName}"]:checked`);
+        if (selected) {
+          const value = selected.value;
+          // 3. Envoie la valeur (exemple avec fetch)
+          fetch('/jeu/get/point', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              question: currentSlideName,
+              reponse: value
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+            // Traite la réponse si besoin
+            // Passe à la slide suivante
+            if (currentSlideIndex < totalSlides - 1) {
+              showSlide(currentSlideIndex + 1);
+              updateNavButtons();
+            }
+          });
         }
       }
       
@@ -360,26 +391,36 @@
         // Disable next button if no answer selected
         nextButton.disabled = !hasAnswer;
       }
-      
+  function startTimer() {
+    updateTimerDisplay();
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimerDisplay();
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        timerDisplay.textContent = "00:00";
+        nextButton.disabled = true;
+        prevButton.disabled = true;
+        alert("Temps écoulé !");
+        // Ici tu peux soumettre automatiquement le quiz ou afficher un message
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+    const sec = String(timeLeft % 60).padStart(2, '0');
+    timerDisplay.textContent = `${min}:${sec}`;
+  }
       // Initialize the quiz
       init();
+      startTimer();
     });
- 
-    const question = async () =>{
-          try{
-            const reponse = await fetch('http://localhost:8000/api/jeu/<?php echo $valeur['id'] ?>')
-            if(!reponse.ok)
-            {
-                throw new Error('Erreur HTTP : ' + reponse.status);
-            }
-            const data = await reponse.json();
-            return data;
-          }catch(e){
-            console.log("Erreur de connexion -> " + e);
-          }
-    }
-  
-
+    //timer for quiz
+    
+    document.getElementById('prev-button').addEventListener('click',function(e){
+       
+    })
   </script>
   
 </body>

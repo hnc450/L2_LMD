@@ -31,7 +31,7 @@
          */
         public static function require_role($roles) {
             self::require_auth();
-            $role = $_SESSION['user'][0]['role'] ?? null;
+            $role = $_SESSION['user']['role'] ?? null;
             if (is_array($roles)) {
                 if (!in_array($role, $roles)) {
                     header('Location: /login');

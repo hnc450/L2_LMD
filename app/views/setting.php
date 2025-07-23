@@ -3,6 +3,7 @@
     header("Location: /login");
     exit();
   }
+  $id = (int)$_SESSION['user']['id_user'];
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -125,11 +126,12 @@
                 <section class="settings-section">
                     <h2>Session</h2>
                     <button class="btn-danger logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> <a href="/deconnexion">Se déconnecter</a>
+                        <i class="fas fa-sign-out-alt"></i><a href="/deconnexion/<?=$id??''?>">Se déconnecter</a>
                     </button>
                 </section>
             </div>
         </main>
+       
 
         <!-- Navigation mobile -->
         <nav class="mobile-nav">
