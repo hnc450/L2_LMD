@@ -18,8 +18,8 @@
 
    Route::get('/api/game/[i:id]',function($id){
       header('Content-Type: application/json');
-  
-       echo json_encode(\App\Models\FactoryModel::Factory('Jeu')->see_one((int)$id['id']));
+   // \App\Models\FactoryModel::Factory('Jeu')->see_one((int)$id['id'])
+       echo json_encode((new \App\Models\JeuModel\JeuModel())->see_one((int)$id['id']));
    });
 
    Route::get('/api/module/[i:id]',function($id){

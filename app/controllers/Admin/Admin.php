@@ -75,7 +75,7 @@
                 ':duration'=> $datas['duration'],
                 ':descr'=> $datas['description'],
                 ':slug'=> $datas['slug'],
-                ':contenu'=> $datas['contenu']
+              
             ];
           
             if($methode ==="POST")
@@ -242,13 +242,12 @@
                         ':slug_img' => $datas['slug_img'],
                         ':duration' => $datas['duration'],
                         ':description' => $datas['description'],
-                        ':contenu' => $datas['contenu'],
                         ':age' => $datas['age'],
                         ':id_categorie' => $datas['category'] ?? $datas['id_categorie']
                     ];
-                    $query = "UPDATE jeux SET titre = :titre, slug_img = :slug_img, duration = :duration, description = :description, contenu = :contenu, age = :age, id_categorie = :id_categorie WHERE id_jeu = :id";
+                    $query = "UPDATE jeux SET titre = :titre, slug_img = :slug_img, duration = :duration, description = :description, age = :age, id_categorie = :id_categorie WHERE id_jeu = :id";
                     Database::executeQuery($query, $params, 1);
-                    header("Location: /administration/contenus");
+                    // header("Location: /administration/contenus");
                     exit();
                 } catch (\PDOException $e) {
                     error_log("Erreur lors de la modification du jeu: " . $e->getMessage());

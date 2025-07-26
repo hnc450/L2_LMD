@@ -1,5 +1,7 @@
 <?php 
      $settings = \App\Controllers\Admin\Admin::get_admin_settings();
+     $compteur = 0;
+     $limit = 4;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -123,6 +125,144 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
+
+.add-setting-form {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(44, 62, 80, 0.10);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    max-width: 420px;
+    margin: 2.5rem auto 1.5rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    animation: fadeIn 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+.add-setting-form h3 {
+    text-align: center;
+    color: #2980b9;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+}
+
+.add-setting-form input[type="text"] {
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #b2bec3;
+    font-size: 1.05rem;
+    background: #f8fbfd;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.add-setting-form input[type="text"]:focus {
+    border: 2px solid #2980b9;
+    box-shadow: 0 0 0 2px #6dd5fa55;
+    outline: none;
+    background: #fff;
+}
+
+.add-setting-form button[type="submit"] {
+    padding: 0.85rem 1.1rem;
+    background: linear-gradient(90deg, #2980b9 60%, #6dd5fa 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.08rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 2px 8px rgba(41,128,185,0.08);
+    letter-spacing: 0.5px;
+}
+
+.add-setting-form button[type="submit"]:hover {
+    background: linear-gradient(90deg, #2573a6 60%, #51b6e7 100%);
+    transform: translateY(-2px) scale(1.02);
+}
+.add-setting-form {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.13);
+    padding: 2.2rem 2rem 1.7rem 2rem;
+    max-width: 430px;
+    margin: 2.5rem auto 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    animation: fadeIn 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+.add-setting-form h3 {
+    text-align: center;
+    color: #2980b9;
+    font-weight: 800;
+    margin-bottom: 0.7rem;
+    font-size: 1.35rem;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.input-group label {
+    font-size: 1rem;
+    color: #2980b9;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.add-setting-form input[type="text"] {
+    padding: 0.85rem 1.1rem;
+    border-radius: 9px;
+    border: 1.5px solid #b2bec3;
+    font-size: 1.07rem;
+    background: #f8fbfd;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(41,128,185,0.07);
+}
+
+.add-setting-form input[type="text"]:focus {
+    border: 2px solid #2980b9;
+    box-shadow: 0 0 0 2px #6dd5fa55;
+    outline: none;
+    background: #fff;
+}
+
+.add-setting-form button[type="submit"] {
+    padding: 0.95rem 1.1rem;
+    background: linear-gradient(90deg, #2980b9 60%, #6dd5fa 100%);
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: 1.13rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 2px 8px rgba(41,128,185,0.09);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.add-setting-form button[type="submit"]:hover {
+    background: linear-gradient(90deg, #2573a6 60%, #51b6e7 100%);
+    transform: translateY(-2px) scale(1.02);
+}
     </style>
 </head>
 <body>
@@ -171,46 +311,37 @@
                 <div class="settings-section">
                     <h3><i class="fas fa-sliders-h"></i> Paramètres Généraux</h3>
                     <div class="settings-grid">
+                            
                         <div class="setting-card">
-                            <h4>Règles du Jeu</h4>
-                            <div class="setting-option">
-                                <label>Activer le mode multijoueur</label>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="multiplayer" checked>
-                                    <label for="multiplayer"></label>
-                                </div>
-                            </div>
-                            <div class="setting-option">
-                                <label>Activer les récompenses</label>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="rewards" checked>
-                                    <label for="rewards"></label>
-                                </div>
-                            </div>
-                            <div class="setting-option">
-                                <label>Activer les classements</label>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="leaderboard" checked>
-                                    <label for="leaderboard"></label>
-                                </div>
-                            </div>
+                           <?php 
+                                while($compteur < count($settings) -1 && $compteur < $limit){
+                                    echo '
+                                       <div class="setting-option">
+                                           <label> '.$settings[$compteur]['setting_name'].'</label>
+                                           <div class="toggle-switch">
+                                               <input type="checkbox" id="'.$settings[$compteur]['id'].'" '.($settings[$compteur]['setting_value'] == 1 ? 'checked' : '').'>
+                                               <label for="'.$settings[$compteur]['id'].'"></label>
+                                           </div>
+                                       </div>';
+                                    $compteur+=1;
+                                }
+                              
+                            ?>
                         </div>
                         <div class="setting-card">
-                            <h4>Notifications</h4>
-                            <div class="setting-option">
-                                <label>Notifications par email</label>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="email-notifications" checked>
-                                    <label for="email-notifications"></label>
-                                </div>
-                            </div>
-                            <div class="setting-option">
-                                <label>Notifications push</label>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="push-notifications" checked>
-                                    <label for="push-notifications"></label>
-                                </div>
-                            </div>
+                            <?php
+                                 while($compteur < count($settings)){
+                                    echo '
+                                      <div class="setting-option">
+                                          <label> '.$settings[$compteur]['setting_name'].'</label>
+                                          <div class="toggle-switch">
+                                              <input type="checkbox" id="'.$settings[$compteur]['id'].'" '.($settings[$compteur]['setting_value'] == 1 ? 'checked' : '').'>
+                                              <label for="'.$settings[$compteur]['id'].'"></label>
+                                          </div>
+                                      </div>';
+                                    $compteur+=1;
+                                }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -225,15 +356,23 @@
             </div>
         </main>
         <!-- ajout du formulaire pour les paramètres -->
-        <form action="/administration/add/settings" method="post">
+
+        <form action="/administration/add/settings" method="post" class="add-setting-form">
+            <h3><i class="fas fa-plus-circle" style="color:#2980b9;"></i> Ajouter un paramètre</h3>
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="id" value="<?= $_SESSION['user']['id_user']?>">
-            <input type="text" name="setting_name" placeholder="Nom du paramètre">
-            <input type="text" name="setting_value" placeholder="Valeur du paramètre 1 ou 0 (active ou inactive)">
-            <button type="submit" class="action-btn primary">Enregistrer</button>
+            <div class="input-group">
+                <label for="setting_name"><i class="fas fa-tag"></i> Nom du paramètre</label>
+                <input type="text" name="setting_name" id="setting_name" placeholder="Ex: leaderboard, rewards..." required>
+            </div>
+            <div class="input-group">
+                <label for="setting_value"><i class="fas fa-toggle-on"></i> Valeur (1 = active, 0 = inactive)</label>
+                <input type="text" name="setting_value" id="setting_value" placeholder="1 ou 0" required pattern="[01]">
+            </div>
+            <button type="submit" class="action-btn primary"><i class="fas fa-check"></i> Enregistrer</button>
         </form>
-
-        <?=count($settings) ?>
+     
+        
         <!-- Navigation mobile admin -->
  
     </div>
@@ -245,7 +384,7 @@
         </script>
         <?php $_SESSION['message'] = '';?>
     <?php endif ?>
-    <script src="/js/theme.js"></script>
+ 
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
     <script src="/js/script.js" defer></script>

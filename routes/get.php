@@ -92,17 +92,8 @@
     });
 
     Route::get('/test',function(){
-      // \App\Controllers\Page\Page::getPage('sms');
-      $database = App\Controllers\App\App::App()->getDb();
-      var_dump(
-      $database
-      ->select()
-      ->column('id_user,pseudo,status')
-      ->from('users')
-      ->orderBy('pseudo','DESC')
-      ->run(2)
-    );
-      $database->getQuery();
+
+       \App\Controllers\Page\Page::getPage('test');
     });
 
 

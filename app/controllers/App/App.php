@@ -28,10 +28,10 @@
             return static::$app;
       }
        
-      public function getDb():\App\Models\Database\Database{
+      public function getDb($user='root' , $mdp =''):\App\Models\Database\Database{
          if(is_null($this->db))
          {
-             $this->db = new \App\Models\Database\Database("mysql:host","3306","QuizWorld","root","");
+             $this->db = new \App\Models\Database\Database("mysql:host","3306","QuizWorld",$user,$mdp);
          }
          return $this->db;
       }

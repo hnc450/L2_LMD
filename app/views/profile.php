@@ -54,8 +54,8 @@
                     <div class="stat-card">
                         <i class="fas fa-star"></i>
                         <div>
-                            <h3>Points</h3>
-                            <p>0</p>
+                            <h3>Point<?=(isset($_SESSION['points']) && $_SESSION['points'] > 1) ? 's' : ''?></h3>
+                            <p><?= $_SESSION['points'] ?? 0?></p>
                         </div>
                     </div>
                     <div class="stat-card">

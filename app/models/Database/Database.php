@@ -128,15 +128,25 @@
            return static::$instance;
        }
 
-       public function select(){
+      public function select(){
          $this->query .="SELECT";
          return $this;
-       }
+      }
 
-       public function all(){
+      public function insertInto(string $table){
+            $this->query .="INSERT INTO ".$table;
+            return $this;
+      }
+
+      public function update(string $table){
+         $this->query .="UPDATE ".$table;
+         return $this;
+      }
+
+      public function all(){
          $this->query .=" * ";
            return $this;
-       }
+      }
 
       public function column(string $column){
             $this->query .=" ".$column;
@@ -167,17 +177,17 @@
          return $this;
       }
          
-         public function equal(string $column, string $value)
-         {
+      public function equal(string $column, string $value)
+      {
             $this->query .= $column . ' = ' . $value;
             return $this;
-         }
+      }
    
-         public function like(string $column, string $value)
-         {
+      public function like(string $column, string $value)
+      {
             $this->query .= $column . ' LIKE ' . $value;
             return $this;
-         }
+      }
    
          public function orderBy(string $column, string $order = 'ASC')
          {

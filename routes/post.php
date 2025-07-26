@@ -51,7 +51,7 @@
        \App\Controllers\Admin\Admin::add_user($_POST);
     });
     Route::post('/administration/add/settings',function(){
-        var_dump($_POST);
+        // var_dump($_POST);
         \App\Controllers\Admin\Admin::save_admin_setting($_POST['setting_name'], $_POST['setting_value'],$_POST['id']);
     });
     Route::post('/chat/send', function() {
@@ -72,7 +72,7 @@
     });
 
     Route::post('/administration/edit/user/[i:id]',function($id){
-        var_dump($id['id']);
+        // var_dump($id['id']);
     
         \App\Controllers\Admin\Admin::update_user($_POST,(int)$id['id']);
     });
@@ -80,7 +80,7 @@
     Route::post('/valide/tokken',function(){
         $i = 0;
         echo "<pre>";
-        var_dump($_POST['number']);
+        // var_dump($_POST['number']);
            echo "</pre>";
         $results ='';
         $tokken= '';
@@ -95,12 +95,43 @@
     
     });
 
-        Route::post('/jeu/get/point',function($id){
+    Route::post('/jeu/get/point',function(){
            header('Content-Type: application/json');
-           $data = json_decode(file_get_contents('php://input'), true);
-           echo json_encode([
-            'reponse' =>  $data
-           ]);
 
+           $data = json_decode(file_get_contents('php://input'), true);
+           \App\Controllers\FactoryController::getController('Game')->userInGame((int)$_SESSION['user']['id_user']);
+           $question = $data['question'];
+           $reponse = $data['reponse'];
+           $bonne_reponse = \App\Models\QuestionModel::getReponse($question);
+
+           if($reponse == $bonne_reponse){
+              $points = (new \App\Controllers\GameController())->addPoint($question, $reponse);
+             $data = [
+               'status' => 'success',
+               'message' => 'reponse correct !',
+            
+             ];
+            echo  json_encode($data);
+
+           } else {
+             $data = [
+               'status' => 'error',
+               'message' => ' reponse incorrect !'
+             ];
+            echo  json_encode($data);
+           }
+    });
+
+    Route::post('/leave/game',function(){
+        echo json_encode([
+            'message' => 'partie quitté avec success'
+        ]);
+    });
+
+    Route::post('/finish/game',function(){
+        \App\Controllers\FactoryController::getController('Game')->finishGame();
+        echo json_encode([
+            '' => ''
+        ]);
     });
 ?> 

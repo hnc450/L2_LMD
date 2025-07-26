@@ -380,10 +380,10 @@
                     <!-- Theme Toggle will be loaded here -->
                     <div class="theme-toggle-container"></div>
                     <div class="user-info-header">
-                        <img src="img/avatar.png" alt="Avatar" class="avatar">
+                        <img src="<?=$_SESSION['user']['avatar'] ?>" alt="Avatar" class="avatar">
                         <div>
-                            <p class="username">Admin</p>
-                            <p class="rank">Administrateur</p>
+                            <p class="username"><?=$_SESSION['user']['prenoms'] ?> </p>
+                            <p class="rank"><?=$_SESSION['user']['role'] ?></p>
                         </div>
                     </div>
                 </div>

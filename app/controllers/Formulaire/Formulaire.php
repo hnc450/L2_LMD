@@ -82,6 +82,7 @@
                if(password_verify($mdp,$user_exists[0]['mdps'])){
                   Database::executeQuery('UPDATE users SET status=1 WHERE mails=:email',[':email' =>$email],3);
                   $_SESSION['user'] = Database::executeQuery('SELECT * FROM users  WHERE mails=:mail',[':mail' => $email],2)[0];
+                  
                   $this->souviens_toi_de_moi("Tokken",$datas,$datas['remember']?? '');
                   $this->message_box('connexion reussi');
                   \App\Middlewares\Security\Security::verify_role($_SESSION['user']['role']);

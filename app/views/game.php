@@ -178,7 +178,12 @@
     .button:hover {
       background-color: #0b5ed7;
     }
-    
+    .button-danger {
+  background: #e74c3c !important;
+}
+.button-danger:hover {
+  background: #c0392b !important;
+}
     .button:disabled {
       background-color: #6c757d;
       cursor: not-allowed;
@@ -248,8 +253,9 @@
     </div>
     
     <div class="quiz-content" id="quiz-content">
-    
+
     <?php foreach($valeur['jeu'] as $value):  ?>
+  
      <form action="/jeu/get/points/<?= $value['id_question']?>" method="get">
       <div class="slide" id="slide-<?= $value['id_question']?>">
         <div class="question-number">Question <?= $value['id_question']?></div>
@@ -257,17 +263,17 @@
         
         <div class="choices" >
           <div class="choice">
-            <input type="radio" id="q<?= $value['id_question']?>-choice1" name="q<?= $value['id_question']?>-answer"  value="<?= $value['answer_1']?><">
+            <input type="radio" id="q<?= $value['id_question']?>-choice1" name="q<?= $value['id_question']?>-answer"  value="1">
             <label for="q<?= $value['id_question']?>-choice1"><?= $value['answer_1']?></label>
           </div>
           
           <div class="choice">
-            <input type="radio" id="q<?= $value['id_question']?>-choice2" name="q<?= $value['id_question']?>-answer" value="<?= $value['answer_1']?><">
+            <input type="radio" id="q<?= $value['id_question']?>-choice2" name="q<?= $value['id_question']?>-answer" value="2">
             <label for="q<?= $value['id_question']?>-choice2"><?= $value['answer_2']?></label>
           </div>
           
           <div class="choice">
-            <input type="radio" id="q<?= $value['id_question']?>-choice3" name="q<?= $value['id_question']?>-answer"value="<?= $value['answer_1']?><">
+            <input type="radio" id="q<?= $value['id_question']?>-choice3" name="q<?= $value['id_question']?>-answer"value="3><">
             <label for="q<?= $value['id_question']?>-choice3"><?= $value['answer_3']?></label>
           </div>
         </div>
@@ -281,6 +287,7 @@
       <div class="buttons-container">
         <button class="button button-secondary" id="prev-button">Previous</button>
         <button class="button" id="next-button">Next Question</button>
+        <button class="button button-danger" id="quit-button" style="background:#e74c3c;margin-left:10px;">Quitter la partie</button>
       </div>
     </div>
   </div>
@@ -343,11 +350,19 @@
       
       // Go to next slide
       function goToNextSlide() {
-   
+        // Récupère l'id de la question (depuis l'attribut data-id du slide actif)
+        // const currentSlide = slides[currentSlideIndex];
+        // const questionId = currentSlide.id.replace('slide-', '');
         // 1. Récupère le nom du groupe radio de la slide courante
-        const currentSlideName = `q${currentSlideIndex + 1}-answer`;
+        // const currentSlideName = `q${currentSlideIndex + 1}-answer`;
         // 2. Récupère la valeur sélectionnée
-        const selected = document.querySelector(`input[name="${currentSlideName}"]:checked`);
+        // const selected = document.querySelector(`input[name="${currentSlideName}"]:checked`);
+        // Récupère l'id de la question (depuis l'id du slide actif)
+const currentSlide = slides[currentSlideIndex];
+const questionId = currentSlide.id.replace('slide-', '');
+// Utilise l'id de la question pour le name du groupe radio
+const currentSlideName = `q${questionId}-answer`;
+const selected = document.querySelector(`input[name="${currentSlideName}"]:checked`);
         if (selected) {
           const value = selected.value;
           // 3. Envoie la valeur (exemple avec fetch)
@@ -355,20 +370,27 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              question: currentSlideName,
+              question: questionId,
               reponse: value
             })
           })
           .then(res => res.json())
           .then(data => {
             console.log(data);
+        
+            window.alert(data.message)
             // Traite la réponse si besoin
             // Passe à la slide suivante
-            if (currentSlideIndex < totalSlides - 1) {
-              showSlide(currentSlideIndex + 1);
-              updateNavButtons();
+            
+            if (currentSlideIndex === totalSlides - 1) {
+                  finishGame();
+            }else{
+               showSlide(currentSlideIndex + 1);
+               updateNavButtons();
             }
-          });
+          }).catch(err => {
+            console.log('Erreur lors de l\'envoi des données:', err);
+          })
         }
       }
       
@@ -385,11 +407,16 @@
         }
         
         // Check if current slide has a selected answer
-        const currentSlideName = `q${currentSlideIndex + 1}-answer`;
-        const hasAnswer = document.querySelector(`input[name="${currentSlideName}"]:checked`) !== null;
+        // const currentSlideName = `q${currentSlideIndex + 1}-answer`;
+        // const hasAnswer = document.querySelector(`input[name="${currentSlideName}"]:checked`) !== null;
         
-        // Disable next button if no answer selected
-        nextButton.disabled = !hasAnswer;
+        // // Disable next button if no answer selected
+        // nextButton.disabled = !hasAnswer;
+         const currentSlide = slides[currentSlideIndex];
+  const questionId = currentSlide.id.replace('slide-', '');
+  const currentSlideName = `q${questionId}-answer`;
+  const hasAnswer = document.querySelector(`input[name="${currentSlideName}"]:checked`) !== null;
+  nextButton.disabled = !hasAnswer;
       }
   function startTimer() {
     updateTimerDisplay();
@@ -412,15 +439,45 @@
     const sec = String(timeLeft % 60).padStart(2, '0');
     timerDisplay.textContent = `${min}:${sec}`;
   }
+
       // Initialize the quiz
       init();
       startTimer();
     });
     //timer for quiz
     
-    document.getElementById('prev-button').addEventListener('click',function(e){
-       
+function finishGame() {
+  fetch('/finish/game', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message || "Quiz terminé !");
+    window.location.href = '/user/jeux'; // Redirige où tu veux
+  })
+  .catch(() => {
+    alert("Erreur lors de la finalisation du quiz.");
+  });
+}
+
+document.getElementById('quit-button').addEventListener('click', function() {
+  if(confirm("Voulez-vous vraiment quitter la partie ?")) {
+    fetch('/leave/game', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
     })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message || "Vous avez quitté la partie.");
+      window.location.href = '/user/jeux'; // Redirige vers l'accueil ou une autre page
+    })
+    .catch(() => {
+      alert("Erreur lors de la sortie de la partie.");
+    });
+  }
+});
+
   </script>
   
 </body>

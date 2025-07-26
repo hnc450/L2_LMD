@@ -9,9 +9,7 @@
         {
             try {
                 $params = [':valeur' => $value];
-                var_dump(
-                    Database::executeQuery("SELECT * FROM $table WHERE $column=:valeur", $params,2)
-                );
+                
                 return count(Database::executeQuery("SELECT * FROM $table WHERE $column=:valeur", $params,2)) > 0 ? true :false;
             } 
             catch (\PDOException $e) {

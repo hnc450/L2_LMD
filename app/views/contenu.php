@@ -555,7 +555,7 @@ use App\Models\JeuModel\JeuModel;
    </div>
 
 
-    <script src="/js/theme.js"></script>
+  
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
     <script src="/js/popup.js"></script>
@@ -630,6 +630,7 @@ document.querySelector('#preview-modal .close-btn').onclick = function() {
     </script>
 </body>
 </html>
+
 <?php
  require __DIR__ .'/view.php';
 ?>
