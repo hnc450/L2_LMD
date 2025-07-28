@@ -1,3 +1,13 @@
+<?php 
+   $users = \App\Models\Database\Database::QueryRequest('SELECT users.prenoms, points.points, ligues.ligue,users.avatar
+              FROM points INNER JOIN ligues 
+               ON points.ligue_id = ligues.id
+               INNER JOIN users 
+               ON points.user_id = users.id_user 
+               ORDER BY points.points DESC'
+    ,2);
+    $rang = 1;
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -33,13 +43,13 @@
                     </div>
                     <div class="league-info">
                         <h2>Ligue Bronze</h2>
-                        <p>Votre rang actuel: #<?= $_SESSION['user'][0]['rang'] ?? 100 ?></p>
+                        <p>Votre rang actuel: #<?= $_SESSION['user']['rang'] ?? 100 ?></p>
                         <div class="progress-container">
                             <div class="progress-bar">
                                 <div class="progress" style="width: 0%"></div>
                             </div>
                             <div class="progress-labels">
-                                <span>0 / 100 points</span>
+                                <span><?= $_SESSION['points'] ?? 0 ?> / 100 points</span>
                                 <span>Prochain rang: Ligue Diamant</span>
                             </div>
                         </div>
@@ -50,13 +60,13 @@
                     <h2>Toutes les Ligues</h2>
                     
                     <div class="leagues-grid">
-                        <div class="league-card bronze active">
+                        <div class="league-card bronze <?= $_SESSION['points'] <= 100 ?' active' : '' ?>">
                             <div class="league-icon">
                                 <i class="fas fa-medal"></i>
                             </div>
                             <h3>Bronze</h3>
                             <p>0 - 100 points</p>
-                            <div class="current-badge">Actuel</div>
+                            <?= $_SESSION['points'] <= 100 ? '<div class="current-badge">Actuel</div>' : '' ?>
                         </div>
                         <div class="league-card silver">
                             <div class="league-icon">
@@ -132,76 +142,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
+                               
+                         
+                            <?php foreach($users as $user):?>
+                                <tr <?= $_SESSION['user']['prenoms'] === $user['prenoms'] ? 'class="current-user"' : ''  ?>>
+                                    <td><?= $rang ?></td>
                                     <td>
                                         <div class="player-info">
-                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
-                                            <span>Sophie Martin</span>
+                                            <img src="<?=$user['avatar'] ?>" alt="Avatar" class="small-avatar">
+                                            <span><?= $user['prenoms'] ?></span>
                                         </div>
                                     </td>
-                                    <td>980</td>
-                                    <td>45</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>
-                                        <div class="player-info">
-                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
-                                            <span>Lucas Bernard</span>
-                                        </div>
-                                    </td>
-                                    <td>925</td>
-                                    <td>42</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>
-                                        <div class="player-info">
-                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
-                                            <span>Emma Petit</span>
-                                        </div>
-                                    </td>
-                                    <td>890</td>
-                                    <td>40</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>
-                                        <div class="player-info">
-                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
-                                            <span>Hugo Leroy</span>
-                                        </div>
-                                    </td>
-                                    <td>870</td>
+                                    <td><?= $user ['points'] ?></td>
                                     <td>38</td>
+                                    <?php $rang = $rang + 1 ?>
                                 </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>
-                                        <div class="player-info">
-                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
-                                            <span>Chloé Dubois</span>
-                                        </div>
-                                    </td>
-                                    <td>845</td>
-                                    <td>37</td>
-                                </tr>
-                                <tr class="current-user">
-                                    <td>42</td>
-                                    <td>
-                                        <div class="player-info">
-                                            <img src="/assets/avatar.png" alt="Avatar" class="small-avatar">
-                                            <span>Thomas Dupont</span>
-                                        </div>
-                                    </td>
-                                    <td>750</td>
-                                    <td>30</td>
-                                </tr>
+                            <?php endforeach ?>
                             </tbody>
                         </table>
                     </div>
                 </section>
+             
 
                 <section class="league-benefits">
                     <h2>Avantages de la Ligue Émeraude</h2>

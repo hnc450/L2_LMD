@@ -91,6 +91,7 @@
 
     public function chat()
     {
+      \App\Middlewares\Security\Security::require_auth();
       $this->view('chat');
     }
 
@@ -127,12 +128,13 @@
 
     public function login()
     {
+      \App\Middlewares\Security\Security::exist_auth();
       $this->view('login');
     }
 
     public function ligue()
     {
-        $this->view('ligue');
+      $this->view('ligue'); 
     }
 
     public function ligues()

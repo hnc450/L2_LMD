@@ -1,10 +1,3 @@
-<?php
-if (!isset($_SESSION['user']['id_user'])) {
-    header('Location: /login');
-    exit();
-}
-
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>

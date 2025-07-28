@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module d'Apprentissage Interactif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header avec navigation */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lesson-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: none;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .lesson-info {
+            text-align: center;
+        }
+
+        .lesson-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .lesson-progress {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.2rem;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0.5rem auto 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .close-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Contenu principal */
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: calc(100vh - 100px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lesson-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Étapes de la leçon */
+        .lesson-step {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .lesson-step.active {
+            display: flex;
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .step-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Contenu interactif */
+        .interactive-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .concept-visual {
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            margin: 2rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-visual:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.4);
+        }
+
+        .concept-visual.animated {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .explanation {
+            max-width: 600px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #555;
+            margin: 2rem 0;
+        }
+
+        .explanation strong {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Exercices interactifs */
+        .interactive-exercise {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px dashed #dee2e6;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-exercise.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .exercise-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .drag-drop-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .draggable-item {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            cursor: grab;
+            user-select: none;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .draggable-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .draggable-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .drop-zone {
+            width: 150px;
+            height: 80px;
+            border: 3px dashed #ccc;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #667eea;
+            background: #f0f4ff;
+            color: #667eea;
+        }
+
+        .drop-zone.filled {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        /* Boutons d'action */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        /* Feedback */
+        .feedback {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #155724;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Quiz intégré */
+        .mini-quiz {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-option {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .quiz-option.selected {
+            border-color: #667eea;
+            background: #e3f2fd;
+        }
+
+        .quiz-option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .lesson-container {
+                padding: 2rem;
+            }
+
+            .step-title {
+                font-size: 1.5rem;
+            }
+
+            .concept-visual {
+                width: 250px;
+                height: 150px;
+                font-size: 3rem;
+            }
+
+            .drag-drop-area {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lesson-container {
+                padding: 1.5rem;
+            }
+
+            .concept-visual {
+                width: 200px;
+                height: 120px;
+                font-size: 2.5rem;
+            }
+
+            .explanation {
+                font-size: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            80% { transform: translateY(-5px); }
+        }
+
+        .success-animation {
+            animation: bounce 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="lesson-nav">
+                <button class="nav-btn" id="prevBtn" onclick="previousStep()" disabled>‹</button>
+                <div class="lesson-info">
+                    <div class="lesson-title">Les Fractions</div>
+                    <div class="lesson-progress">Étape <span id="currentStep">1</span> sur <span id="totalSteps">5</span></div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                <button class="nav-btn" id="nextBtn" onclick="nextStep()">›</button>
+            </div>
+            <button class="close-btn" onclick="closeLearning()">✕</button>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <div class="lesson-container">
+            
+            <!-- Étape 1: Introduction -->
+            <div class="lesson-step active" id="step1">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h2 class="step-title">Qu'est-ce qu'une fraction ?</h2>
+                    <p class="step-subtitle">Découvrons ensemble le concept des fractions</p>
+                </div>
+                
+                <div class="interactive-content">
+                    <div class="concept-visual" onclick="animateConcept()" id="fractionVisual">
+                        🍕
+                    </div>
+                    
+                    <div class="explanation">
+                        Une <strong>fraction</strong> représente une partie d'un tout. Imaginez une pizza coupée en plusieurs parts égales. 
+                        Chaque part représente une fraction de la pizza entière.
+                        <br><br>
+                        Cliquez sur la pizza ci-dessus pour voir comment elle se divise !
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="nextStep()">Continuer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 2: Structure d'une fraction -->
+            <div class="lesson-step" id="step2">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h2 class="step-title">Structure d'une fraction</h2>
+                    <p class="step-subtitle">Numérateur et dénominateur</p>
+                </div>
+                
+                <div class="interactive-content">
+                    <div class="concept-visual" style="background: linear-gradient(135deg, #43e97b, #38f9d7); font-size: 2rem;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <div style="font-size: 3rem; margin-bottom: 10px;">3</div>
+                            <div style="width: 80px; height: 3px; background: white; margin: 5px 0;"></div>
+                            <div style="font-size: 3rem; margin-top: 10px;">4</div>
+                        </div>
+                    </div>
+                    
+                    <div class="explanation">
+                        Une fraction se compose de deux parties :
+                        <br><br>
+                        • Le <strong>numérateur</strong> (en haut) : indique combien de parts nous avons
+                        <br>
+                        • Le <strong>dénominateur</strong> (en bas) : indique en combien de parts le tout est divisé
+                        <br><br>
+                        Dans l'exemple 3/4, nous avons <strong>3 parts</strong> sur un total de <strong>4 parts</strong>.
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="previousStep()">Précédent</button>
+                        <button class="btn btn-primary" onclick="nextStep()">Continuer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 3: Exercice interactif -->
+            <div class="lesson-step" id="step3">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h2 class="step-title">Exercice pratique</h2>
+                    <p class="step-subtitle">Glissez les éléments au bon endroit</p>
+                </div>
+                
+                <div class="interactive-content">
+                    <div class="interactive-exercise" id="dragExercise">
+                        <div class="exercise-title">Construisez la fraction 2/5</div>
+                        
+                        <div class="drag-drop-area">
+                            <div class="draggable-item" draggable="true" data-value="2">2</div>
+                            <div class="draggable-item" draggable="true" data-value="5">5</div>
+                            <div class="draggable-item" draggable="true" data-value="3">3</div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin: 2rem 0;">
+                            <div class="drop-zone" data-target="numerator">Numérateur</div>
+                            <div style="font-size: 2rem; font-weight: bold;">/</div>
+                            <div class="drop-zone" data-target="denominator">Dénominateur</div>
+                        </div>
+                        
+                        <div class="feedback" id="exerciseFeedback"></div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="previousStep()">Précédent</button>
+                        <button class="btn btn-primary" onclick="checkExercise()">Vérifier</button>
+                        <button class="btn btn-success" id="continueBtn3" onclick="nextStep()" style="display: none;">Continuer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 4: Quiz -->
+            <div class="lesson-step" id="step4">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <h2 class="step-title">Mini Quiz</h2>
+                    <p class="step-subtitle">Testez vos connaissances</p>
+                </div>
+                
+                <div class="interactive-content">
+                    <div class="mini-quiz">
+                        <div class="quiz-question">Dans la fraction 7/8, quel est le dénominateur ?</div>
+                        
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectQuizOption(this, false)">7</div>
+                            <div class="quiz-option" onclick="selectQuizOption(this, true)">8</div>
+                            <div class="quiz-option" onclick="selectQuizOption(this, false)">15</div>
+                            <div class="quiz-option" onclick="selectQuizOption(this, false)">1</div>
+                        </div>
+                        
+                        <div class="feedback" id="quizFeedback"></div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="previousStep()">Précédent</button>
+                        <button class="btn btn-success" id="continueBtn4" onclick="nextStep()" style="display: none;">Continuer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 5: Récapitulatif -->
+            <div class="lesson-step" id="step5">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <h2 class="step-title">Félicitations ! 🎉</h2>
+                    <p class="step-subtitle">Vous avez terminé cette leçon</p>
+                </div>
+                
+                <div class="interactive-content">
+                    <div class="concept-visual success-animation" style="background: linear-gradient(135deg, #ffd700, #ffed4e); color: #333;">
+                        🏆
+                    </div>
+                    
+                    <div class="explanation">
+                        <strong>Récapitulatif de ce que vous avez appris :</strong>
+                        <br><br>
+                        ✅ Une fraction représente une partie d'un tout
+                        <br>
+                        ✅ Le numérateur indique combien de parts nous avons
+                        <br>
+                        ✅ Le dénominateur indique le nombre total de parts
+                        <br>
+                        ✅ Les fractions nous aident à décrire des quantités partielles
+                        <br><br>
+                        <strong>XP gagné : +100 XP</strong>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="previousStep()">Précédent</button>
+                        <button class="btn btn-primary" onclick="completeLearning()">Terminer la leçon</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStepIndex = 1;
+        const totalSteps = 5;
+        let exerciseCompleted = false;
+        let quizCompleted = false;
+
+        // Initialisation
+        function init() {
+            updateProgress();
+            setupDragAndDrop();
+        }
+
+        // Mettre à jour la progression
+        function updateProgress() {
+            const progress = (currentStepIndex / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentStep').textContent = currentStepIndex;
+            document.getElementById('totalSteps').textContent = totalSteps;
+            
+            // Mettre à jour les boutons de navigation
+            document.getElementById('prevBtn').disabled = currentStepIndex === 1;
+            document.getElementById('nextBtn').disabled = currentStepIndex === totalSteps;
+        }
+
+        // Étape suivante
+        function nextStep() {
+            if (currentStepIndex < totalSteps) {
+                document.getElementById(`step${currentStepIndex}`).classList.remove('active');
+                currentStepIndex++;
+                document.getElementById(`step${currentStepIndex}`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        // Étape précédente
+        function previousStep() {
+            if (currentStepIndex > 1) {
+                document.getElementById(`step${currentStepIndex}`).classList.remove('active');
+                currentStepIndex--;
+                document.getElementById(`step${currentStepIndex}`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        // Animer le concept
+        function animateConcept() {
+            const visual = document.getElementById('fractionVisual');
+            visual.classList.add('animated');
+            visual.innerHTML = '🍕➡️🍕🍕🍕🍕';
+            
+            setTimeout(() => {
+                visual.innerHTML = '🍕🍕🍕🍕<br><span style="font-size: 1rem;">4 parts égales</span>';
+            }, 1000);
+            
+            setTimeout(() => {
+                visual.classList.remove('animated');
+                visual.innerHTML = '🍕';
+            }, 3000);
+        }
+
+        // Configuration du drag and drop
+        function setupDragAndDrop() {
+            const draggables = document.querySelectorAll('.draggable-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+
+            draggables.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('drop', handleDrop);
+                zone.addEventListener('dragenter', handleDragEnter);
+                zone.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.value);
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.target.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.target.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const value = e.dataTransfer.getData('text/plain');
+            const target = e.target.dataset.target;
+            
+            e.target.classList.remove('drag-over');
+            e.target.textContent = value;
+            e.target.classList.add('filled');
+            e.target.dataset.value = value;
+        }
+
+        // Vérifier l'exercice
+        function checkExercise() {
+            const numerator = document.querySelector('[data-target="numerator"]').dataset.value;
+            const denominator = document.querySelector('[data-target="denominator"]').dataset.value;
+            const feedback = document.getElementById('exerciseFeedback');
+            
+            if (numerator === '2' && denominator === '5') {
+                feedback.textContent = '🎉 Excellent ! Vous avez correctement construit la fraction 2/5 !';
+                feedback.classList.remove('error');
+                feedback.classList.add('show');
+                document.getElementById('continueBtn3').style.display = 'inline-block';
+                exerciseCompleted = true;
+            } else {
+                feedback.textContent = '❌ Pas tout à fait. Rappelez-vous : 2/5 signifie 2 au numérateur et 5 au dénominateur.';
+                feedback.classList.add('error');
+                feedback.classList.add('show');
+            }
+        }
+
+        // Sélectionner une option de quiz
+        function selectQuizOption(option, isCorrect) {
+            const options = document.querySelectorAll('.quiz-option');
+            const feedback = document.getElementById('quizFeedback');
+            
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt === option) {
+                    opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (opt.onclick.toString().includes('true')) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            if (isCorrect) {
+                feedback.textContent = '🎉 Correct ! Le dénominateur est 8, il indique que le tout est divisé en 8 parts.';
+                feedback.classList.remove('error');
+                document.getElementById('continueBtn4').style.display = 'inline-block';
+                quizCompleted = true;
+            } else {
+                feedback.textContent = '❌ Incorrect. Le dénominateur est le nombre en bas de la fraction.';
+                feedback.classList.add('error');
+            }
+            
+            feedback.classList.add('show');
+        }
+
+        // Terminer l'apprentissage
+        function completeLearning() {
+            alert('🎉 Félicitations ! Vous avez terminé la leçon sur les fractions et gagné 100 XP !');
+            // Ici vous pouvez rediriger vers la liste des modules ou la leçon suivante
+        }
+
+        // Fermer l'apprentissage
+        function closeLearning() {
+            if (confirm('Êtes-vous sûr de vouloir quitter cette leçon ?')) {
+                // Redirection vers la liste des modules
+                alert('Retour aux modules...');
+            }
+        }
+
+        // Initialiser au chargement
+        window.onload = init;
+    </script>
+</body>
+</html>

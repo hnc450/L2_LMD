@@ -11,10 +11,10 @@
     //   ->run(2)
     // );
     //   $database->getQuery();
-    $user_id = 1;
-  // \App\Models\FactoryModel::Factory('question')->finishQuiz();
-   var_dump(\App\Controllers\Action\Action::check_existence('points','user',$user_id));
-?>
+    // $user = new \App\Controllers\User\User();
+    // $user->getPoints((int)$_SESSION['user']['id_user']);
+    // var_dump( $user->getPoints((int)$_SESSION['user']['id_user']))
+    ?>
 <pre>
  
 </pre>

@@ -1,9 +1,3 @@
-<?php 
-  if(isset($_SESSION['user'])){
-    \App\Middlewares\Security\Security::verify_role($_SESSION['user']['role']);
-    exit();
-  }
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>

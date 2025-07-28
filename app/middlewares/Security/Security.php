@@ -24,6 +24,18 @@
                 exit;
             }
         }
+        
+        /*
+          verifie l existance de la session
+          si celle ci existe ca appel la methode verify_role pour la redirection 
+          en fonction des roles 
+        */
+        public static function exist_auth(){
+            if(isset($_SESSION['user'])){
+                \App\Middlewares\Security\Security::verify_role($_SESSION['user']['role']);
+                exit;
+            }
+        }
 
         /**
          * Vérifie le rôle de l'utilisateur connecté. Redirige selon le rôle.

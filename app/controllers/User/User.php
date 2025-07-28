@@ -7,6 +7,13 @@
     
    class User
    {
+       public function getPoints($id){
+          $points = Database::executeQuery(' SELECT points FROM points WHERE user_id = ?',[$id],2);
+          if(count($points) > 0){
+            return $points[0]['points'];
+           }
+           return 0;
+        }
         public  static function se_deconnecter(int $id)
         {
         
