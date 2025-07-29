@@ -125,9 +125,12 @@
 
                 <section class="settings-section">
                     <h2>Session</h2>
-                    <button class="btn-danger logout-btn">
-                        <i class="fas fa-sign-out-alt"></i><a href="/deconnexion/<?=$id??''?>">Se déconnecter</a>
-                    </button>
+                    <form action="/deconnexion/<?=$id?>" method="POST">
+                       <button class="btn-danger logout-btn" type="submit">
+                           <i class="fas fa-sign-out-alt"></i>Se déconnecter
+                       </button>
+                    </form>
+                 
                 </section>
             </div>
         </main>

@@ -12,7 +12,7 @@
 
       public function __construct()
       {
-         $this->datas = \App\Models\Database\Database::QueryRequest('SELECT modules.id,modules.noms,modules.levels, categories.categorie 
+         $this->datas = \App\Models\Database\Database::QueryRequest('SELECT modules.id,modules.noms,modules.levels,modules.image, categories.categorie 
          FROM modules INNER JOIN categories ON modules.categorie_id = categories.id_categorie',2);
       }
 

@@ -1,10 +1,6 @@
 <?php 
     use Route\Route;
-    // Route::get('/test',function(){
-    //     $factory = \App\Models\FactoryModel::Factory('module');
-    //     var_dump($factory);
-    // });
-
+  
     Route::get('/',function() use ($view){
       $view->welcome();
     });
@@ -12,11 +8,7 @@
     Route::get('/login',function() use ($view){
        $view->login();
     });
-
-    Route::get('/deconnexion/[i:id]',function($id) use($view){
-      App\Controllers\User\User::se_deconnecter((int)$id['id']);
-    });
-    
+  
     Route::get('/user/chat',function() use($view){
        $view->chat();
     });

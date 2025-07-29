@@ -1,9 +1,9 @@
 <?php 
    \App\Middlewares\Security\Security::require_auth();
-   use App\Models\Jeu\Jeu;
-use App\Models\JeuModel\JeuModel;
-
+   use App\Models\JeuModel\JeuModel;
    $contenus = \App\Controllers\Admin\Admin::voir_toutes_les_informations();
+   $modules = \App\Models\FactoryModel::Factory('module')->getAllModules();
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -302,26 +302,27 @@ use App\Models\JeuModel\JeuModel;
                     <!-- Modules Tab -->
                     <div class="tab-content" id="modules-tab">
                         <div class="modules-grid">
-
+                           <?php foreach($modules as $module): ?>
                             <div class="module-card-admin">
                                 <div class="module-header">
-                                    <img src="img/geography.jpg" alt="Module">
+                                    <img src="<?= $module['image']?>" alt="Module">
                                     <div class="module-status active">Actif</div>
                                 </div>
                                 <div class="module-content">
-                                    <h3>Découverte des Continents</h3>
+                                    <h3><?=  $module['noms'] ?></h3>
                                     <p>Module d'introduction à la géographie mondiale</p>
                                     <div class="module-meta">
-                                        <span><i class="fas fa-users"></i> 1,245 utilisateurs</span>
-                                        <span><i class="fas fa-star"></i> 4.8/5</span>
+                                        <span><i class="fas fa-users"></i> 0 utilisateurs</span>
+                                        <span><i class="fas fa-star"></i> 0/5</span>
                                     </div>
                                     <div class="module-actions">
                                         <button class="btn-small edit">Modifier</button>
                                         <button class="btn-small view">Voir</button>
-                                        <button class="btn-small stats">Stats</button>
+                                        <!-- <button class="btn-small stats">Stats</button> -->
                                     </div>
                                 </div>
-                            </div>
+                            </div>  
+                          <?php endforeach?>
 
                         </div>
                     </div>

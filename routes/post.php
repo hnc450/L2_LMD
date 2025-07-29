@@ -134,4 +134,7 @@
             '' => ''
         ]);
     });
+      Route::post('/deconnexion/[i:id]',function($id) use($view){
+      App\Controllers\User\User::se_deconnecter((int)$id['id']);
+    });
 ?> 
