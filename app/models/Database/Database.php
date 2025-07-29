@@ -116,12 +116,12 @@
 
        }
 
-       public static function insert(string $generic_table_with_column,array $datas)
+      public static function insert(string $generic_table_with_column,array $datas)
        {
          self::executeQuery("INSERT INTO ".$generic_table_with_column." VALUES (".str_repeat('?,', count($datas) - 1)."?)", $datas, 1);
        }
 
-       public static function Database($dns,$port,$db,$user,$mdp):Database{
+      public static function Database($dns,$port,$db,$user,$mdp):Database{
            if(is_null(static::$instance)){
               static::$instance = new Database($dns,$port,$db,$user,$mdp);
            }

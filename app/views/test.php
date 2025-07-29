@@ -1,8 +1,8 @@
 
 <?php
     // \App\Controllers\Page\Page::getPage('sms');
-    //   $database = App\Controllers\App\App::App()->getDb();
-    //   var_dump(;
+      // $database = App\Controllers\App\App::App()->getDb();
+    //   var_dump(
     //   $database
     //   ->select()
     //   ->column('id_user,pseudo,status')
@@ -14,7 +14,22 @@
     // $user = new \App\Controllers\User\User();
     // $user->getPoints((int)$_SESSION['user']['id_user']);
     // var_dump( $user->getPoints((int)$_SESSION['user']['id_user']))
+     $module = new \App\Models\ModuleModel();
+    //  $module->geOnetModule(1);
+    $modules = $module->getAllModules();
+    var_dump($modules);
+    //  var_dump ($module->geOnetModule(2))
     ?>
 <pre>
- 
+    
 </pre>
+
+<?php 
+// foreach ($modules as $module) {
+//    echo $module['id'];
+//    echo "<br/>";
+//    echo $module['noms'];
+//    echo "<br/>";
+//    echo $module['categorie'];
+//   //  var_dump(json_decode($module['content']));
+// } ?>

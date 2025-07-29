@@ -36,8 +36,8 @@
                     // On ne garde que le nom du fichier pour le chemin web
                     $fileName = basename($avatarPath);
                     $webAvatarPath = '/assets/' . $fileName;
-                    $userId = $_SESSION['user'][0]['id_user'];
-                    $user = Database::QueryRequest("SELECT avatar FROM users WHERE id_user=$userId", 2);
+                    $userId = $_SESSION['user']['id_user'];
+                    $user = Database::executeQuery("SELECT avatar FROM users WHERE id_user= :id",[':id'=>$userId], 2);
                     if (!empty($user[0]['avatar']) && strpos($user[0]['avatar'], 'default') === false) {
                         \App\Middlewares\Upload\Upload::delete_image($user[0]['avatar']);
                     }
@@ -46,10 +46,10 @@
                         ':id' => $userId
                     ], 3);
                     $_SESSION['user'][0]['avatar'] = $webAvatarPath;
-                    echo "<script>window.alert('Profil mis à jour avec success')</script>";
+
                     header("Location: /user/profile");
                 } else {
-                    echo "<script>window.alert('Erreur lors de l envoie de l image')</script>";
+                 
                     header("Location: /user/profile");
                 }
             } else {

@@ -32,21 +32,21 @@
                         <i class="fas fa-star"></i>
                         <div>
                             <h3>Points</h3>
-                            <p> <?= $_SESSION['user'][0]['points'] ?? '0'?> </p>
+                            <p> <?= $_SESSION['points'] ?? '0'?> </p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <i class="fas fa-trophy"></i>
                         <div>
                             <h3>Trophées</h3>
-                            <p><?= $_SESSION['user'][0]['trophies'] ?? '0'?></p>
+                            <p><?= $_SESSION['user']['trophies'] ?? '0'?></p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <i class="fas fa-clock"></i>
                         <div>
                             <h3>Temps de jeu</h3>
-                            <p><?= $_SESSION['user'][0]['temps'] ?? '0'?>s</p>
+                            <p><?= $_SESSION['user']['temps'] ?? '0'?>s</p>
                         </div>
                     </div>
                 </section>

@@ -38,8 +38,8 @@
     });
     
     Route::post('/administration/add/module', function() {
-        \App\Middlewares\Security\Security::require_role('administrateur');
-        //\App\Controllers\Admin\Admin::ajouter_un_module($_POST, $_SERVER['REQUEST_METHOD']);
+      //  \App\Middlewares\Security\Security::require_role('administrateur');
+        \App\Controllers\Admin\Admin::add_module($_POST);
     });
     
     Route::post('/administration/ban/user/[i:id]', function($id) {

@@ -141,10 +141,16 @@
     {
       $this->view('ligues');
     }
+    public function module(int $id)
+    {
+        $module = \App\Models\FactoryModel::Factory('module')->getOneModule($id);
+        $this->render('learn-module',compact('id','module'));
+    }
     public function modules()
     {
       $this->view('modules');
     }
+
 
     public function profile()
     {

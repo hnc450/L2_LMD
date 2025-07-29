@@ -1,3 +1,9 @@
+<?php 
+    $module = new \App\Models\ModuleModel();
+   
+    $modules = $module->getAllModules();
+  
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -42,7 +48,7 @@
 
             <!-- Liste des modules -->
             <div class="modules-grid">
-                <!-- 6-8 ans -->
+                <!-- 6-8 ans
                 <div class="module-large-card" data-age="6-8">
                     <div class="module-large-header">
                         <div class="module-large-icon">
@@ -63,9 +69,9 @@
                         </div>
                         <button class="btn-module">Continuer</button>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="module-large-card" data-age="6-8">
+                <!-- <div class="module-large-card" data-age="6-8">
                     <div class="module-large-header">
                         <div class="module-large-icon">
                             <i class="fas fa-paw"></i>
@@ -85,10 +91,10 @@
                         </div>
                         <button class="btn-module">Continuer</button>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- 9-11 ans -->
-                <div class="module-large-card" data-age="9-11">
+                <!-- <div class="module-large-card" data-age="9-11">
                     <div class="module-large-header">
                         <div class="module-large-icon">
                             <i class="fas fa-mountain"></i>
@@ -108,8 +114,8 @@
                         </div>
                         <button class="btn-module">Continuer</button>
                     </div>
-                </div>
-
+                </div> -->
+<!-- 
                 <div class="module-large-card" data-age="9-11">
                     <div class="module-large-header">
                         <div class="module-large-icon">
@@ -130,10 +136,10 @@
                         </div>
                         <button class="btn-module">Continuer</button>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- 12-14 ans -->
-                <div class="module-large-card" data-age="12-14">
+                <!-- <div class="module-large-card" data-age="12-14">
                     <div class="module-large-header">
                         <div class="module-large-icon">
                             <i class="fas fa-flask"></i>
@@ -153,8 +159,8 @@
                         </div>
                         <button class="btn-module">Continuer</button>
                     </div>
-                </div>
-
+                </div> -->
+<!-- 
                 <div class="module-large-card" data-age="12-14">
                     <div class="module-large-header">
                         <div class="module-large-icon">
@@ -175,10 +181,10 @@
                         </div>
                         <button class="btn-module">Continuer</button>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- 15+ ans -->
-                <div class="module-large-card" data-age="15+">
+                <!-- <div class="module-large-card" data-age="15+">
                     <div class="module-large-header">
                         <div class="module-large-icon">
                             <i class="fas fa-university"></i>
@@ -198,9 +204,33 @@
                         </div>
                         <button class="btn-module">Continuer</button>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="module-large-card" data-age="15+">
+            <?php foreach($modules as $module): ?>
+                <div class="module-large-card" data-age="<?= $module['levels'] ?>">
+                    <div class="module-large-header">
+                        <div class="module-large-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <div class="module-large-badge"><?= $module['levels'] ?> ans</div>
+                    </div>
+                    <div class="module-large-content">
+                        <h3><?= $module['noms'] ?></h3>
+                        <p>Analyse les événements majeurs du 20ème et 21ème siècle</p>
+                        <div class="module-large-meta">
+                            <span><i class="fas fa-star"></i> 0.0</span>
+                            <span><i class="fas fa-users"></i> 0 joueurs</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 0%"></div>
+                            <span>0% complété</span>
+                        </div>
+                        <button class="btn-module">Commencer</button>
+                    </div>
+                </div>        
+            <?php endforeach ?>
+
+                <!-- <div class="module-large-card" data-age="15+">
                     <div class="module-large-header">
                         <div class="module-large-icon">
                             <i class="fas fa-chart-line"></i>
@@ -221,7 +251,8 @@
                         <button class="btn-module">Continuer</button>
                     </div>
                 </div>
-            </div>
+            </div> -->
+            
         </main>
 
         <!-- Navigation mobile style WhatsApp -->

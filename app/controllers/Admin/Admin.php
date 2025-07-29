@@ -300,6 +300,22 @@
         return \App\Models\SettingModel::deleteSetting($id);
     }
 
+    public static function add_module(array $datas){
+    
+       if(empty($datas['titre-module']) && empty($datas['content-module']) && empty($datas['category-module']) && empty($datas['level-module'])){
+        header('Location: /administration/contenus');
+        exit;
+       }
+        Database::executeQuery('INSERT INTO modules(noms, categorie_id,content,levels) VALUES(:nom,:categorie,:content,:levels)',[
+            ':nom'=> $datas['titre-module'],
+            ':categorie' => $datas['category-module'],
+            ':content'=> $datas['content-module'],
+            ':levels' => $datas['level-module']
+        ],1);
+        header('Location: /administration/contenus');
+        exit;
     }
+
+}
 
 ?>

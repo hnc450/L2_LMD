@@ -130,8 +130,8 @@ use App\Models\JeuModel\JeuModel;
                     <div class="user-info-header">
                         <img src="<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" class="avatar">
                         <div>
-                            <p class="username">Admin</p>
-                            <p class="rank">Administrateur</p>
+                            <p class="username"><?= $_SESSION['user']['prenoms'] ?></p>
+                            <p class="rank"><?= $_SESSION['user']['role']?></p>
                         </div>
                     </div>
                 </div>
@@ -323,25 +323,6 @@ use App\Models\JeuModel\JeuModel;
                                 </div>
                             </div>
 
-                            <div class="module-card-admin">
-                                <div class="module-header">
-                                    <img src="img/history.jpg" alt="Module">
-                                    <div class="module-status draft">Brouillon</div>
-                                </div>
-                                <div class="module-content">
-                                    <h3>Histoire Contemporaine</h3>
-                                    <p>Les événements majeurs du 20ème siècle</p>
-                                    <div class="module-meta">
-                                        <span><i class="fas fa-users"></i> 0 utilisateurs</span>
-                                        <span><i class="fas fa-star"></i> -/5</span>
-                                    </div>
-                                    <div class="module-actions">
-                                        <button class="btn-small edit">Modifier</button>
-                                        <button class="btn-small publish">Publier</button>
-                                        <button class="btn-small delete">Supprimer</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -475,15 +456,15 @@ use App\Models\JeuModel\JeuModel;
         <form id="contentFormModule" method="POST" action="/administration/add/module">
             <div class="form-group">
                 <label for="title-module">Titre</label>
-                <input type="text" id="title-module" required>
+                <input type="text" id="title-module" required name="titre-module">
             </div>
             <div class="form-group">
                 <label for="description-module">Description</label>
-                <textarea id="description-module" rows="3"></textarea>
+                <textarea id="description-module" rows="3"  name="content-module"></textarea>
             </div>
             <div class="form-group">
                 <label for="category-module">Catégorie</label>
-                <select id="category-module" required>
+                <select id="category-module" required name="category-module">
                     <option value="">Sélectionner une catégorie</option>
                     <?php foreach(\App\Models\Category\Category::categories() as $category):?>
                     <option value="<?=$category['id_categorie']?>"><?=$category['categorie']?></option>
@@ -492,7 +473,7 @@ use App\Models\JeuModel\JeuModel;
             </div>
             <div class="form-group">
                 <label for="level-module">Niveau</label>
-                <select id="level-module" required>
+                <select id="level-module" required name="level-module">
                     <option value="">Sélectionner un niveau</option>
                     <option value="6-8">6-8 ans</option>
                     <option value="9-11">9-11 ans</option>

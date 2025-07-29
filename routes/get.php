@@ -53,6 +53,9 @@
         $view->game((int)$id['id']);
     });
 
+    Route::get('/user/module/start/[i:id]',function($id) use($view){
+        $view->module((int)$id['id']);
+    });
 
     Route::get('/user/exploration/start/[i:id]',function($id) use($view){
         $view->start_exploration((int)$id['id']);
