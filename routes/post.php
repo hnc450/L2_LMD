@@ -72,8 +72,6 @@
     });
 
     Route::post('/administration/edit/user/[i:id]',function($id){
-        // var_dump($id['id']);
-    
         \App\Controllers\Admin\Admin::update_user($_POST,(int)$id['id']);
     });
 
@@ -134,7 +132,8 @@
             '' => ''
         ]);
     });
-      Route::post('/deconnexion/[i:id]',function($id) use($view){
+
+    Route::post('/deconnexion/[i:id]',function($id) use($view){
       App\Controllers\User\User::se_deconnecter((int)$id['id']);
     });
 ?> 

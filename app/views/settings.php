@@ -319,7 +319,7 @@
                                        <div class="setting-option">
                                            <label> '.$settings[$compteur]['setting_name'].'</label>
                                            <div class="toggle-switch">
-                                               <input type="checkbox" id="'.$settings[$compteur]['id'].'" '.($settings[$compteur]['setting_value'] == 1 ? 'checked' : '').'>
+                                               <input type="checkbox"  data-id="'.$settings[$compteur]['id'].'"  id="'.$settings[$compteur]['id'].'" '.($settings[$compteur]['setting_value'] == 1 ? 'checked' : '').'>
                                                <label for="'.$settings[$compteur]['id'].'"></label>
                                            </div>
                                        </div>';
@@ -335,7 +335,7 @@
                                       <div class="setting-option">
                                           <label> '.$settings[$compteur]['setting_name'].'</label>
                                           <div class="toggle-switch">
-                                              <input type="checkbox" id="'.$settings[$compteur]['id'].'" '.($settings[$compteur]['setting_value'] == 1 ? 'checked' : '').'>
+                                              <input type="checkbox" data-id="'.$settings[$compteur]['id'].'" id="'.$settings[$compteur]['id'].'" '.($settings[$compteur]['setting_value'] == 1 ? 'checked' : '').'>
                                               <label for="'.$settings[$compteur]['id'].'"></label>
                                           </div>
                                       </div>';
@@ -347,12 +347,12 @@
                 </div>
 
                 <!-- Sauvegarder Button -->
-                <div class="save-settings">
+                <!-- <div class="save-settings">
                     <button class="action-btn primary">
                         <i class="fas fa-save"></i>
                         Sauvegarder les Paramètres
                     </button>
-                </div>
+                </div> -->
             </div>
         </main>
         <!-- ajout du formulaire pour les paramètres -->
@@ -388,5 +388,27 @@
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
     <script src="/js/script.js" defer></script>
+    <script>
+        document.querySelectorAll('input[type="checkbox"][data-id]').forEach(checkbox => {
+  checkbox.addEventListener('change', function() {
+    const id = this.getAttribute('data-id');
+    const value = this.checked ? 1 : 0;
+
+    fetch('/settings/update', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: id,
+        value: value
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      // Optionnel : afficher un message de succès ou d’erreur
+      alert(data.message);
+    });
+  });
+});
+    </script>
 </body>
 </html> 

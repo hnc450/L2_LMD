@@ -16,7 +16,55 @@
     <link rel="stylesheet" href="/css/popup.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        #preview-modal {
+        #edit-module-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(30, 32, 41, 0.55);
+  justify-content: center;
+  align-items: center;
+}
+#edit-module-modal.active, #edit-module-modal[style*='display: flex'] {
+  display: flex !important;
+}
+#edit-module-modal .modal-content {
+  background: #23242a;
+  border-radius: 22px;
+  max-width: 500px;
+  width: 90vw;
+  padding: 2rem 2rem 1.5rem 2rem;
+  box-shadow: 0 12px 48px rgba(30,32,41,0.18), 0 2px 8px rgba(0,0,0,0.08);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  
+}
+#edit-module-modal .close-btn {
+  position: absolute;
+  top: 18px;
+  right: 28px;
+  font-size: 2.2rem;
+  color: #e74c3c;
+  background: #fff;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+#edit-module-modal .close-btn:hover {
+  background: #ffeaea;
+  color: #c0392b;
+}
+
+    #preview-modal {
       display: none;
       position: fixed;
       z-index: 9999;
@@ -304,19 +352,19 @@
                         <div class="modules-grid">
                            <?php foreach($modules as $module): ?>
                             <div class="module-card-admin">
-                                <div class="module-header">
+                                <div class="module-header" data-id="<?= $module['id'] ?>">
                                     <img src="<?= $module['image']?>" alt="Module">
                                     <div class="module-status active">Actif</div>
                                 </div>
                                 <div class="module-content">
                                     <h3><?=  $module['noms'] ?></h3>
-                                    <p>Module d'introduction à la géographie mondiale</p>
+                                    <p><?=  $module['discribe_mod'] ?></p>
                                     <div class="module-meta">
                                         <span><i class="fas fa-users"></i> 0 utilisateurs</span>
                                         <span><i class="fas fa-star"></i> 0/5</span>
                                     </div>
                                     <div class="module-actions">
-                                        <button class="btn-small edit">Modifier</button>
+                                        <button class="btn-small edit" data-type="module">Modifier</button>
                                         <button class="btn-small view">Voir</button>
                                         <!-- <button class="btn-small stats">Stats</button> -->
                                     </div>
@@ -536,7 +584,44 @@
      </div>
    </div>
 
+<div id="edit-module-modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2>Modifier le module</h2>
+    <form id="edit-module-form">
+      <input type="hidden" id="edit-module-id" name="id">
+      <div class="form-group">
+        <label for="edit-module-title">Titre</label>
+        <input type="text" id="edit-module-title" name="noms" required>
+      </div>
+      <div class="form-group">
+        <label for="edit-module-desc">Description</label>
+        <textarea id="edit-module-desc" name="discribe_mod" rows="3" required></textarea>
+      </div>
 
+      <div class="form-group">
+        <label for="edit-modal-content">Contenu</label>
+        <input type="text" id="edit-modal-content" name="content">
+      </div>
+
+      <div class="form-group">
+         <label for="edit-module-age">level</label>
+         <input type="text" id="edit-module-age" name="age">
+      </div>
+
+      <div class="form-group">
+        <label for="edit-module-image">Image Or Slug image</label>
+        <input type="text" id="edit-module-image" name="image">
+      </div>
+
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel">Annuler</button>
+        <button type="submit" class="btn-save">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
   
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
@@ -608,6 +693,57 @@
 });
 document.querySelector('#preview-modal .close-btn').onclick = function() {
     document.getElementById('preview-modal').style.display = 'none';
+};
+// Ouvre la pop-up de modification et pré-remplit les champs
+document.querySelectorAll('.module-card-admin .btn-small.edit[data-type="module"]').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const moduleCard = this.closest('.module-card-admin');
+        const moduleId = moduleCard.querySelector('.module-header').getAttribute('data-id');
+        // Récupère les infos du module depuis le DOM (ou via fetch si tu préfères)
+        const title = moduleCard.querySelector('h3').textContent.trim();
+        const desc = moduleCard.querySelector('p').textContent.trim();
+        const image = moduleCard.querySelector('img').getAttribute('src');
+
+        // Remplit le formulaire
+        document.getElementById('edit-module-id').value = moduleId;
+        document.getElementById('edit-module-title').value = title;
+        document.getElementById('edit-module-desc').value = desc;
+        document.getElementById('edit-module-image').value = image;
+
+        // Affiche la pop-up
+        document.getElementById('edit-module-modal').style.display = 'flex';
+    });
+});
+
+// Fermer la pop-up
+document.querySelector('#edit-module-modal .close-btn').onclick = function() {
+    document.getElementById('edit-module-modal').style.display = 'none';
+};
+document.querySelector('#edit-module-modal .btn-cancel').onclick = function() {
+    document.getElementById('edit-module-modal').style.display = 'none';
+};
+
+// Soumission du formulaire de modification
+document.getElementById('edit-module-form').onsubmit = function(e) {
+    e.preventDefault();
+    const id = document.getElementById('edit-module-id').value;
+    const data = {
+        noms: document.getElementById('edit-module-title').value,
+        discribe_mod: document.getElementById('edit-module-desc').value,
+        image: document.getElementById('edit-module-image').value
+    };
+    fetch(`/administration/module/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(res => {
+        if (res.ok) {
+            location.reload();
+        } else {
+            alert('Erreur lors de la modification');
+        }
+    });
 };
     </script>
 </body>

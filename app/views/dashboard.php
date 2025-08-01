@@ -277,6 +277,94 @@
             background: linear-gradient(180deg, var(--primary-color), var(--primary-light));
             border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
         }
+
+/* Pop-up styles */
+.modal-user {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(30, 32, 41, 0.65);
+  justify-content: center;
+  align-items: center;
+}
+.modal-user.active { display: flex; }
+.modal-user-content {
+  background: #23242a;
+  border-radius: 18px;
+  max-width: 400px;
+  width: 90vw;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  box-shadow: 0 12px 48px rgba(30,32,41,0.18), 0 2px 8px rgba(0,0,0,0.08);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  color: #f3f3f3;
+}
+.close-user-modal {
+  position: absolute;
+  top: 18px;
+  right: 28px;
+  font-size: 2.2rem;
+  color: #e74c3c;
+  background: #23242a;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.close-user-modal:hover {
+  background: #ffeaea;
+  color: #c0392b;
+}
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.user-form input,
+.user-form select {
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #444857;
+  font-size: 1rem;
+  background: #18181c;
+  color: #f3f3f3;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.user-form input:focus,
+.user-form select:focus {
+  border: 2px solid #6dd5fa;
+  box-shadow: 0 0 0 2px #2980b955;
+  outline: none;
+  background: #23242a;
+}
+.btn-user-submit {
+  padding: 0.9rem 1.1rem;
+  background: linear-gradient(90deg, #2980b9 60%, #6dd5fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(41,128,185,0.09);
+  letter-spacing: 0.5px;
+}
+.btn-user-submit:hover {
+  background: linear-gradient(90deg, #2573a6 60%, #51b6e7 100%);
+  transform: translateY(-2px) scale(1.02);
+}
+
     </style>
 </head>
 <body>
@@ -306,8 +394,8 @@
                     <div class="user-info-header">
                         <img src="<?= $_SESSION['user']['avatar']?>" alt="Avatar" class="avatar">
                         <div>
-                            <p class="username">Admin</p>
-                            <p class="rank">Administrateur</p>
+                            <p class="username"><?=  $_SESSION['user']['prenoms'] ?></p>
+                            <p class="rank"> <?= $_SESSION['user']['role'] ?>  </p>
                         </div>
                     </div>
                 </div>
@@ -387,13 +475,14 @@
                         <p>Créer un nouveau quiz</p>
                     </div>
 
-                    <div class="action-card">
-                        <div class="action-icon">
-                            <i class="fas fa-user-plus"></i>
-                        </div>
-                        <h3>Nouvel Utilisateur</h3>
-                        <p>Ajouter un utilisateur</p>
+                    <div class="action-card" id="open-user-modal">
+                       <div class="action-icon">
+                           <i class="fas fa-user-plus"></i>
+                       </div>
+                       <h3>Nouvel Utilisateur</h3>
+                       <p>Ajouter un utilisateur</p>
                     </div>
+
 
                     <div class="action-card">
                         <div class="action-icon">
@@ -530,23 +619,50 @@
         </div>
     </form>
 
-    <form action="/admin/add/user" method="post">
-           <input type="text" name="prenom" placeholder="prenom utilisateur">
-           <input type="text" name="pseudo" placeholder="pseudo utilisateur">
-           <input type="email" name="email" placeholder="email utilisateur">
-           <input type="text" name="age" placeholder="age utilisateur">
-           <input type="password" name="password" placeholder="mot de passe utilisateur">
-           <input type="password" name="confirmPassword" placeholder="confirmation du mdp">
-           <select name="role">
-               <option value="utilisateur">utilisateur</option>
-               <option value="administrateur">administrateur</option>
-           </select>
-           <button type="submit">ajouter</button>
-           <select name="sexe">
-            <option value="masculin">masculin</option>
-            <option value="feminin">feminin</option>
-           </select>
+
+
+<!-- Pop-up d'ajout utilisateur -->
+<div id="user-modal" class="modal-user">
+  <div class="modal-user-content">
+    <span class="close-user-modal">&times;</span>
+    <h2>Ajouter un utilisateur</h2>
+    <form action="/admin/add/user" method="post" class="user-form">
+      <input type="text" name="prenom" placeholder="Prénom" required>
+      <input type="text" name="pseudo" placeholder="Pseudo" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="age" placeholder="Âge" required>
+      <input type="password" name="password" placeholder="Mot de passe" required>
+      <input type="password" name="confirmPassword" placeholder="Confirmation du mot de passe" required>
+      <select name="role" required>
+        <option value="">Rôle</option>
+        <option value="utilisateur">Utilisateur</option>
+        <option value="administrateur">Administrateur</option>
+      </select>
+      <select name="sexe" required>
+        <option value="">Sexe</option>
+        <option value="masculin">Masculin</option>
+        <option value="feminin">Féminin</option>
+      </select>
+      <button type="submit" class="btn-user-submit">Ajouter</button>
     </form>
+  </div>
+</div>
+
+
+    <script>
+    // Ouvre la pop-up
+    document.getElementById('open-user-modal').onclick = function() {
+      document.getElementById('user-modal').classList.add('active');
+    };
+    // Ferme la pop-up
+    document.querySelector('.close-user-modal').onclick = function() {
+      document.getElementById('user-modal').classList.remove('active');
+    };
+    // Ferme aussi si on clique en dehors du contenu
+    document.getElementById('user-modal').onclick = function(e) {
+      if(e.target === this) this.classList.remove('active');
+    };
+    </script>
  
   
     <script src="/js/dashboard.js"></script>

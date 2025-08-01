@@ -134,6 +134,7 @@
 
     public function ligue()
     {
+      \App\Middlewares\Security\Security::require_auth();
       $this->view('ligue'); 
     }
 
@@ -154,6 +155,7 @@
 
     public function profile()
     {
+      \App\Middlewares\Security\Security::require_auth();
       $this->view('profile');
     }
     public function settings()
@@ -163,17 +165,17 @@
 
     public function setting()
     {
-         $this->view('setting');
+      $this->view('setting');
     }
 
     public function users()
     {
-          $this->view('users');
+      $this->view('users');
     }
 
     public function user($id)
     {
-      $user = \App\Models\FactoryModel::Factory('User')->getUser($id);
+      $user = (new \App\Models\UserModel\UserModel())->getUser($id);
       $this->render('user',compact('user'));
     }
 

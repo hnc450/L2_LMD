@@ -518,6 +518,12 @@
                        <label for="edit-prenoms">Prénom :</label>
                        <input type="text" id="edit-prenoms" name="prenom" value="" required>
                      </div>
+
+                     <div>
+                        <label for="edit-status">Status (1 or 0)</label>
+                        <input type="text" name="status" id="edit-status" value="" required>
+                    </div>
+
                      <div>
                        <label for="edit-pseudo">Pseudo :</label>
                        <input type="text" id="edit-pseudo" name="pseudo" value="" required>
@@ -571,7 +577,7 @@
             </ul>
         </nav>
     </div>
-    <script src="/js/theme.js"></script>
+    
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
     <script src="/js/request.js"></script>
@@ -613,6 +619,7 @@ document.querySelectorAll('.edit-user-btn').forEach(function(btn) {
     document.getElementById('edit-email').value = btn.getAttribute('data-user-email');
     document.getElementById('edit-genre').value = btn.getAttribute('data-user-genre');
     document.getElementById('edit-role').value = btn.getAttribute('data-user-role');
+    document.getElementById('edit-status').value = btn.getAttribute('data-user-status')
     document.getElementById('edit-user-form').action = '/administration/edit/user/' + btn.getAttribute('data-user-id');
     document.getElementById('edit-user-modal').classList.add('active');
   });

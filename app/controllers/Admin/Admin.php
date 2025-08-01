@@ -112,11 +112,12 @@
         }
         public static function update_user(array $datas, int $id){
             if((int)$datas['id_user'] === $id){
-               \App\Models\Database\Database::executeQuery('UPDATE users SET prenoms=:pr,pseudo=:ps,mails=:m,genre=:g,role=:r WHERE id_user=:i',[
+               \App\Models\Database\Database::executeQuery('UPDATE users SET prenoms=:pr,pseudo=:ps,mails=:m,status=:st,genre=:g,role=:r WHERE id_user=:i',[
                    ':i' => $id,
                    ':pr' => htmlspecialchars(trim($datas['prenom'])),
                    ':ps' => strip_tags(htmlspecialchars(trim($datas['pseudo']))),
                    ':m' => strip_tags(htmlspecialchars(trim($datas['email']))),
+                   ':st' => strip_tags(htmlspecialchars(trim($datas['status']))),
                    ':g' => strip_tags(htmlspecialchars(trim($datas['genre']))),
                    ':r' => strip_tags(htmlspecialchars(trim($datas['role'])))
                ],4);
@@ -264,13 +265,13 @@
             if ($methode === "PUT" || $methode === "POST") {
                 try {
                     $params = [
-                        ':id' => $id,
+                        
                         ':titre' => $datas['titre'],
                         ':description' => $datas['description'],
                         ':categorie' => $datas['categorie'],
                         ':niveau' => $datas['niveau']
                     ];
-                    $query = "UPDATE modules SET titre = :titre, description = :description, categorie = :categorie, niveau = :niveau WHERE id_module = :id";
+                    $query = "UPDATE modules SET noms=:titre, content = :content, categorie_id =:categorie, niveau = :niveau WHERE id_module = :id";
                     \App\Models\Database\Database::executeQuery($query, $params, 1);
                     header("Location: /administration/contenus");
                     exit();

@@ -15,7 +15,9 @@
    
    Route::put('/administration/module/[i:id]', function($id) {
        \App\Middlewares\Security\Security::require_role('administrateur');
-       // \App\Controllers\Admin\Admin::modifier_module($_POST, $_SERVER['REQUEST_METHOD'], (int)$id['id']);
+        var_dump($id);
+        die;
+        \App\Controllers\Admin\Admin::modifier_module((int)$id['id'],$_POST, $_SERVER['REQUEST_METHOD'], (int)$id['id']);
    });
    
    Route::put('/administration/exploration/[i:id]', function($id) {
@@ -29,4 +31,17 @@
       $datas = json_decode(file_get_contents('php://input'), true);
       \App\Controllers\User\User::modifier_mot_de_passe($datas, $_SERVER['REQUEST_METHOD'],$id['id']);
    });
+
+//    Route::put('/administration/edit/user/[i:id]',function($id){
+//         \App\Controllers\Admin\Admin::update_user($_POST,(int)$id['id']);
+//     });   
+Route::put('/settings/update', function() {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $id = $data['id'];
+    $value = $data['value'];
+    // Update la BDD ici
+    // Ex: UPDATE settings SET setting_value = $value WHERE id = $id
+      \App\Models\SettingModel::updateSetting($id,$value);
+      
+});
 ?>

@@ -174,6 +174,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/user/explorations">
+                     <i class="fa-brands fa-wpexplorer"></i>
+                     <span></span>Explorations</li>
+                    </a>
+                 
+                <li>
                     <a href="/user/profile">
                         <i class="fas fa-user"></i>
                         <span>Profil</span>

@@ -34,4 +34,8 @@ class SettingModel
           $_SESSION['message'] = "parametre supprimé avec succès";
           \App\Models\Database\Database::executeQuery('DELETE FROM settings WHERE id = ?',[$id],4);
     }
+    public static function updateSetting($id, $valeur){
+        \App\Models\Database\Database::executeQuery('UPDATE settings SET setting_value = :valeur WHERE id = :id',[':valeur'=> $valeur, ':id'=>$id],3);
+        // echo json_encode(['success' => true, 'message' => 'Paramètre mis à jour']);
+    }
 }
