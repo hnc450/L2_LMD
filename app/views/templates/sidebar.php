@@ -3,7 +3,9 @@
 ?>
 <aside class="sidebar">
     <div class="sidebar-header">
-        <img src="/assets/logo.jpeg" alt="Logo" class="logo">
+        <span class="logo" style="display:flex;align-items:center;justify-content:center;background:#fff;">
+            <i class="fas fa-globe-europe" style="font-size:2rem;color:#3a256a;"></i>
+        </span>
         <h1>Le Monde<br>Dans Ma Poche</h1>
     </div>
     <nav class="sidebar-nav">
@@ -38,20 +40,10 @@
                 <!-- Liens spécifiques pour l'administrateur -->
                 <?php if(isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'administrateur'): ?>
                     <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/dashboard" ? "active" : null ?>">
-                        <a href="/administration/dashboard"><i class="fa-solid fa-user-tie"></i> Dashboard Admin</a>
+                        <a href="/administration/dashboard"><i class="fa-solid fa-user-tie"></i> Dashboard</a>
                     </li>
-                    <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/users" ? "active" : null ?>">
-                        <a href="/administration/users"><i class="fa-solid fa-users"></i> Utilisateurs</a>
-                    </li>
-                    <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/contenus" ? "active" : null ?>">
-                        <a href="/administration/contenus"><i class="fa-solid fa-database"></i> Contenus</a>
-                    </li>
-                    <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/ligues" ? "active" : null ?>">
-                        <a href="/administration/ligues"><i class="fa-solid fa-trophy"></i> Ligues (Admin)</a>
-                    </li>
-                    <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/plaintes" ? "active" : null ?>">
-                        <a href="/administration/plaintes"><i class="fa-solid fa-flag"></i> Plaintes</a>
-                    </li>
+                 
+                   
                     <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/settings" ? "active" : null ?>">
                         <a href="/administration/settings"><i class="fa-solid fa-cogs"></i> Paramètres Admin</a>
                     </li>

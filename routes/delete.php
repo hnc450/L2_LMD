@@ -30,7 +30,7 @@ Route::delete('/user/explorations/[i:id]', function($id) {
 
 Route::delete('/administration/module/[i:id]', function($id) {
     \App\Middlewares\Security\Security::require_role('administrateur');
-    //\App\Controllers\Admin\Admin::supprimer_module((int)$id['id']);
+    \App\Controllers\Admin\Admin::supprimer_module((int)$id['id']);
 });
 
 Route::delete('/administration/exploration/[i:id]', function($id) {

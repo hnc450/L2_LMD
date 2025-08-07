@@ -45,8 +45,10 @@
         $view->game((int)$id['id']);
     });
 
-    Route::get('/user/module/start/[i:id]',function($id) use($view){
-        $view->module((int)$id['id']);
+
+
+    Route::get('/user/start/module/[i:id]',function($id) use($view){
+        $view->start_module((int)$id['id']);
     });
 
     Route::get('/user/exploration/start/[i:id]',function($id) use($view){
@@ -62,23 +64,22 @@
     });
 
     Route::get('/administration/users',function() use($view){
-        $view->users();
+      $view->users();
     });
 
     Route::get('/administration/contenus',function() use($view){
-        $view->contenus();
+      $view->contenus();
     });
 
     Route::get('/administration/ligue',function() use($view){
-        $view->ligues();
+       $view->ligues();
     });
 
     Route::get('/administration/settings',function() use($view){
-          $view->settings();
+       $view->settings();
     });
 
     Route::get('/administration/user/[i:id]',function($id) use ($view){
-      // \App\Controllers\Page\Page::getPageWithId('user',$id['id']);
        $view->user((int)$id['id']);
     });
 
@@ -87,10 +88,8 @@
     });
 
     Route::get('/test',function(){
-
        \App\Controllers\Page\Page::getPage('test');
     });
-
 
     Route::get('/forget/password',function(){
       \App\Controllers\Page\Page::getPage('form');
@@ -103,7 +102,4 @@
     Route::get('/update/password',function(){
         \App\Controllers\Page\Page::getPage('mail');
     });
-
-
-   
 ?>

@@ -3,7 +3,7 @@
 
    Route::get('/api/categories',function(){
        header('Content-Type: application/json');
-      echo json_encode(\App\Models\Category\Category::categories(),JSON_PRETTY_PRINT);
+      echo json_encode(\App\Models\Category\Category::getAll(),JSON_PRETTY_PRINT);
    });
 
    Route::get('/api/exploration/[i:id]',function($id){

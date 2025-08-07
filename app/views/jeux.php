@@ -206,7 +206,7 @@ use App\Models\JeuModel\JeuModel;
     <div class="app-container">
         <!-- Sidebar pour Desktop -->
         <?php
-           require (__DIR__) . '/sidebar.php';
+           require (__DIR__) . '/templates/sidebar.php';
         ?>
         <!-- Contenu principal -->
         <main class="main-content">
@@ -221,28 +221,29 @@ use App\Models\JeuModel\JeuModel;
 
             <!-- Contenu de la page jeux -->
             <div class="games-content">
-                <section class="games-filters">
+                <section class="games-filters"  id="filter-categories">
                     <div class="filter-group">
                         <label>Catégorie</label>
                         <div class="filter-options">
-                            <button class="filter-btn active">Tous</button>
-                            <button class="filter-btn">Géographie</button>
-                            <button class="filter-btn">Histoire</button>
-                            <button class="filter-btn">Sciences</button>
-                            <button class="filter-btn">Culture</button>
+                            <button class="filter-btn active" data-category="">Tous</button>
+                            <?php foreach (App\Models\Category\Category::getAll() as $cat): ?>
+                            <button class="filter-btn" data-category="<?= htmlspecialchars($cat['id_categorie'] ?? '') ?>">
+                                <?= htmlspecialchars($cat['categorie'] ?? '') ?>
+                            </button>
+                            <?php endforeach; ?>
                         </div>
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group" id="filter-ages">
                         <label>Âge</label>
                         <div class="filter-options">
                             <button class="filter-btn active">Tous</button>
-                            <button class="filter-btn">6-8 ans</button>
-                            <button class="filter-btn">9-11 ans</button>
-                            <button class="filter-btn">12-14 ans</button>
-                            <button class="filter-btn">15+ ans</button>
+                            <button class="filter-btn">6-8</button>
+                            <button class="filter-btn">9-11</button>
+                            <button class="filter-btn">12-14</button>
+                            <button class="filter-btn">15+</button>
                         </div>
                     </div>
-                    <div class="filter-group">
+                    <!-- <div class="filter-group">
                         <label>Difficulté</label>
                         <div class="filter-options">
                             <button class="filter-btn active">Tous</button>
@@ -250,12 +251,12 @@ use App\Models\JeuModel\JeuModel;
                             <button class="filter-btn">Moyen</button>
                             <button class="filter-btn">Difficile</button>
                         </div>
-                    </div>
+                    </div> -->
                 </section>
 
                 <section class="games-grid">
-                    <?php foreach(JeuModel::recuperer_tous_les_jeux() as $jeu): ?>
-                    <div class="game-card">
+                    <?php foreach(JeuModel::getAll() as $jeu): ?>
+                    <div class="game-card"  data-category="<?= htmlspecialchars($jeu['id_categorie'] ?? '') ?>" data-age="<?= htmlspecialchars($jeu['age'] ?? '') ?>">
                         <div class="game-image">
                             <img src="<?= htmlspecialchars($jeu['slug_img'] ?? 'img/placeholder.svg') ?>" alt="Quiz <?= htmlspecialchars($jeu['titre'] ?? '') ?>">
                             <div class="game-badge"><?= htmlspecialchars($jeu['age'] ?? '') ?></div>
@@ -278,42 +279,45 @@ use App\Models\JeuModel\JeuModel;
         </main>
 
         <!-- Navigation mobile -->
-        <nav class="mobile-nav">
-            <ul>
-                <li>
-                    <a href="/user/home">
-                        <i class="fas fa-home"></i>
-                        <span>Accueil</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/user/jeux">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Jeux</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/profile">
-                        <i class="fas fa-user"></i>
-                        <span>Profil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/ligue">
-                        <i class="fas fa-trophy"></i>
-                        <span>Ligues</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/parametres">
-                        <i class="fas fa-cog"></i>
-                        <span>Paramètres</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <?php 
+             require __DIR__ . '/templates/mobile.php';
+        ?>
     </div>
+<script>
+    let selectedCategory = '';
+let selectedAge = 'Tous';
 
+// Filtre catégorie
+document.querySelectorAll('#filter-categories .filter-btn[data-category]').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('#filter-categories .filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selectedCategory = this.getAttribute('data-category') || '';
+        filterGames();
+    });
+});
+
+// Filtre âge
+document.querySelectorAll('#filter-ages .filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('#filter-ages .filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selectedAge = this.textContent.trim();
+        filterGames();
+    });
+});
+
+function filterGames() {
+    document.querySelectorAll('.games-grid .game-card').forEach(card => {
+        const cat = card.getAttribute('data-category') || '';
+        const age = card.getAttribute('data-age') || '';
+        let show = true;
+        if (selectedCategory && cat !== selectedCategory) show = false;
+        if (selectedAge !== 'Tous' && age !== selectedAge) show = false;
+        card.style.display = show ? '' : 'none';
+    });
+}
+</script>
     <script src="/js/script.js" defer></script>
 </body>
 </html>

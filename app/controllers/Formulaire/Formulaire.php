@@ -84,7 +84,12 @@
                   $_SESSION['user'] = Database::executeQuery('SELECT * FROM users  WHERE mails=:mail',[':mail' => $email],2)[0];
                   $_SESSION['points'] = (new \App\Controllers\User\User())->getPoints((int)$_SESSION['user']['id_user']);
                   $this->souviens_toi_de_moi("Tokken",$datas,$datas['remember']?? '');
-                 
+                  \App\Controllers\FactoryController::getController('log')->addLog(
+                  (int)$_SESSION['user']['id_user'],
+                   'Connexion effectué',
+                    $_SESSION['user']['prenoms'].' s\' est connecté',
+                    'fas fa-user'
+                  );
                   \App\Middlewares\Security\Security::verify_role($_SESSION['user']['role']);
                }
                else{
@@ -119,7 +124,8 @@
 
                elseif(strlen($datas['email']) < 9)
                {
-                 header("Location: /login?message=l email doit avoir au moins 9 caracteres && color=red");
+                 header("Location: /login");
+                 $_SESSION['message'] = "l' email doit avoir au moins 9 caracteres";
                   exit;
                }
 
@@ -131,10 +137,17 @@
                }
                elseif(strlen($datas['pseudo']) < 6)
                {
-                $_SESSION['message'] = "le pseudo doit avoir au moins 3 caracteres";
+                 $_SESSION['message'] = "le pseudo doit avoir au moins 3 caracteres";
                  header("Location: /login");
-                  exit;
+                 exit;
                }
+
+                elseif(strlen($datas['prenom']) < 6)
+                {
+                  $_SESSION['message'] = "le prenom doit avoir au moins 3 caracteres";
+                  header("Location: /login");
+                  exit;
+                }
 
                elseif (!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) 
                {
@@ -197,6 +210,7 @@
                     ':avatar' => '/assets/avatar.png'
                   ],1);
                   $_SESSION['message'] = "compte crée avec success";
+                  //\App\Controllers\FactoryController::getController('log')->addLog($_SESSION['user']['id_user'],'Nouvel utilisateur',$_SESSION['user']['prenoms'].' s\' est inscrit(e)','fas fa-user');
                   header("Location: /login");
                   exit;
                 }

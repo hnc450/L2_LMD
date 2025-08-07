@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil - Le Monde Dans Ma Poche</title>
-    
+
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="app-container">
         <!-- Sidebar pour Desktop -->
         <?php
-           require (__DIR__) . '/sidebar.php';
+        require (__DIR__) . '/templates/sidebar.php';
         ?>
         <!-- Contenu principal -->
         <main class="main-content">
@@ -30,14 +32,14 @@
             <div class="profile-content">
                 <section class="profile-header">
                     <div class="profile-avatar">
-                  
+
                         <!-- Affichage de l'avatar utilisateur (ou avatar par défaut) -->
-                        <img src="<?= $_SESSION['user']['avatar'] ? $_SESSION['user']['avatar'] : '/assets/avatar.png'?>" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <img src="<?= $_SESSION['user']['avatar'] ? $_SESSION['user']['avatar'] : '/assets/avatar.png' ?>" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
                         <form action="/user/profile/avatar" method="POST" enctype="multipart/form-data" style="margin-top:10px;">
                             <input type="file" name="image" accept="image/*" required>
                             <button type="submit" class="btn-primary">Changer d'avatar</button>
                         </form>
-                        <?php if(isset($uploadError)): ?>
+                        <?php if (isset($uploadError)): ?>
                             <div style="color:red; font-size:14px; margin-top:5px;"> <?= $uploadError ?> </div>
                         <?php endif; ?>
                         <!-- Bouton de suppression d'avatar -->
@@ -54,8 +56,8 @@
                     <div class="stat-card">
                         <i class="fas fa-star"></i>
                         <div>
-                            <h3>Point<?=(isset($_SESSION['points']) && $_SESSION['points'] > 1) ? 's' : ''?></h3>
-                            <p><?= $_SESSION['points'] ?? 0?></p>
+                            <h3>Point<?= (isset($_SESSION['points']) && $_SESSION['points'] > 1) ? 's' : '' ?></h3>
+                            <p><?= $_SESSION['points'] ?? 0 ?></p>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -78,7 +80,7 @@
                     <div class="section-header">
                         <h2>Mes Trophées</h2>
                     </div>
-                    
+
                     <div class="trophies-grid">
                         <div class="trophy-card">
                             <div class="trophy-icon gold">
@@ -143,7 +145,7 @@
                     <div class="section-header">
                         <h2>Activité Récente</h2>
                     </div>
-                    
+
                     <div class="activity-list">
                         <div class="activity-item">
                             <div class="activity-icon">
@@ -192,87 +194,55 @@
                 </section>
             </div>
         </main>
-
-        <nav class="mobile-nav">
-            <ul>
-                <li>
-                    <a href="/user/home">
-                        <i class="fas fa-home"></i>
-                        <span>Accueil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/jeux">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Jeux</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/user/profile">
-                        <i class="fas fa-user"></i>
-                        <span>Profil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/ligue">
-                        <i class="fas fa-trophy"></i>
-                        <span>Ligues</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/parametres">
-                        <i class="fas fa-cog"></i>
-                        <span>Paramètres</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <?php 
+             require __DIR__ . '/templates/mobile.php';
+        ?>
     </div>
 
     <script src="/js/script.js" defer></script>
     <script>
+        document.getElementById('delete-avatar-btn').addEventListener('click', function() {
+            if (confirm('Voulez-vous vraiment supprimer votre avatar ?')) {
+                fetch('/user/delete/avatar', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.alert(data.success);
+                            window.location.reload();
+                        } else {
+                            alert('Erreur lors de la suppression de l\'avatar.');
+                        }
+                    })
+                    .catch(() => alert('Erreur lors de la suppression de l\'avatar.'));
+            }
+        });
 
-    document.getElementById('delete-avatar-btn').addEventListener('click', function() {
-        if(confirm('Voulez-vous vraiment supprimer votre avatar ?')) {
-            fetch('/user/delete/avatar', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    window.alert(data.success);
-                    window.location.reload();
-                } else {
-                    alert('Erreur lors de la suppression de l\'avatar.');
-                }
-            })
-            .catch(() => alert('Erreur lors de la suppression de l\'avatar.'));
-        }
-    });
-
-    document.getElementById('delete-account-btn').addEventListener('click', function() {
-        if(confirm('Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.')) {
-            fetch(`http://localhost:8000/delete/account/<?php echo $_SESSION['user']['id_user'] ?>`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    alert('Votre compte a été supprimé avec succès.');
-                    window.location.href = '/login';
-                } else {
-                    alert('Erreur lors de la suppression du compte.');
-                }
-            })
-            .catch(() => alert('Erreur lors de la suppression du compte.'));
-        }
-    });
+        document.getElementById('delete-account-btn').addEventListener('click', function() {
+            if (confirm('Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.')) {
+                fetch(`http://localhost:8000/delete/account/<?php echo $_SESSION['user']['id_user'] ?>`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Votre compte a été supprimé avec succès.');
+                            window.location.href = '/login';
+                        } else {
+                            alert('Erreur lors de la suppression du compte.');
+                        }
+                    })
+                    .catch(() => alert('Erreur lors de la suppression du compte.'));
+            }
+        });
     </script>
 </body>
+
 </html>

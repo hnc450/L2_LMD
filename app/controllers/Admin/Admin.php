@@ -14,7 +14,8 @@
                 if(!is_numeric($user_id) || $user_id <= 0){
                     return false;
                 }
-             
+             // ajout du log pour supprimer les utilisateurs
+             //   \App\Controllers\FactoryController::getController('log')->addLog();
                 $query = "DELETE FROM users WHERE id_user = $user_id";
                 $result = Database::QueryRequest($query, 4);
                 header("Location: /admin/dahsboard");
@@ -34,20 +35,24 @@
                 'administrateurs'=> Database::QueryRequest("SELECT COUNT(*) AS administrateurs FROM users WHERE role = 'administrateur'", 2) ,
                 'categories' => Database::QueryRequest("SELECT COUNT(*) AS nombre_categorie FROM categories", 2),
                 'explorations' => Database::QueryRequest('SELECT COUNT(*) AS nombres_explorations FROM explorations',2),
-                'jeux' => Database::QueryRequest('SELECT COUNT(*) AS nombres_jeux FROM jeux',2)
+                'jeux' => Database::QueryRequest('SELECT COUNT(*) AS nombres_jeux FROM jeux',2),
+                'modules' => Database::QueryRequest('SELECT COUNT(id) AS nombre_modules FROM modules',2)
             ];
         }
 
         public static function get_all_users() 
         {
             try {
-                $query = "SELECT * FROM users";
-                $result = Database::QueryRequest($query, 2);
+                $result =  (new \App\Models\UserModel\UserModel())->all();
                 return $result;
             } catch (\PDOException $e) {
                 error_log("Erreur lors de la récupération des utilisateurs: " . $e->getMessage());
                 return [];
             }
+        }
+
+        public static function supprimer_module(int $id){
+            \App\Models\Database\Database::executeQuery('DELETE FROM modules WHERE id=:id ',[':id' => $id],4);
         }
         /**
          * Récupère un utilisateur par son identifiant.
@@ -80,9 +85,11 @@
           
             if($methode ==="POST")
             {
+             
+              \App\Controllers\FactoryController::getController('log')->addLog($_SESSION['user']['id_user'],'Nouveau jeu créé par '.$_SESSION['user']['prenoms'],'Quiz sur le(la,l\')' .$datas['titre'],'fas fa-gamepad');
            
-              Database::executeQuery("INSERT INTO jeux(titre,age,id_categorie, duration,description,slug_img,contenu)
-              VALUES (:titre,:age,:id_cat,:duration,:descr,:slug,:contenu)", $params,1);
+              Database::executeQuery("INSERT INTO jeux(titre,age,id_categorie, duration,description,slug_img)
+              VALUES (:titre,:age,:id_cat,:duration,:descr,:slug)", $params,1);
          
               header("Location:/administration/contenus");
             }
@@ -108,6 +115,7 @@
         }
 
         public static function add_user(array $datas){
+            \App\Controllers\FactoryController::getController('log')->addLog($_SESSION['user']['id_user'],'Nouvel utilisateur ajouté par l\''.$_SESSION['user']['role'].' '.$_SESSION['user']['prenoms'],$datas['prenom'].' a été ajouté','fas fa-user');
             \App\Controllers\Formulaire\Formulaire::instance()->sign_up($datas,'POST');
         }
         public static function update_user(array $datas, int $id){
@@ -149,6 +157,7 @@
 
         public static function ajouter_une_categorie(array $datas) 
         {
+            \App\Controllers\FactoryController::getController('Log')->addLog($_SESSION['user']['id_user'],'Nouvelle catégorie','Catégorie '.$datas['categoryName'].' ajoutée par '. $_SESSION['user']['prenoms'],'fas fa-folder-plus');
             Database::executeQuery("INSERT INTO categories (id_categorie, categorie) VALUES (:id,:category)", [
                 'id' => $datas['categoryId'],
                 'category' => $datas['categoryName']
@@ -262,19 +271,22 @@
 
         public static function modifier_module(int $id, array $datas, string $methode)
         {
-            if ($methode === "PUT" || $methode === "POST") {
+            if ($methode === "PUT") {
                 try {
                     $params = [
-                        
+                        ':id' => $id,
                         ':titre' => $datas['titre'],
-                        ':description' => $datas['description'],
                         ':categorie' => $datas['categorie'],
-                        ':niveau' => $datas['niveau']
+                        ':contenu' => $datas['contenu'],
+                        ':niveau' => $datas['level'],
+                        ':descript' => $datas['description'],
+                        ':slug' => $datas['image']
+                        
                     ];
-                    $query = "UPDATE modules SET noms=:titre, content = :content, categorie_id =:categorie, niveau = :niveau WHERE id_module = :id";
-                    \App\Models\Database\Database::executeQuery($query, $params, 1);
-                    header("Location: /administration/contenus");
-                    exit();
+                    $query = "UPDATE modules SET titre=:titre,categorie_id =:categorie, content=:contenu, levels=:niveau, slug_img=:slug, discribe_mod=:descript WHERE id=:id";
+                    \App\Models\Database\Database::executeQuery($query, $params, 3);
+                   
+                  
                 } catch (\PDOException $e) {
                     error_log("Erreur lors de la modification du module: " . $e->getMessage());
                     return false;
@@ -283,39 +295,39 @@
                 header("Location: /home");
             }
         }
-
-            // ... existing code ...
-
     // Afficher tous les paramètres admin
-    public static function get_admin_settings() {
-        return \App\Models\SettingModel::getAllAdminSettings();
-    }
-
-    // Ajouter ou modifier un paramètre admin
-    public static function save_admin_setting($name, $value,$id) {
-        return \App\Models\SettingModel::saveSetting($name, $value, $id); 
-    }
-
-    // Supprimer un paramètre admin
-    public static function delete_admin_setting($id) {
-        return \App\Models\SettingModel::deleteSetting($id);
-    }
-
-    public static function add_module(array $datas){
+        public static function get_admin_settings() {
+            return \App\Models\SettingModel::getAllAdminSettings();
+        }
     
-       if(empty($datas['titre-module']) && empty($datas['content-module']) && empty($datas['category-module']) && empty($datas['level-module'])){
-        header('Location: /administration/contenus');
-        exit;
-       }
-        Database::executeQuery('INSERT INTO modules(noms, categorie_id,content,levels) VALUES(:nom,:categorie,:content,:levels)',[
-            ':nom'=> $datas['titre-module'],
-            ':categorie' => $datas['category-module'],
-            ':content'=> $datas['content-module'],
-            ':levels' => $datas['level-module']
-        ],1);
-        header('Location: /administration/contenus');
-        exit;
-    }
+        // Ajouter ou modifier un paramètre admin
+        public static function save_admin_setting($name, $value,$id) {
+            return \App\Models\SettingModel::saveSetting($name, $value, $id); 
+        }
+    
+        // Supprimer un paramètre admin
+        public static function delete_admin_setting($id) {
+            return \App\Models\SettingModel::deleteSetting($id);
+        }
+    
+        public static function add_module(array $datas){
+            // \App\Controllers\FactoryController::getController('log')->addLog($_SESSION['user']['id_user'],'Nouveau module ajouté par l\''.$_SESSION['user']['role'].' '.$_SESSION['user']['prenoms'],$datas['titre-module'].' a été ajouté','fas fa-book');
+            // Vérification des données
+            var_dump($datas);
+            die();
+           if(empty($datas['titre-module']) && empty($datas['content-module']) && empty($datas['category-module']) && empty($datas['level-module'])){
+            header('Location: /administration/contenus');
+            exit;
+           }
+            Database::executeQuery('INSERT INTO modules(noms, categorie_id,content,levels) VALUES(:nom,:categorie,:content,:levels)',[
+                ':nom'=> $datas['titre-module'],
+                ':categorie' => $datas['category-module'],
+                ':content'=> $datas['content-module'],
+                ':levels' => $datas['level-module']
+            ],1);
+            header('Location: /administration/contenus');
+            exit;
+        }
 
 }
 

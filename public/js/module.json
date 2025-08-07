@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "title": "Localisation et frontières de la RDC",
+    "texte": "La République Démocratique du Congo est située au cœur de l’Afrique centrale. Elle partage ses frontières avec neuf pays : l’Angola, le Burundi, la Centrafrique, le Congo-Brazzaville, le Rwanda, le Soudan du Sud, la Tanzanie, l’Ouganda et la Zambie.",
+    "question": "Combien de pays partagent une frontière avec la RDC ?",
+    "reponse": "neuf"
+  },
+  {
+    "id": "2",
+    "title": "Hydrographie de la RDC",
+    "texte": "La RDC est traversée par le deuxième plus long fleuve d’Afrique : le fleuve Congo. Ce fleuve, avec ses affluents, constitue un réseau navigable vital pour le pays et alimente de nombreux lacs comme le lac Tanganyika et le lac Albert.",
+    "question": "Quel est le nom du principal fleuve qui traverse la RDC ?",
+    "reponse": "Congo"
+  },
+  {
+    "id": "3",
+    "title": "Relief et forêts de la RDC",
+    "texte": "Le relief de la RDC comprend de vastes plateaux, des montagnes à l’Est (notamment les monts Rwenzori et le volcan Nyiragongo) et la plus grande forêt équatoriale d’Afrique, qui couvre plus de la moitié du territoire national.",
+    "question": "Quel type de forêt couvre plus de la moitié du territoire de la RDC ?",
+    "reponse": "forêt équatoriale"
+  },
+  {
+    "id": "4",
+    "title": "Grandes villes et provinces de la RDC",
+    "texte": "La RDC compte 26 provinces. Les plus grandes villes sont Kinshasa (la capitale), Lubumbashi, Kisangani, Mbuji-Mayi et Goma. Ces villes sont des centres économiques et culturels majeurs du pays.",
+    "question": "Quelle est la capitale de la RDC ?",
+    "reponse": "Kinshasa"
+  }
+]

@@ -216,26 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    function filterGames() {
-      const cards = gamesGrid.querySelectorAll('.game-card');
-      cards.forEach((card) => {
-        // Récupérer les infos du jeu
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        const badge = card.querySelector('.game-badge').textContent.trim();
-        const desc = card.querySelector('p').textContent.toLowerCase();
-        // Catégorie
-        let matchCategory = (selectedCategory === 'Tous') || title.includes(selectedCategory.toLowerCase()) || desc.includes(selectedCategory.toLowerCase());
-        // Âge
-        let matchAge = (selectedAge === 'Tous') || badge === selectedAge;
-        // Difficulté
-        let matchLevel = (selectedLevel === 'Tous') || desc.includes(selectedLevel.toLowerCase()) || title.includes(selectedLevel.toLowerCase());
-        // Affichage
-        if (matchCategory && matchAge && matchLevel) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
+  
   }
 })

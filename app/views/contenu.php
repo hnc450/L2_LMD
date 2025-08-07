@@ -1,9 +1,7 @@
 <?php 
-   \App\Middlewares\Security\Security::require_auth();
    use App\Models\JeuModel\JeuModel;
    $contenus = \App\Controllers\Admin\Admin::voir_toutes_les_informations();
    $modules = \App\Models\FactoryModel::Factory('module')->getAllModules();
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -167,23 +165,7 @@
         <!-- Contenu principal -->
         <main class="main-content">
             <!-- Header pour toutes les tailles d'écran -->
-            <header class="main-header">
-                <div class="header-left">
-                    <img src="" alt="Logo" class="logo">
-                    <h1>Gestion du Contenu</h1>
-                </div>
-                <div class="header-right">
-                    <!-- Theme Toggle will be loaded here -->
-                    <div class="theme-toggle-container"></div>
-                    <div class="user-info-header">
-                        <img src="<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" class="avatar">
-                        <div>
-                            <p class="username"><?= $_SESSION['user']['prenoms'] ?></p>
-                            <p class="rank"><?= $_SESSION['user']['role']?></p>
-                        </div>
-                    </div>
-                </div>
-            </header>
+          <?php require __DIR__ . '/templates/navbar.php' ?>
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">
@@ -221,7 +203,7 @@
                         </div>
                         <div class="stat-info">
                             <h3>Jeu</h3>
-                            <p class="stat-number"><?= $contenus['jeux'][0]['nombres_jeux']?>  </p>
+                            <p class="stat-number"><?= $contenus['jeux'][0]['nombres_jeux']?></p>
                             <span class="stat-change positive">+12 cette semaine</span>
                         </div>
                     </div>
@@ -231,7 +213,7 @@
                         </div>
                         <div class="stat-info">
                             <h3>Modules</h3>
-                            <p class="stat-number">0</p>
+                            <p class="stat-number"> <?= $contenus['modules'][0]['nombre_modules']?> </p>
                             <span class="stat-change positive">+3 ce mois</span>
                         </div>
                     </div>
@@ -274,19 +256,16 @@
                                 <i class="fas fa-search"></i>
                             </div>
                             <div class="filter-options">
-                                <select class="filter-select">
+                                <select class="filter-select" id="category-quiz">
                                     <option>Toutes les catégories</option>
-                                    <option>Géographie</option>
-                                    <option>Histoire</option>
-                                    <option>Sciences</option>
-                                    <option>Culture</option>
+                                  
                                 </select>
-                                <select class="filter-select">
-                                    <option>Tous les niveaux</option>
-                                    <option>6-8 ans</option>
-                                    <option>9-11 ans</option>
-                                    <option>12-14 ans</option>
-                                    <option>15+ ans</option>
+                                <select class="filter-select" id="level-quiz">
+                                    <option value="">Tous les niveaux</option>
+                                    <option value="6-8">6-8 ans</option>
+                                    <option value="9-11">9-11 ans</option>
+                                    <option value="12-14">12-14 ans</option>
+                                    <option value="15+">15+ ans</option>
                                 </select>
                             </div>
                         </div>
@@ -305,9 +284,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach(JeuModel::recuperer_tous_les_jeux() as $jeu): ?>
+                                    <?php foreach(JeuModel::getAll() as $jeu): ?>
                                        
-                                    <tr>
+                                    <tr  data-age="<?= htmlspecialchars($jeu['age'] ?? '') ?>" data-category="<?= htmlspecialchars($jeu['id_categorie'] ?? '') ?>">
                                         <td>
                                             <div class="content-title">
                                                 <img src="<?= htmlspecialchars($jeu['slug_img'] ?? 'img/placeholder.svg') ?>" alt="Quiz" class="content-thumb">
@@ -353,11 +332,11 @@
                            <?php foreach($modules as $module): ?>
                             <div class="module-card-admin">
                                 <div class="module-header" data-id="<?= $module['id'] ?>">
-                                    <img src="<?= $module['image']?>" alt="Module">
+                                    <img src="<?= $module['slug_img']?>" alt="Module">
                                     <div class="module-status active">Actif</div>
                                 </div>
                                 <div class="module-content">
-                                    <h3><?=  $module['noms'] ?></h3>
+                                    <h3><?=  $module['titre'] ?></h3>
                                     <p><?=  $module['discribe_mod'] ?></p>
                                     <div class="module-meta">
                                         <span><i class="fas fa-users"></i> 0 utilisateurs</span>
@@ -366,7 +345,10 @@
                                     <div class="module-actions">
                                         <button class="btn-small edit" data-type="module">Modifier</button>
                                         <button class="btn-small view">Voir</button>
-                                        <!-- <button class="btn-small stats">Stats</button> -->
+                                        <form action="/administration/module/<?= $module['id']?>" method="post">
+                                            <button class="btn-icon delete">supprimer</button>
+                                        </form>
+                                    
                                     </div>
                                 </div>
                             </div>  
@@ -470,16 +452,12 @@
                 <textarea id="description-quiz" rows="3" name="description"></textarea>
             </div>
             
-            <div class="form-group">
-                <label for="contenu-quiz">Contenu</label>
-                <textarea id="contenu-quiz" rows="3" name="contenu"></textarea>
-            </div>
 
             <div class="form-group">
                 <label for="category-quiz">Catégorie</label>
                 <select id="category-quiz" required name="category">
                     <option value="">Sélectionner une catégorie</option>
-                    <?php foreach(\App\Models\Category\Category::categories() as $category):?>
+                    <?php foreach(\App\Models\Category\Category::getAll() as $category):?>
                      <option value="<?=$category['id_categorie']?>"><?=$category['categorie']?></option>
                     <?php endforeach ?>
                 </select>
@@ -509,13 +487,19 @@
             </div>
             <div class="form-group">
                 <label for="description-module">Description</label>
+                <textarea id="description-module" rows="3"  name="description-module"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="description-module">Contenu</label>
                 <textarea id="description-module" rows="3"  name="content-module"></textarea>
             </div>
+
             <div class="form-group">
                 <label for="category-module">Catégorie</label>
                 <select id="category-module" required name="category-module">
                     <option value="">Sélectionner une catégorie</option>
-                    <?php foreach(\App\Models\Category\Category::categories() as $category):?>
+                    <?php foreach(\App\Models\Category\Category::getAll() as $category):?>
                     <option value="<?=$category['id_categorie']?>"><?=$category['categorie']?></option>
                     <?php endforeach ?>
                 </select>
@@ -559,7 +543,7 @@
                 <label for="category-exploration">Catégorie</label>
                 <select id="category-exploration" required name="categorie">
                   <option value="">Sélectionner une catégorie</option>
-                <?php foreach(\App\Models\Category\Category::categories() as $category):?>
+                <?php foreach(\App\Models\Category\Category::getAll() as $category):?>
                     <option value="<?=$category['id_categorie']?>"><?=$category['categorie']?></option>
                 <?php endforeach ?>
                 </select>
@@ -612,6 +596,16 @@
       <div class="form-group">
         <label for="edit-module-image">Image Or Slug image</label>
         <input type="text" id="edit-module-image" name="image">
+      </div>
+
+      <div class="form-group">
+        <label for="edit-module-category">Catégorie</label>
+        <select id="edit-module-category" name="category">
+          <option value="">Sélectionner une catégorie</option>
+          <?php foreach(\App\Models\Category\Category::getAll() as $category):?>
+            <option value="<?= $category['id_categorie'] ?>"><?= $category['categorie'] ?></option>
+          <?php endforeach ?>
+        </select>
       </div>
 
 
@@ -726,11 +720,17 @@ document.querySelector('#edit-module-modal .btn-cancel').onclick = function() {
 // Soumission du formulaire de modification
 document.getElementById('edit-module-form').onsubmit = function(e) {
     e.preventDefault();
+    const form = document.getElementById('edit-module-form');
+    const datas = new FormData(form);
+ 
     const id = document.getElementById('edit-module-id').value;
     const data = {
-        noms: document.getElementById('edit-module-title').value,
-        discribe_mod: document.getElementById('edit-module-desc').value,
-        image: document.getElementById('edit-module-image').value
+        titre: document.getElementById('edit-module-title').value,
+        description: document.getElementById('edit-module-desc').value,
+        contenu : document.getElementById('edit-modal-content').value,
+        level: document.getElementById('edit-module-age').value,
+        image: document.getElementById('edit-module-image').value,
+        categorie : document.getElementById('edit-module-category').value
     };
     fetch(`/administration/module/${id}`, {
         method: 'PUT',
@@ -744,7 +744,85 @@ document.getElementById('edit-module-form').onsubmit = function(e) {
             alert('Erreur lors de la modification');
         }
     });
+    console.log(datas);
 };
+// Filtre par niveau (tranche d'âge)
+document.querySelector('.filter-options select#level-quiz')?.addEventListener('change', function() {
+    const selectedAge = this.value;
+    document.querySelectorAll('.content-table tbody tr').forEach(row => {
+        const age = row.getAttribute('data-age');
+        if (!selectedAge || selectedAge === "Tous les niveaux" || age === selectedAge) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+
+
+fetch('http://localhost:8000/api/categories')
+  .then(res => res.json())
+  .then(categories => {
+    // Sélecteurs pour tous les selects de catégorie (quiz, module, exploration)
+    const selects = [
+      document.getElementById('category-quiz'),
+      document.getElementById('category-module'),
+      document.getElementById('category-exploration')
+    ].filter(Boolean); // retire les null si certains selects n'existent pas
+
+    selects.forEach(select => {
+      // Vide les anciennes options sauf la première
+      select.length = 1;
+      categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.id_categorie || cat.id || cat.value || '';
+        option.textContent = cat.categorie || cat.nom || '';
+        select.appendChild(option);
+      });
+    });
+  })
+  .catch(() => {
+    // Optionnel : afficher une erreur ou laisser les options statiques
+    console.log("Erreur lors du chargement des catégories");
+  });
+  // Filtre par catégorie
+document.getElementById('category-quiz')?.addEventListener('change', function() {
+    const selectedCat = this.value;
+    document.querySelectorAll('.content-table tbody tr').forEach(row => {
+        const cat = row.getAttribute('data-category');
+        if (!selectedCat || selectedCat === "Toutes les catégories" || cat === selectedCat) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+// Pagination JS pour les quiz (5 par page)
+const rows = Array.from(document.querySelectorAll('.content-table tbody tr'));
+const rowsPerPage = 5;
+let currentPage = 1;
+
+function showPage(page) {
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+    currentPage = Math.max(1, Math.min(page, totalPages));
+    rows.forEach((row, i) => {
+        row.style.display = (i >= (currentPage-1)*rowsPerPage && i < currentPage*rowsPerPage) ? '' : 'none';
+    });
+    document.querySelector('.pagination-info').textContent = `Page ${currentPage} sur ${totalPages}`;
+    document.querySelector('.pagination-btn.prev').disabled = currentPage === 1;
+    document.querySelector('.pagination-btn.next').disabled = currentPage === totalPages;
+}
+
+// Ajoute les classes pour les boutons
+document.querySelector('.pagination-btn:first-child').classList.add('prev');
+document.querySelector('.pagination-btn:last-child').classList.add('next');
+
+// Navigation
+document.querySelector('.pagination-btn.prev').onclick = () => showPage(currentPage - 1);
+document.querySelector('.pagination-btn.next').onclick = () => showPage(currentPage + 1);
+
+// Affiche la première page au chargement
+showPage(1);
     </script>
 </body>
 </html>

@@ -5,8 +5,15 @@ use App\Models\Database\Database;
 
 class Exploration
 {
-    private static $instance;
+    private static $instance; // Instance unique de la classe Exploration
+
     // Créer une exploration
+    /**
+     * Crée une nouvelle exploration dans la base de données.
+     * 
+     * @param string $titre Le titre de l'exploration.
+     * @param string $slug Le slug de l'exploration.
+     * @param string $categorie_id L'ID de la catégorie de l'exploration.*/
     public static function create(string $titre, string $slug, string $categorie_id,string $contenu,string $description)
     {
         $query = "INSERT INTO explorations (category_id, titre_exploration , description_exploration,contenu_exploration,slug_exploration)
@@ -20,7 +27,19 @@ class Exploration
         ];
         Database::executeQuery($query, $params, 1);
     }
-     
+    
+   // Récupérer l'instance de la classe Exploration
+    /**
+     * Récupère l'instance unique de la classe Exploration.
+     * 
+     * @return Exploration L'instance unique de la classe Exploration.
+     */
+    // Récupérer l'instance de la classe Exploration
+    /**
+     * Récupère l'instance unique de la classe Exploration.
+     * 
+     * @return Exploration L'instance unique de la classe Exploration.
+     */
     public static function getInstanceExploration():Exploration{
           if(is_null(self::$instance))
           {

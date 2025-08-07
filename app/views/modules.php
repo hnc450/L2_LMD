@@ -20,7 +20,7 @@
         <!-- Header pour toutes les tailles d'écran -->
 
         <?php
-           require __DIR__ . '/sidebar.php';
+           require __DIR__ . '/templates/sidebar.php';
         ?>
        
 
@@ -205,7 +205,7 @@
                         <button class="btn-module">Continuer</button>
                     </div>
                 </div> -->
-
+        
             <?php foreach($modules as $module): ?>
                 <div class="module-large-card" data-age="<?= $module['levels'] ?>">
                     <div class="module-large-header">
@@ -215,17 +215,19 @@
                         <div class="module-large-badge"><?= $module['levels'] ?> ans</div>
                     </div>
                     <div class="module-large-content">
-                        <h3><?= $module['noms'] ?></h3>
-                        <p>Analyse les événements majeurs du 20ème et 21ème siècle</p>
-                        <div class="module-large-meta">
+                        <h3><?= $module['titre'] ?></h3>
+                        <p> <?=$module['discribe_mod'] ?></p>
+                        <!-- <div class="module-large-meta">
                             <span><i class="fas fa-star"></i> 0.0</span>
                             <span><i class="fas fa-users"></i> 0 joueurs</span>
-                        </div>
-                        <div class="progress-bar">
+                        </div> -->
+                        <!-- <div class="progress-bar">
                             <div class="progress" style="width: 0%"></div>
                             <span>0% complété</span>
-                        </div>
-                        <button class="btn-module">Commencer</button>
+                        </div> -->
+                        <button class="btn-module">
+                            <a href="/user/start/module/<?= $module['id']?>">Commencer</a>
+                        </button>
                     </div>
                 </div>        
             <?php endforeach ?>
@@ -259,13 +261,13 @@
         <nav class="mobile-nav">
             <ul>
                 <li>
-                    <a href="index.html">
+                    <a href="/user/home">
                         <i class="fas fa-home"></i>
                         <span>Accueil</span>
                     </a>
                 </li>
                 <li>
-                    <a href="jeux.html">
+                    <a href="/user/jeux">
                         <i class="fas fa-gamepad"></i>
                         <span>Jeux</span>
                     </a>
@@ -283,7 +285,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="parametres.html">
+                    <a href="/user/">
                         <i class="fas fa-cog"></i>
                         <span>Paramètres</span>
                     </a>
@@ -291,7 +293,24 @@
             </ul>
         </nav>
     </div>
-
+            
     <script src="/js/script.js" defer></script>
+    <script>
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+          tab.addEventListener('click', function() {
+              // Retire la classe active de tous les onglets
+              document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+              this.classList.add('active');
+              const age = this.getAttribute('data-age');
+              document.querySelectorAll('.module-large-card').forEach(card => {
+                  if (age === 'all' || card.getAttribute('data-age') === age) {
+                      card.style.display = '';
+                  } else {
+                      card.style.display = 'none';
+                  }
+              });
+          });
+      });
+</script>
 </body>
 </html>

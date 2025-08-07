@@ -14,7 +14,7 @@
 <body>
     <div class="app-container">
         <?php
-           require __DIR__ . '/sidebar.php';
+           require __DIR__ . '/templates/sidebar.php';
         ?>
         <main class="main-content">
             <div class="page-header">
@@ -29,7 +29,7 @@
                     <button class="filter-tab active" data-category="all">
                          All
                     </button>
-                    <?php foreach(\App\Models\Category\Category::categories() as $category): ?>
+                    <?php foreach(\App\Models\Category\Category::getAll() as $category): ?>
                     <button class="filter-tab" data-category="<?= $category['categorie'] ?>">
                         <?= $category['categorie'] ?>
                     </button>
@@ -68,40 +68,9 @@
         </main>
 
         <!-- Navigation mobile style WhatsApp -->
-        <nav class="mobile-nav">
-            <ul>
-                <li>
-                    <a href="/">
-                        <i class="fas fa-home"></i>
-                        <span>Accueil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/jeux">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Jeux</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/profile">
-                        <i class="fas fa-user"></i>
-                        <span>Profil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/ligue">
-                        <i class="fas fa-trophy"></i>
-                        <span>Ligues</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/parametres">
-                        <i class="fas fa-cog"></i>
-                        <span>Paramètres</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <?php 
+             require __DIR__ . '/templates/mobile.php';
+        ?>
     </div>
 </body>
 </html>

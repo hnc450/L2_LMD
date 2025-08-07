@@ -14,11 +14,12 @@
            }
            return 0;
         }
+
         public  static function se_deconnecter(int $id)
         {
-        
+         \App\Controllers\FactoryController::getController('log')->addLog($id,'Deconnexion ' . $_SESSION['user']['role'], $_SESSION['user']['prenoms'].' s\'est deconnecté','fas fa-sign-out-alt');
           Database::executeQuery('UPDATE users SET status=0 WHERE id_user=?',[$id],3);
-          // unset($_SESSION['user']);
+          //  unset($_SESSION['user']);
            session_destroy();
           // $_SESSION = [];
            header("Location: /login");
@@ -29,13 +30,13 @@
             \App\Middlewares\Security\Security::require_auth();
             if ($request === 'POST' && isset($fichier['image'])) {
           
-                $uploadDir = __DIR__ . '/../../../public/assets/';
+                $uploadDir = dirname(__DIR__,3) . '/public/assets/';
                 $file = $fichier['image'];
                 $avatarPath = \App\Middlewares\Upload\Upload::upload_image($file, $uploadDir);
                 if ($avatarPath) {
                     // On ne garde que le nom du fichier pour le chemin web
                     $fileName = basename($avatarPath);
-                    $webAvatarPath = '/assets/' . $fileName;
+                    $webAvatarPath = './assets/' . $fileName;
                     $userId = $_SESSION['user']['id_user'];
                     $user = Database::executeQuery("SELECT avatar FROM users WHERE id_user= :id",[':id'=>$userId], 2);
                     if (!empty($user[0]['avatar']) && strpos($user[0]['avatar'], 'default') === false) {
@@ -75,7 +76,7 @@
                 ':avatar' => $default,
                 ':id' => $id
             ], 3);
-            $_SESSION['user'][0]['avatar'] = $default;
+            $_SESSION['user']['avatar'] = $default;
             header("Content-Type: application/json");
             echo json_encode(["success" => "avatar supprimé avec succès"]);
         }

@@ -47,7 +47,7 @@
     });
 
     Route::post('/admin/add/user',function(){
-        var_dump($_POST);
+       
        \App\Controllers\Admin\Admin::add_user($_POST);
     });
     Route::post('/administration/add/settings',function(){
@@ -77,9 +77,7 @@
 
     Route::post('/valide/tokken',function(){
         $i = 0;
-        echo "<pre>";
-        // var_dump($_POST['number']);
-           echo "</pre>";
+
         $results ='';
         $tokken= '';
         while($i <= 5){
@@ -136,4 +134,8 @@
     Route::post('/deconnexion/[i:id]',function($id) use($view){
       App\Controllers\User\User::se_deconnecter((int)$id['id']);
     });
+
+    Route::post('/administration/module/[i:id]',function($id){
+        \App\Controllers\Admin\Admin::supprimer_module((int)$id['id']);
+    })
 ?> 

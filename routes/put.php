@@ -15,9 +15,8 @@
    
    Route::put('/administration/module/[i:id]', function($id) {
        \App\Middlewares\Security\Security::require_role('administrateur');
-        var_dump($id);
-        die;
-        \App\Controllers\Admin\Admin::modifier_module((int)$id['id'],$_POST, $_SERVER['REQUEST_METHOD'], (int)$id['id']);
+        $datas = json_decode(file_get_contents('php://input'), true);
+        \App\Controllers\Admin\Admin::modifier_module((int)$id['id'],$datas, $_SERVER['REQUEST_METHOD']);
    });
    
    Route::put('/administration/exploration/[i:id]', function($id) {

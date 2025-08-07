@@ -14,6 +14,7 @@
 
       public static function getController($controllerName)
       {
+        $controllerName = ucfirst($controllerName);
         try{
             $controllerClass = "\\App\\Controllers\\{$controllerName}Controller";
             if(class_exists($controllerClass)) {

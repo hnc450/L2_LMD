@@ -273,27 +273,35 @@
         <!-- Contenu principal -->
         <main class="main-content">
             <!-- Header pour toutes les tailles d'écran -->
-            <header class="main-header">
-                <div class="header-left">
-                    <img src="" alt="Logo" class="logo">
-                    <h1>Paramètres du Jeu</h1>
-                </div>
-                <div class="header-right">
-                    <!-- Theme Toggle will be loaded here -->
-                    <div class="theme-toggle-container"></div>
-                    <div class="user-info-header">
-                        <img src="<?= $_SESSION['user']['avatar']?>" alt="Avatar" class="avatar">
-                        <div>
-                            <p class="username"><?= $_SESSION['user']['prenoms'] ?></p>
-                            <p class="rank"><?= $_SESSION['user']['role'] ?></p>
-                        </div>
-                    </div>
-                </div>
-            </header>
+             <?php require __DIR__ . '/templates/navbar.php' ?>
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">
                 <!-- Page Header -->
+
+                <div class="page-header">
+                      
+                        <img src="<?= $_SESSION['user']['avatar']?>" alt="">
+                       <?= 
+                          $_SESSION['user']['status'] ? 'online' : 'offline'
+                       ?>
+                    <form class="settings-form" action="/modifier/information/<?= $_SESSION['user']['id_user'] ?? ''?>" method="POST">
+                        <div class="form-group">
+                            <label for="pseudo">Pseudo</label>
+                            <input type="text" id="pseudo" value="<?= $_SESSION['user']['pseudo'] ?? ''?>" name="pseudo">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="<?= $_SESSION['user']['mails'] ?? '' ?>" name="email">
+                        </div>
+                   
+                        <div class="form-group">
+                            <label for="prenom">Prénom</label>
+                            <input type="text" id="prenom" value="<?= $_SESSION['user']['prenoms'] ?? '' ?>" name="prenom">
+                        </div>
+                        <button type="submit" class="btn-primary">Enregistrer les modifications</button>
+                    </form>
+                </div>
                 <div class="page-header">
                   <?php if(isset($_SESSION['message']) && !empty($_SESSION['message'])): ?>
                     <div class="save-settings" >
@@ -374,7 +382,16 @@
      
         
         <!-- Navigation mobile admin -->
- 
+
+        <form action="/update/password/<?= $_SESSION['user']['id_user'] ?>" method="post">
+            <input type="text" name="current_password" placeholder="ancien mot de passe">
+            <input type="text" name="new_password" placeholder="nouveau mot de pase">
+            <input type="text" name="confirm_password" placeholder="confirmation mot de passe">
+            <button type="submit"> changer le mot de passe</button>
+        </form>
+      <form action="/deconnexion/<?= $_SESSION['user']['id_user']?>" method="post">
+        <button type="submit">deconnexion</button>
+      </form>
     </div>
     <?php if(isset($_SESSION['message']) && !empty($_SESSION['message'])):?>
         <script>

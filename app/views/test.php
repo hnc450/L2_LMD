@@ -1,5 +1,5 @@
-
 <?php
+ require __DIR__ . '/templates/avatar.php';
     // \App\Controllers\Page\Page::getPage('sms');
       // $database = App\Controllers\App\App::App()->getDb();
     //   var_dump(
@@ -14,15 +14,14 @@
     // $user = new \App\Controllers\User\User();
     // $user->getPoints((int)$_SESSION['user']['id_user']);
     // var_dump( $user->getPoints((int)$_SESSION['user']['id_user']))
-     $module = new \App\Models\ModuleModel();
-    //  $module->geOnetModule(1);
-    $modules = $module->getAllModules();
-    var_dump($modules);
+    //  $module = new \App\Models\ModuleModel();
+    // //  $module->geOnetModule(1);
+    // $modules = $module->getAllModules();
+    // var_dump($modules);
     //  var_dump ($module->geOnetModule(2))
+    echo $_SERVER['REQUEST_URI'];
     ?>
-<pre>
-    
-</pre>
+  <img src="" alt="">
 
 <?php 
 // foreach ($modules as $module) {

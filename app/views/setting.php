@@ -19,7 +19,7 @@
     <div class="app-container">
         <!-- Sidebar pour Desktop -->
         <?php
-           require __DIR__ . '/sidebar.php';
+           require __DIR__ . '/templates/sidebar.php';
         ?>
         <!-- Contenu principal -->
         <main class="main-content">
@@ -137,40 +137,9 @@
        
 
         <!-- Navigation mobile -->
-        <nav class="mobile-nav">
-            <ul>
-                <li>
-                    <a href="/user/home">
-                        <i class="fas fa-home"></i>
-                        <span>Accueil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/jeux">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Jeux</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/profile">
-                        <i class="fas fa-user"></i>
-                        <span>Profil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/ligue">
-                        <i class="fas fa-trophy"></i>
-                        <span>Ligues</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/user/parametres">
-                        <i class="fas fa-cog"></i>
-                        <span>Paramètres</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <?php 
+             require __DIR__ . '/templates/mobile.php';
+        ?>
     </div>
     <script src="/js/script.js" defer></script>
 </body>

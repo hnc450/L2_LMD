@@ -217,7 +217,7 @@
     <div class="app-container">
         
         <?php
-           require (__DIR__) . '/sidebar.php';
+           require (__DIR__) . '/templates/sidebar.php';
         ?>
 
         <header class="main-header">

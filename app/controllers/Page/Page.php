@@ -53,6 +53,7 @@
 
     public  function dashboard()
     {
+      \App\Middlewares\Security\Security::require_auth();
       $this->view('dashboard');
     }
 
@@ -86,6 +87,7 @@
 
     public function contenus()
     {
+      \App\Middlewares\Security\Security::require_auth();
       $this->view('contenu');
     }
 
@@ -107,7 +109,8 @@
 
     public function game($id)
     {
-     $jeu =  \App\Models\JeuModel\JeuModel::recuperer_un_jeu($id);
+      \App\Middlewares\Security\Security::require_auth();
+      $jeu =  \App\Models\JeuModel\JeuModel::recuperer_un_jeu($id);
       $this->render('game',compact('id','jeu'));
     }
     
@@ -140,15 +143,17 @@
 
     public function ligues()
     {
+      \App\Middlewares\Security\Security::require_auth();
       $this->view('ligues');
     }
-    public function module(int $id)
+    public function start_module(int $id)
     {
         $module = \App\Models\FactoryModel::Factory('module')->getOneModule($id);
         $this->render('learn-module',compact('id','module'));
     }
     public function modules()
     {
+      \App\Middlewares\Security\Security::require_auth();
       $this->view('modules');
     }
 
@@ -160,11 +165,13 @@
     }
     public function settings()
     {
+      \App\Middlewares\Security\Security::require_auth();
       $this->view('settings');
     }
 
     public function setting()
     {
+      \App\Middlewares\Security\Security::require_auth();
       $this->view('setting');
     }
 
@@ -175,7 +182,7 @@
 
     public function user($id)
     {
-      $user = (new \App\Models\UserModel\UserModel())->getUser($id);
+      $user = (new \App\Models\UserModel\UserModel())->one($id);
       $this->render('user',compact('user'));
     }
 
@@ -184,5 +191,6 @@
       $exploration = \App\Models\Exploration\Exploration::getById($id);
       $this->render('start-exploration', compact('id', 'exploration'));
     }
+
   }
 ?>

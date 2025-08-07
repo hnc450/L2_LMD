@@ -22,7 +22,7 @@
     <div class="app-container">
         <!-- Sidebar pour Desktop -->
         <?php
-           require (__DIR__) . '/sidebar.php';
+           require (__DIR__) . '/templates/sidebar.php';
         ?>
         <!-- Contenu principal -->
         <main class="main-content">
@@ -46,7 +46,7 @@
                         <p>Votre rang actuel: #<?= $_SESSION['user']['rang'] ?? 100 ?></p>
                         <div class="progress-container">
                             <div class="progress-bar">
-                                <div class="progress" style="width: 0%"></div>
+                                <div class="progress" style="width: <?=$_SESSION['points']?>%"></div>
                             </div>
                             <div class="progress-labels">
                                 <span><?= $_SESSION['points'] ?? 0 ?> / 100 points</span>
@@ -68,26 +68,30 @@
                             <p>0 - 100 points</p>
                             <?= $_SESSION['points'] <= 100 ? '<div class="current-badge">Actuel</div>' : '' ?>
                         </div>
-                        <div class="league-card silver">
+                        <div class="league-card silver <?= ($_SESSION['points'] > 100  && $_SESSION['points'] <= 250)?' active' : '' ?>">
                             <div class="league-icon">
                                 <i class="fas fa-medal"></i>
                             </div>
                             <h3>Argent</h3>
                             <p>101 - 250 points</p>
+                            <?=($_SESSION['points'] > 100 && $_SESSION['points'] <= 250) ? '<div class="current-badge">Actuel</div>' : '' ?>
                         </div>
-                        <div class="league-card gold">
+                        <div class="league-card gold <?= ($_SESSION['points'] > 250  && $_SESSION['points'] <= 500)?' active' : '' ?>">
                             <div class="league-icon">
                                 <i class="fas fa-medal"></i>
                             </div>
                             <h3>Or</h3>
                             <p>251 - 500 points</p>
+                            <?=($_SESSION['points'] > 250 && $_SESSION['points'] <= 500) ? '<div class="current-badge">Actuel</div>' : '' ?>
                         </div>
-                        <div class="league-card platinum">
+                        <div class="league-card platinum <?= ($_SESSION['points'] > 500  && $_SESSION['points'] <= 750)?' active' : '' ?>">
                             <div class="league-icon">
                                 <i class="fas fa-medal"></i>
                             </div>
                             <h3>Platine</h3>
                             <p>501 - 750 points</p>
+                            <?=($_SESSION['points'] > 500 && $_SESSION['points'] <= 750) ? '<div class="current-badge">Actuel</div>' : '' ?>
+
                         </div>
                         <div class="league-card emerald ">
                             <div class="league-icon">
@@ -95,35 +99,44 @@
                             </div>
                             <h3>Émeraude</h3>
                             <p>751 - 1000 points</p>
-                            <!-- <div class="current-badge">Actuel</div> -->
+                            <?=($_SESSION['points'] > 750 && $_SESSION['points'] <= 1000) ? '<div class="current-badge">Actuel</div>' : '' ?>
+
                         </div>
-                        <div class="league-card diamond">
+                        <div class="league-card diamond  <?= ($_SESSION['points'] > 1000  && $_SESSION['points'] <= 1500)?' active' : '' ?>">
                             <div class="league-icon">
                                 <i class="fas fa-gem"></i>
                             </div>
                             <h3>Diamant</h3>
                             <p>1001 - 1500 points</p>
+                            <?=($_SESSION['points'] > 1000 && $_SESSION['points'] <= 1500) ? '<div class="current-badge">Actuel</div>' : '' ?>
+
                         </div>
-                        <div class="league-card titan">
+                        <div class="league-card titan <?= ($_SESSION['points'] > 1500  && $_SESSION['points'] <= 2000)?' active' : '' ?>">
                             <div class="league-icon">
                                 <i class="fas fa-crown"></i>
                             </div>
                             <h3>Titan</h3>
                             <p>1501 - 2000 points</p>
+                            <?=($_SESSION['points'] > 1500 && $_SESSION['points'] <= 2000) ? '<div class="current-badge">Actuel</div>' : '' ?>
+
                         </div>
-                        <div class="league-card legend">
+                        <div class="league-card legend <?=($_SESSION['points'] > 2000 && $_SESSION['points'] <= 3000)?' active' : '' ?>">
                             <div class="league-icon">
                                 <i class="fas fa-crown"></i>
                             </div>
                             <h3>Légende</h3>
                             <p>2001 - 3000 points</p>
+                            <?=($_SESSION['points'] > 2000 && $_SESSION['points'] <= 3000) ? '<div class="current-badge">Actuel</div>' : '' ?>
+
                         </div>
-                        <div class="league-card stellar">
+                        <div class="league-card stellar <?=($_SESSION['points'] > 3000)?' active' : '' ?>">
                             <div class="league-icon">
                                 <i class="fas fa-star"></i>
                             </div>
                             <h3>Stellar</h3>
                             <p>3001+ points</p>
+                            <?=$_SESSION['points'] > 3000 ? '<div class="current-badge">Actuel</div>' : '' ?>
+
                         </div>
                     </div>
                 </section>
@@ -138,7 +151,7 @@
                                     <th>Rang</th>
                                     <th>Joueur</th>
                                     <th>Points</th>
-                                    <th>Quiz</th>
+                                    <!-- <th>Quiz</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,7 +167,7 @@
                                         </div>
                                     </td>
                                     <td><?= $user ['points'] ?></td>
-                                    <td>38</td>
+                                    <!-- <td>38</td> -->
                                     <?php $rang = $rang + 1 ?>
                                 </tr>
                             <?php endforeach ?>
@@ -210,40 +223,9 @@
         </main>
 
         <!-- Navigation mobile -->
-        <nav class="mobile-nav">
-            <ul>
-                <li>
-                    <a href="/user/home">
-                        <i class="fas fa-home"></i>
-                        <span>Accueil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/jeux">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Jeux</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/profile">
-                        <i class="fas fa-user"></i>
-                        <span>Profil</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/user/ligue">
-                        <i class="fas fa-trophy"></i>
-                        <span>Ligues</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/user/parametres">
-                        <i class="fas fa-cog"></i>
-                        <span>Paramètres</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <?php 
+             require __DIR__ . '/templates/mobile.php';
+        ?>
     </div>
 
     <script src="/js/script.js" defer></script>
