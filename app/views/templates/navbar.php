@@ -181,7 +181,7 @@
         <a href="/administration/dashboard">dashboard</a>
         <a href="/administration/contenus">contenus</a>
         <a href="/administration/users">utilisateurs</a>
-        <a href="/administration/settings">parametres</a>
+        <!-- <a href="/administration/settings">parametres</a> -->
     </nav>
     <div class="header-right">
         <!-- Theme Toggle will be loaded here -->

@@ -46,10 +46,9 @@
     });
 
 
-
-    Route::get('/user/start/module/[i:id]',function($id) use($view){
+    Route::any('/user/start/module/[i:id]',function($id) use($view){
         $view->start_module((int)$id['id']);
-    });
+    }, 'POST|GET');
 
     Route::get('/user/exploration/start/[i:id]',function($id) use($view){
         $view->start_exploration((int)$id['id']);

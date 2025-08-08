@@ -1,5 +1,5 @@
 <?php
- require __DIR__ . '/templates/avatar.php';
+//  require __DIR__ . '/templates/avatar.php';
     // \App\Controllers\Page\Page::getPage('sms');
       // $database = App\Controllers\App\App::App()->getDb();
     //   var_dump(

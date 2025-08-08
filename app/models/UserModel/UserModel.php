@@ -1,7 +1,7 @@
 <?php 
     namespace App\Models\UserModel;
     
-    class UserModel implements \App\Models\TableInterfaceModel{
+    class UserModel{
 
         private int $id_user;
         private string $peudo;

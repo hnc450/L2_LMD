@@ -47,7 +47,6 @@
     });
 
     Route::post('/admin/add/user',function(){
-       
        \App\Controllers\Admin\Admin::add_user($_POST);
     });
     Route::post('/administration/add/settings',function(){

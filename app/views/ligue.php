@@ -50,7 +50,7 @@
                             </div>
                             <div class="progress-labels">
                                 <span><?= $_SESSION['points'] ?? 0 ?> / 100 points</span>
-                                <span>Prochain rang: Ligue Diamant</span>
+                                <!-- <span>Prochain rang: Ligue Diamant</span> -->
                             </div>
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                 </section>
              
 
-                <section class="league-benefits">
+                <!-- <section class="league-benefits">
                     <h2>Avantages de la Ligue Émeraude</h2>
                     
                     <div class="benefits-list">
@@ -218,7 +218,7 @@
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> -->
             </div>
         </main>
 

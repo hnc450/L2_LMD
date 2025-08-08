@@ -17,6 +17,9 @@
         public static function delete(string $path, callable $callback){
             self::getRouter()->map('DELETE', $path, $callback);
         }   
+        public static function any(string $path, callable $callback, string $methods = 'GET'){
+            static::getRouter()->map($methods, $path, $callback);
+        }
 
         public static function getRouter(){
             if(static::$router === null){

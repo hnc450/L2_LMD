@@ -6,7 +6,7 @@
         <span class="logo" style="display:flex;align-items:center;justify-content:center;background:#fff;">
             <i class="fas fa-globe-europe" style="font-size:2rem;color:#3a256a;"></i>
         </span>
-        <h1>Le Monde<br>Dans Ma Poche</h1>
+        <h1>Ha<br>ppy</h1>
     </div>
     <nav class="sidebar-nav">
         <ul>
@@ -18,16 +18,16 @@
                 <a href="/user/jeux"><i class="fas fa-gamepad"></i> Jeux</a>
             </li>
             <li class="<?= $_SERVER['REQUEST_URI'] === "/user/modules" ? "active" : null ?>">
-                <a href="/user/modules"><i class="fas fa-cubes"></i> Modules</a>
+                <!-- <a href="/user/modules"><i class="fas fa-cubes"></i> Modules</a> -->
             </li>
             <li class="<?= $_SERVER['REQUEST_URI'] === "/user/explorations" ? "active" : null ?>">
                 <a href="/user/explorations"><i class="fa-brands fa-wpexplorer"></i> Explorations</a>
             </li>
             <li class="<?= $_SERVER['REQUEST_URI'] === "/user/ligue" ? "active" : null ?>">
-                <a href="/user/ligue"><i class="fas fa-trophy"></i> Ligues</a>
+                <a href="/user/ligue"><i class="fas fa-trophy"></i> Points</a>
             </li>
             <li class="<?= $_SERVER['REQUEST_URI'] === "/user/chat" ? "active" : null ?>">
-                <a href="/user/chat"><i class="fa-solid fa-comment"></i> Chat</a>
+                <!-- <a href="/user/chat"><i class="fa-solid fa-comment"></i> Chat</a> -->
             </li>
 
             <?php if(isset($_SESSION['user'])): ?>
@@ -42,10 +42,9 @@
                     <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/dashboard" ? "active" : null ?>">
                         <a href="/administration/dashboard"><i class="fa-solid fa-user-tie"></i> Dashboard</a>
                     </li>
-                 
                    
                     <li class="<?= $_SERVER['REQUEST_URI'] === "/administration/settings" ? "active" : null ?>">
-                        <a href="/administration/settings"><i class="fa-solid fa-cogs"></i> Paramètres Admin</a>
+                        <!-- <a href="/administration/settings"><i class="fa-solid fa-cogs"></i> Paramètres Admin</a> -->
                     </li>
                 <?php endif; ?>
             <?php else: ?>

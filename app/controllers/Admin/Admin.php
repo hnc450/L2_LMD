@@ -313,17 +313,17 @@
         public static function add_module(array $datas){
             // \App\Controllers\FactoryController::getController('log')->addLog($_SESSION['user']['id_user'],'Nouveau module ajouté par l\''.$_SESSION['user']['role'].' '.$_SESSION['user']['prenoms'],$datas['titre-module'].' a été ajouté','fas fa-book');
             // Vérification des données
-            var_dump($datas);
-            die();
-           if(empty($datas['titre-module']) && empty($datas['content-module']) && empty($datas['category-module']) && empty($datas['level-module'])){
-            header('Location: /administration/contenus');
-            exit;
+      
+           if(empty($datas['titre-module']) && empty($datas['content-module']) && empty($datas['category-module']) && empty($datas['level-module']) && empty($datas['description-module'])){
+              header('Location: /administration/contenus');
+              exit;
            }
-            Database::executeQuery('INSERT INTO modules(noms, categorie_id,content,levels) VALUES(:nom,:categorie,:content,:levels)',[
-                ':nom'=> $datas['titre-module'],
+            Database::executeQuery('INSERT INTO modules(titre, categorie_id,content,levels,slug_img,discribe_mod) VALUES(:titre,:categorie,:content,:levels,"/assets/module.jpeg",:discribe)',[
+                ':titre'=> $datas['titre-module'],
                 ':categorie' => $datas['category-module'],
                 ':content'=> $datas['content-module'],
-                ':levels' => $datas['level-module']
+                ':levels' => $datas['level-module'],
+                ':discribe' => $datas['description-module']
             ],1);
             header('Location: /administration/contenus');
             exit;

@@ -63,7 +63,7 @@
                                 <img src="/assets/geography.jpeg" alt="Géographie">
                                 <div class="slide-content">
                                     <h3>Géographie</h3>
-                                    <p>Découvrez les pays et les continents</p>
+                                    <p> <a href="/user/explorations">Découvrez les pays et les continents</a> </p>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                 <img src="/assets/history.jpeg" alt="Histoire">
                                 <div class="slide-content">
                                     <h3>Histoire</h3>
-                                    <p>Voyagez à travers les époques</p>
+                                    <p><a href="/user/explorations">Voyagez à travers les époques</a></p>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                 <img src="/assets/science.jpeg" alt="Sciences">
                                 <div class="slide-content">
                                     <h3>Sciences</h3>
-                                    <p>Explorez les mystères de la nature</p>
+                                    <p><a href="/user/explorations">Explorez les mystères de la nature</a></p>
                                 </div>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                                 <img src="/assets/culture.jpeg" alt="Culture">
                                 <div class="slide-content">
                                     <h3>Culture</h3>
-                                    <p>Découvrez les traditions du monde</p>
+                                    <p><a href="/user/explorations">Découvrez les traditions du monde</a></p>
                                 </div>
                             </div>
                         </div>
@@ -110,10 +110,10 @@
                             </div>
                             <div class="module-info">
                                 <h3>6-8 ans</h3>
-                                <p>Découverte du monde</p>
-                                <div class="progress-bar">
+                                <!-- <p>Découverte du monde</p> -->
+                                <!-- <div class="progress-bar">
                                     <div class="progress" style="width: 75%"></div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="module-card">
@@ -122,10 +122,10 @@
                             </div>
                             <div class="module-info">
                                 <h3>9-11 ans</h3>
-                                <p>Exploration avancée</p>
+                                <!-- <p>Exploration avancée</p>
                                 <div class="progress-bar">
                                     <div class="progress" style="width: 45%"></div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="module-card">
@@ -134,10 +134,10 @@
                             </div>
                             <div class="module-info">
                                 <h3>12-14 ans</h3>
-                                <p>Connaissances intermédiaires</p>
+                                <!-- <p>Connaissances intermédiaires</p>
                                 <div class="progress-bar">
                                     <div class="progress" style="width: 30%"></div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="module-card">
@@ -146,10 +146,10 @@
                             </div>
                             <div class="module-info">
                                 <h3>15+ ans</h3>
-                                <p>Expertise mondiale</p>
+                                <!-- <p>Expertise mondiale</p>
                                 <div class="progress-bar">
                                     <div class="progress" style="width: 15%"></div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
