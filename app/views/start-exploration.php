@@ -408,9 +408,43 @@ a:focus {
         background: #4b5563;
         border-color: #6b7280;
     }
+    header{
+        background: #1f2937;
+        color: #f9fafb;
+        padding: 20px 30px;
+
+       
+    }
+    header .container{
+         display: flex;
+        justify-content: space-between;
+    }
+      header .container button{
+        background: #3b82f6;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
 }
 
 </style>
+<header>
+    <div class="container">
+        <a href="/user/explorations">
+             <button><-</button>
+        </a>
+       
+
+        <a href="/user/explorations">
+            <button> quittez l exploration</button>
+        </a>
+
+    </div>
+  
+</header>
 <?= 
 App\Controllers\App\App::App()
 ->Parsedown()

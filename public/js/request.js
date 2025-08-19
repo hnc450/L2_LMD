@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'DELETE'
                 })
                 .then(response => {
-                    if (response.ok) {
+                    if (response.status === 200) {
                         // Optionnel : rafraîchir la page ou retirer la ligne du tableau
                         location.reload();
                     } else {

@@ -19,10 +19,10 @@
           return strip_tags(htmlspecialchars(trim($value)));
        }
 
-       private  function message_box(string $message):void
-       {
-         echo "<script>window.alert('" . $message . "');</script>";
-       }
+      //  private  function message_box(string $message):void
+      //  {
+      //    echo "<script>window.alert('" . $message . "');</script>";
+      //  }
         /** 
         * @param string $cookie_name : nom cookie
         * @param array $datas :  tableau a stocker dans le cookie
@@ -84,12 +84,12 @@
                   $_SESSION['user'] = Database::executeQuery('SELECT * FROM users  WHERE mails=:mail',[':mail' => $email],2)[0];
                   $_SESSION['points'] = (new \App\Controllers\User\User())->getPoints((int)$_SESSION['user']['id_user']);
                   $this->souviens_toi_de_moi("Tokken",$datas,$datas['remember']?? '');
-                  \App\Controllers\FactoryController::getController('log')->addLog(
-                  (int)$_SESSION['user']['id_user'],
-                   'Connexion effectué',
-                    $_SESSION['user']['prenoms'].' s\' est connecté',
-                    'fas fa-user'
-                  );
+                  // \App\Controllers\FactoryController::getController('log')->addLog(
+                  // (int)$_SESSION['user']['id_user'],
+                  //  'Connexion effectué',
+                  //   $_SESSION['user']['prenoms'].' s\' est connecté',
+                  //   'fas fa-user'
+                  // );
                   \App\Middlewares\Security\Security::verify_role($_SESSION['user']['role']);
                }
                else{
@@ -137,14 +137,14 @@
                }
                elseif(strlen($datas['pseudo']) < 6)
                {
-                 $_SESSION['message'] = "le pseudo doit avoir au moins 3 caracteres";
+                 $_SESSION['message'] = "le pseudo doit avoir au moins 6 caracteres dont des lettres et des chiffres";
                  header("Location: /login");
                  exit;
                }
 
                 elseif(strlen($datas['prenom']) < 6)
                 {
-                  $_SESSION['message'] = "le prenom doit avoir au moins 3 caracteres";
+                  $_SESSION['message'] = "le prenom doit avoir au moins 6 caracteres";
                   header("Location: /login");
                   exit;
                 }
@@ -172,16 +172,15 @@
  
                elseif(!preg_match("/^[a-zA-Z]*$/",$datas['prenom']) || !preg_match("/^[a-zA-Z]*$/",$datas['sexe']))
                {
-                $_SESSION['message'] = "le nom et genre doivent etre compose de lettre";
+                $_SESSION['message'] = "le prenom et genre doivent etre composer de lettre";
                  header("Location: /register");
                   exit;
                }
                  
               else
               {
-                $user_exists = Database::executeQuery("SELECT * FROM users WHERE mails=:email AND mdps=:mdp",[
+                $user_exists = Database::executeQuery("SELECT * FROM users WHERE mails=:email",[
                   ':email' => $this->filter_array($datas['email']),
-                  ':mdp' => $this->filter_array( $datas['password'])
                 ],2);
 
               

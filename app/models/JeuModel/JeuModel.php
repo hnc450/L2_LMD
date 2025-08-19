@@ -40,6 +40,9 @@
           $query = "SELECT jeux.*,categories.categorie as categorie FROM jeux INNER JOIN categories ON jeux.id_categorie = categories.id_categorie";
           return \App\Models\Database\Database::QueryRequest($query,2);
       }
+      public static function getJeu(){
+         return \App\Models\Database\Database::QueryRequest('SELECT id_jeu, titre FROM jeux ',2);
+      }
 
       /**
        * Met à jour un jeu existant.

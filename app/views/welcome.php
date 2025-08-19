@@ -16,8 +16,8 @@
                     <img src="img/welcome1.jpg" alt="Bienvenue">
                 </div>
                 <div class="welcome-text">
-                    <h1>Bienvenue dans Le Monde Dans Ma Poche</h1>
-                    <p>Découvrez le monde à travers des quiz interactifs et amusants</p>
+                    <h1>Bienvenue dans Le Monde Dans World</h1>
+                    <p>Découvrez le monde à travers des explorations et quiz amusants</p>
                 </div>
             </div>
 
@@ -28,7 +28,7 @@
                 </div>
                 <div class="welcome-text">
                     <h1>Apprenez en vous amusant</h1>
-                    <p>Des modules adaptés à votre âge pour progresser à votre rythme</p>
+                    <p>Des explorations adaptés  pour apprendre à votre rythme</p>
                 </div>
             </div>
 
@@ -38,8 +38,8 @@
                     <img src="img/welcome3.jpg" alt="Compétition">
                 </div>
                 <div class="welcome-text">
-                    <h1>Relevez des défis</h1>
-                    <p>Gagnez des trophées et montez dans les ligues</p>
+                    <h1>Faites des quiz</h1>
+                    <p>Faite des quiz pour tester les connaissances acquises</p>
                 </div>
             </div>
 
@@ -50,7 +50,7 @@
                 </div>
                 <div class="welcome-text">
                     <h1>Prêt à commencer l'aventure?</h1>
-                    <p>Rejoignez des milliers d'explorateurs du monde entier</p>
+                    <p>Rejoignez l exploration du monde</p>
                     <div class="welcome-buttons">
                         <a href="/login" class="btn-welcome">Se connecter</a>
                         <a href="/user/home" class="btn-welcome primary">Commencer</a>

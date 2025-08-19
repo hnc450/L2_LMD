@@ -134,13 +134,13 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-options">
+                    <!-- <div class="form-options">
                         <label class="checkbox-container">
                             <input type="checkbox" id="termsAccept" required>
                             <span class="checkmark"></span>
                             J'accepte les <a href="#">conditions d'utilisation</a>
                         </label>
-                    </div>
+                    </div> -->
                     <button type="submit" class="btn-auth">S'inscrire</button>
                 </form>
             </div>

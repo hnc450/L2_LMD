@@ -32,3 +32,7 @@
 //    echo $module['categorie'];
 //   //  var_dump(json_decode($module['content']));
 // } ?>
+
+<?php 
+   var_dump(\App\Models\QuestionModel::getReponse(1));
+?>

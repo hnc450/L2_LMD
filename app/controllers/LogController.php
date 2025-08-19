@@ -1,12 +1,12 @@
 <?php 
    namespace App\Controllers;
 
-   class LogController implements \App\Models\TableInterfaceModel{
+   class LogController {
 
     public function one(int $id){
       return \App\Models\Database\Database::executeQuery('SELECT * FROM logs WHERE id=:id',[':id' => $id],2)[0];
     }
-
+ 
      public function allLog(){
         return \App\Models\Database\Database::QueryRequest('SELECT * FROM logs ORDER BY id DESC LIMIT 5 ',2);
      }

@@ -64,10 +64,10 @@
                         <div class="stat-info">
                             <h3><?=$stats['jeux'][0]['nombres_jeux']?></h3>
                             <p>Jeux</p>
-                            <!-- <div class="stat-trend positive">
+                            <div class="stat-trend positive">
                                 <i class="fas fa-arrow-up"></i>
                                 <span>15% ce mois</span>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
 
@@ -80,10 +80,10 @@
                                 <?= $stats['categories'][0]['nombre_categorie'] ?>
                             </h3>
                             <p>Catégorie<?= $stats['categories'][0]['nombre_categorie'] > 1 ?'s':'' ?></p>
-                            <!-- <div class="stat-trend positive">
+                            <div class="stat-trend positive">
                                 <i class="fas fa-arrow-up"></i>
                                 <span>5% ce mois</span>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -146,7 +146,7 @@
                         </div>
                       <?php endforeach ?>
 
-                        <!-- <div class="activity-item">
+                        <div class="activity-item">
                             <div class="activity-icon user">
                                 <i class="fas fa-user"></i>
                             </div>
@@ -177,12 +177,10 @@
                                 <p>50 nouvelles questions ajoutées</p>
                             </div>
                             <span class="activity-time">Il y a 2h</span>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
                 
-
-                <!-- Métriques de performance -->
                 <div class="performance-metrics">
                     <div class="metric-card">
                         <div class="metric-header">
@@ -211,6 +209,7 @@
                         <div class="metric-chart"></div>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>

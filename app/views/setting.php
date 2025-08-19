@@ -96,7 +96,7 @@
                     </div>
                 </section>
 
-                <section class="settings-section">
+                <!-- <section class="settings-section">
                     <h2>Notifications</h2>
                     
                     <div class="settings-options">
@@ -121,7 +121,7 @@
                             </label>
                         </div>
                     </div>
-                </section>
+                </section> -->
 
                 <section class="settings-section">
                     <h2>Session</h2>

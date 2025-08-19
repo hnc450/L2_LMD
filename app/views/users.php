@@ -117,11 +117,7 @@
                                           >
                                               <i class="fas fa-edit" style="color: #fff;"></i>
                                           </button>
-                                          <a href="/administration/user/<?= $users['id_user'] ?>" style="text-decoration: none;">
-                                                 <button class="btn-icon ban" title="Bannir" >
-                                                     <i class="fas fa-eye" ></i>
-                                                 </button>
-                                          </a>
+                                      
                                           <button class="btn-icon delete" title="Supprimer" data-user-id="<?= $users['id_user'] ?>" style="color: #fff;">
                                               <i class="fa-solid fa-trash"></i>
                                           </button>
@@ -301,6 +297,6 @@ document.querySelectorAll('.filter-select').forEach(function(select) {
     });
 });
 </script>
-    <script src="/js/script.js" defer></script>
+<script src="/js/script.js" defer></script>
 </body>
 </html> 

@@ -9,6 +9,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion du Contenu - Le Monde Dans Ma Poche</title>
+  <!-- boostrap link-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/theme.css">
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/popup.css">
@@ -186,12 +188,17 @@
                         Nouveau Module
                     </button>
                     <button class="action-btn tertiary">
-                        <i class="fas fa-compass"></i>
+                       
                         Nouvelle Exploration
                     </button>
-                    <button class="action-btn quaternary">
+                    <button class="action-btn quaternary" data-bs-toggle="modal" ata-bs-target="#exampleModal" >
                         <i class="fas fa-upload"></i>
-                        Importer Contenu
+                    
+                    </button>
+                    
+                    <button type="button" class="action-btn quaternary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                     <i class="fa-solid fa-plus"></i>
+                      Ajouter une question
                     </button>
                 </div>
 
@@ -207,15 +214,15 @@
                             <span class="stat-change positive">+12 cette semaine</span>
                         </div>
                     </div>
-                    <div class="stat-card">
+                     <div class="stat-card">
                         <div class="stat-icon module">
                             <i class="fas fa-book"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Modules</h3>
                             <p class="stat-number"> <?= $contenus['modules'][0]['nombre_modules']?> </p>
-                            <span class="stat-change positive">+3 ce mois</span>
-                        </div>
+                          <span class="stat-change positive">+3 ce mois</span> 
+                        </div> 
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon exploration">
@@ -234,7 +241,7 @@
                         <div class="stat-info">
                             <h3>En Attente</h3>
                             <p class="stat-number">0</p>
-                            <span class="stat-change negative">Nécessite révision</span>
+                            <span class="stat-change negative">Nécessite révision</span> 
                         </div>
                     </div>
                 </div>
@@ -616,13 +623,62 @@
     </form>
   </div>
 </div>
-  
+
+<!-- ajout d une question en fonction d un jeu -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">AJouter une question en fonction d un jeu</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/administration/add/quiz/question" method="POST">
+            <div class="form-group">
+                <label for="question-title">Titre de la question</label>
+                <input type="text" id="question-title" name="question" required>
+            </div>
+            <div class="form-group">
+                <label for="question-content">reponse 1:</label>
+                <input id="question-content" name="reponse1" rows="3" required>
+            </div>
+            <div class="form-group">
+                <label for="question-content">reponse 2:</label>
+                <input id="question-content" name="reponse2" rows="3" required>
+            </div>
+
+            <div class="form-group">
+               <label for="question-content">reponse 3:</label>
+                <input id="question-content" name="reponse3" rows="3" required>
+            </div>
+            <div class="form-group">
+                <label for="question-content">bonne reponse:</label>
+                <input id="question-content" name="bonne_reponse" rows="3" required>
+            </div>
+                  <select name="id_jeu" id="" class="form-select">
+                    <?php foreach(\App\Models\JeuModel\JeuModel::getJeu() as $jeux): ?>
+                      <option value="<?= $jeux['id_jeu'] ?>"> <?= $jeux['titre']?></option>
+                    <?php endforeach?>
+                  </select>
+          
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--  -->
     <script src="/js/dashboard.js"></script>
     <script src="/js/include.js"></script>
     <script src="/js/popup.js"></script>
     <script src="/js/script.js" defer></script>
     <script src="/js/analytics.js"></script>
     <script src="/js/admin-dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <script>
     document.querySelectorAll('.btn-small.delete, .btn-icon.delete').forEach(btn => {
         btn.addEventListener('click', function() {

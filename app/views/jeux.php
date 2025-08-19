@@ -243,7 +243,7 @@ use App\Models\JeuModel\JeuModel;
                             <button class="filter-btn">15+</button>
                         </div>
                     </div>
-                    <!-- <div class="filter-group">
+                    <div class="filter-group">
                         <label>Difficulté</label>
                         <div class="filter-options">
                             <button class="filter-btn active">Tous</button>
@@ -251,7 +251,7 @@ use App\Models\JeuModel\JeuModel;
                             <button class="filter-btn">Moyen</button>
                             <button class="filter-btn">Difficile</button>
                         </div>
-                    </div> -->
+                    </div>
                 </section>
 
                 <section class="games-grid">
@@ -259,7 +259,7 @@ use App\Models\JeuModel\JeuModel;
                     <div class="game-card"  data-category="<?= htmlspecialchars($jeu['id_categorie'] ?? '') ?>" data-age="<?= htmlspecialchars($jeu['age'] ?? '') ?>">
                         <div class="game-image">
                             <img src="<?= htmlspecialchars($jeu['slug_img'] ?? 'img/placeholder.svg') ?>" alt="Quiz <?= htmlspecialchars($jeu['titre'] ?? '') ?>">
-                            <div class="game-badge"><?= htmlspecialchars($jeu['age'] ?? '') ?></div>
+                            <!-- <div class="game-badge"> htmlspecialchars($jeu['age'] ?? '') ?></div> -->
                         </div>
                         <div class="game-info">
                             <h3><?= htmlspecialchars($jeu['titre'] ?? '') ?></h3>

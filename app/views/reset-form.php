@@ -95,7 +95,7 @@ body {
       <i class="fas fa-envelope"></i>
     </div>
     <h2>Envoyer un mail</h2>
-    <div class="form-help">Entrez votre adresse email pour recevoir un lien de réinitialisation.</div>
+    <div class="form-help">Entrez votre adresse email pour recevoir un code de réinitialisation du mot de passe.</div>
     <form action="/send/mail" method="post" autocomplete="off">
         <?= \App\Models\Component\Component::Input('email','mail','Entrez votre email',null,null);?>
         <?= \App\Models\Component\Component::Button('submit','Soumettre') ?>

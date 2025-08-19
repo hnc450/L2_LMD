@@ -2,7 +2,7 @@
 <div id="editQuizModal" style="display:none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
   <div class="modal-content" style="background: var(--bg-color, #fff); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 500px; width: 100%; margin: auto; padding: 2rem 1.5rem; position: relative;">
     <span class="close-btn" onclick="closeEditQuizModal()" style="position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; cursor: pointer;">&times;</span>
-    <h2 style="text-align:center; color: var(--text-color, #222); margin-bottom: 1.5rem;">Modifier le Quiz</h2>
+    <h2 style="text-align:center; color: var(--text-color, #222); margin-bottom: 1.5rem;">Modifier le jeu</h2>
     <form id="editQuizForm">
       <input type="hidden" name="id_jeu" id="edit-quiz-id">
       <div class="form-group">
@@ -83,7 +83,7 @@
   <div class="modal-content" style="background: var(--bg-color, #fff); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 500px; width: 100%; margin: auto; padding: 2rem 1.5rem; position: relative;">
     <span class="close-btn" onclick="closeEditExplorationModal()" style="position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; cursor: pointer;">&times;</span>
     <h2 style="text-align:center; color: var(--text-color, #222); margin-bottom: 1.5rem;">Modifier l'Exploration</h2>
-    <form id="editExplorationForm">
+    <form id="editExplorationForm" action="/administration/exploration/1" method="POST">
       <input type="hidden" name="id_exploration" id="edit-exploration-id">
       <div class="form-group">
         <label for="edit-title-exploration">Titre</label>
@@ -269,21 +269,21 @@ function closeEditExplorationModal() {
     document.getElementById('editExplorationModal').style.display = 'none';
 }
 
-document.getElementById('editExplorationForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const id = document.getElementById('edit-exploration-id').value;
-    const data = Object.fromEntries(new FormData(this).entries());
-    fetch(`/administration/exploration/${id}`, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    })
-    .then(res => {
-        if (res.ok) {
-            location.reload();
-        } else {
-            alert('Erreur lors de la modification');
-        }
-    });
-});
+// document.getElementById('editExplorationForm').addEventListener('submit', function(e) {
+//     e.preventDefault();
+//     const id = document.getElementById('edit-exploration-id').value;
+//     const data = Object.fromEntries(new FormData(this).entries());
+//     fetch(`/administration/exploration/${id}`, {
+//         method: 'PUT',
+//         headers: {'Content-Type': 'application/json'},
+//         body: JSON.stringify(data)
+//     })
+//     .then(res => {
+//         if (res.ok) {
+//             location.reload();
+//         } else {
+//             alert('Erreur lors de la modification');
+//         }
+//     });
+// });
 </script>

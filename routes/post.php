@@ -26,7 +26,10 @@
         //\App\Middlewares\Security\Security::require_role('administrateur');
         \App\Controllers\Admin\Admin::ajouter_un_jeu($_POST, $_SERVER['REQUEST_METHOD']);
     });
-    
+    Route::post('/administration/add/quiz/question', function() {
+        //\App\Middlewares\Security\Security::require_role('administrateur');
+        \App\Controllers\Admin\Admin::ajouter_question($_POST);
+    });
     Route::post('/administration/add/category', function() {
         //\App\Middlewares\Security\Security::require_role('administrateur');
         \App\Controllers\Admin\Admin::ajouter_une_categorie($_POST);
@@ -97,13 +100,14 @@
            \App\Controllers\FactoryController::getController('Game')->userInGame((int)$_SESSION['user']['id_user']);
            $question = $data['question'];
            $reponse = $data['reponse'];
-           $bonne_reponse = \App\Models\QuestionModel::getReponse($question);
+           $bonne_reponse =(int)\App\Models\QuestionModel::getReponse($question);
 
            if($reponse == $bonne_reponse){
-              $points = (new \App\Controllers\GameController())->addPoint($question, $reponse);
+             $points = (new \App\Controllers\GameController())->addPoint($question, $reponse);
              $data = [
                'status' => 'success',
                'message' => 'reponse correct !',
+               'reponse' => $reponse
             
              ];
             echo  json_encode($data);
@@ -111,7 +115,9 @@
            } else {
              $data = [
                'status' => 'error',
-               'message' => ' reponse incorrect !'
+               'message' => ' reponse incorrect !',
+               'reponse' => $reponse,
+               'bonne_reponse' => $bonne_reponse
              ];
             echo  json_encode($data);
            }
@@ -136,5 +142,11 @@
 
     Route::post('/administration/module/[i:id]',function($id){
         \App\Controllers\Admin\Admin::supprimer_module((int)$id['id']);
-    })
+    });
+
+    Route::post('/administration/exploration/[i:id]', function($id) {
+    //    \App\Middlewares\Security\Security::require_role('administrateur');
+       \App\Controllers\Admin\Admin::modifier_exploration($_POST, $_SERVER['REQUEST_METHOD'], (int)$id['id']);
+   });
+   
 ?> 

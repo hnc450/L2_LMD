@@ -15,10 +15,16 @@
                     return false;
                 }
              // ajout du log pour supprimer les utilisateurs
-             //   \App\Controllers\FactoryController::getController('log')->addLog();
-                $query = "DELETE FROM users WHERE id_user = $user_id";
-                $result = Database::QueryRequest($query, 4);
-                header("Location: /admin/dahsboard");
+            //    \App\Controllers\FactoryController::getController('log')->addLog((int) $_SESSION['user']['id_user'],'Suppression utilisateur');
+                // $query = " DELETE FROM users WHERE id_user = ?";
+                // $result = Database::QueryRequest($query, 4);
+                // Database::executeQuery('DELETE FROM  points WHERE user_id =:id', [':id' => $user_id ], 4);
+                Database::executeQuery('DELETE FROM  users WHERE id_user =:id', [':id' => $user_id ], 4);
+                // Database::executeQuery('DELETE FROM logs WHERE user_id = :id', [':id' => $user_id], 4);
+                // Database::executeQuery('DELETE FROM messages WHERE sender_id = :id', [':id' => $user_id], 4);
+                
+                // Database::executeQuery($query, [':id' => $user_id], 4);
+             
                 
             } catch (\PDOException $e) {
               
@@ -135,12 +141,16 @@
 
         public static function modifier_exploration(array $datas, string $methode, int $id)
         {
-            if($methode === "PUT")
+          
+            if($methode === "PUT" || $methode === "POST")
             {
+                $id = (int) $datas['id_exploration'] ?? 0;
                 $titre = $datas['titre'] ?? '';
                 $categorie = $datas['categorie'] ?? '';
-                $info = $datas['info'] ?? '';
-               // Exploration::update($id, $titre, $categorie, $info);
+                $info = $datas['description'] ?? '';
+                $image = $datas['slug'] ?? '';
+                $contenu = $datas['contenu'] ?? '';
+                Exploration::update($id, $titre, $categorie, $info,$image, $contenu);
                 header("Location: /administration/contenus");
             }
             else
@@ -304,7 +314,27 @@
         public static function save_admin_setting($name, $value,$id) {
             return \App\Models\SettingModel::saveSetting($name, $value, $id); 
         }
-    
+
+        public static function  ajouter_question(array $datas)
+        {
+            if($datas !== null)
+            {
+                $params = [
+                    ':id_jeu' => $datas['id_jeu'],
+                    ':question' => $datas['question'],
+                    ':reponse1' => $datas['reponse1'],
+                    ':reponse2' => $datas['reponse2'],
+                    ':reponse3' => $datas['reponse3'],
+                    ':bonne_reponse' => $datas['bonne_reponse']
+                ];
+                Database::executeQuery("INSERT INTO questions(id_jeu, questions, answer_1, answer_2, answer_3, correct) VALUES (:id_jeu, :question, :reponse1, :reponse2, :reponse3, :bonne_reponse)", $params, 1);
+                header("Location: /administration/contenus");
+            }
+            else
+            {
+                header("Location: /administration/contenus?message=veuillez remplir tout les champs");
+            }
+        }
         // Supprimer un paramètre admin
         public static function delete_admin_setting($id) {
             return \App\Models\SettingModel::deleteSetting($id);

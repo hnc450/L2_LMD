@@ -35,20 +35,20 @@
 
                         <!-- Affichage de l'avatar utilisateur (ou avatar par défaut) -->
                         <img src="<?= $_SESSION['user']['avatar'] ? $_SESSION['user']['avatar'] : '/assets/avatar.png' ?>" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
-                        <!-- <form action="/user/profile/avatar" method="POST" enctype="multipart/form-data" style="margin-top:10px;">
+                        <form action="/user/profile/avatar" method="POST" enctype="multipart/form-data" style="margin-top:10px;">
                             <input type="file" name="image" accept="image/*" required>
                             <button type="submit" class="btn-primary">Changer d'avatar</button>
-                        </form> -->
-                        <?php // if (isset($uploadError)): ?>
-                            <!-- <div style="color:red; font-size:14px; margin-top:5px;"> <?= $uploadError ?> </div> -->
-                        <?php //endif; ?>
+                        </form>
+                        <?php  if (isset($uploadError)): ?>
+                            <div style="color:red; font-size:14px; margin-top:5px;"> <?= $uploadError ?> </div>
+                        <?php endif; ?>
                         <!-- Bouton de suppression d'avatar -->
-                        <!-- <button id="delete-avatar-btn" class="btn-danger" style="margin-top:5px;">Supprimer l'avatar</button> -->
+                        <button id="delete-avatar-btn" class="btn-danger" style="margin-top:5px;">Supprimer l'avatar</button>
                     </div>
                     <div class="profile-info">
                         <h2><?= $_SESSION['user']['status'] ? "<i class='fa-solid fa-circle' style='color: green;'></i>" : "<i class='fa-solid fa-circle' style='color: red;'></i>" ?> <?= $_SESSION['user']['prenoms'] ?></h2>
-                        <!-- <p class="profile-rank"><i class="fas fa-gem"></i> Ligue Bronze</p>
-                        <p class="profile-joined"><i class="fas fa-calendar"></i> : ------</p> -->
+                        <p class="profile-rank"><i class="fas fa-gem"></i> Ligue Bronze</p>
+                        <p class="profile-joined"><i class="fas fa-calendar"></i> : ------</p>
                     </div>
                 </section>
 
@@ -78,7 +78,7 @@
                     </div>
                 </section>
 
-                <!-- <section class="trophies-section">
+                <section class="trophies-section">
                     <div class="section-header">
                         <h2>Mes Trophées</h2>
                     </div>
@@ -141,7 +141,7 @@
                             <p>Trophée verrouillé</p>
                         </div>
                     </div>
-                </section> -->
+                </section>
 
                 <section class="recent-activity">
                     <div class="section-header">

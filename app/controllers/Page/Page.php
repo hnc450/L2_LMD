@@ -177,6 +177,7 @@
 
     public function users()
     {
+      
       $this->view('users');
     }
 

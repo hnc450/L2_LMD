@@ -273,7 +273,7 @@
           </div>
           
           <div class="choice">
-            <input type="radio" id="q<?= $value['id_question']?>-choice3" name="q<?= $value['id_question']?>-answer"value="3><">
+            <input type="radio" id="q<?= $value['id_question']?>-choice3" name="q<?= $value['id_question']?>-answer"value="3">
             <label for="q<?= $value['id_question']?>-choice3"><?= $value['answer_3']?></label>
           </div>
         </div>

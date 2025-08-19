@@ -81,15 +81,16 @@ class Exploration
     }
 
     // Mettre à jour une exploration (avec vérification user_id)
-    public static function update($id, $titre, $categorie, $info, $user_id)
+    public static function update($id, $titre, $categorie, $info, $image,$contenu)
     {
-        $query = "UPDATE explorations SET titre_exploration = :titre, categorie = :categorie, info = :info WHERE id = :id AND user_id = :user_id";
+        $query = "UPDATE explorations SET titre_exploration = :titre, category_id = :categorie, description_exploration = :info,contenu_exploration = :content,slug_exploration = :images WHERE id_exploration = :id";
         $params = [
             ':id' => $id,
             ':titre' => $titre,
             ':categorie' => $categorie,
             ':info' => $info,
-            ':user_id' => $user_id
+            ':images' => $image,
+            ':content' => $contenu,
         ];
         return Database::executeQuery($query, $params, 1);
     }

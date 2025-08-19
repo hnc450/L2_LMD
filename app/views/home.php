@@ -36,10 +36,10 @@
                         </div>
                     </div>
                     <div class="stat-card">
-                        <i class="fas fa-trophy"></i>
+                        <i class="fas fa-user"></i>
                         <div>
-                            <h3>Trophées</h3>
-                            <p><?= $_SESSION['user']['trophies'] ?? '0'?></p>
+                            <h3>Bienvenu </h3>
+                            <p><?= $_SESSION['user']['prenoms'] ?? 'Invité'?></p>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -102,18 +102,17 @@
                         <h2>Modules par âge</h2>
                         <a href="/user/modules" class="see-all">Voir tout <i class="fas fa-chevron-right"></i></a>
                     </div>
-                    
-                    <div class="modules-container">
+                   <div class="modules-container">
                         <div class="module-card">
                             <div class="module-icon">
                                 <i class="fas fa-child"></i>
                             </div>
                             <div class="module-info">
                                 <h3>6-8 ans</h3>
-                                <!-- <p>Découverte du monde</p> -->
-                                <!-- <div class="progress-bar">
+                               <p>Découverte du monde</p> 
+                               <div class="progress-bar">
                                     <div class="progress" style="width: 75%"></div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                         <div class="module-card">
@@ -121,11 +120,11 @@
                                 <i class="fas fa-child"></i>
                             </div>
                             <div class="module-info">
-                                <h3>9-11 ans</h3>
-                                <!-- <p>Exploration avancée</p>
+                                <h3>9-11 ans</h3> 
+                                <p>Exploration avancée</p>
                                 <div class="progress-bar">
                                     <div class="progress" style="width: 45%"></div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                         <div class="module-card">
@@ -133,11 +132,11 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="module-info">
-                                <h3>12-14 ans</h3>
-                                <!-- <p>Connaissances intermédiaires</p>
+                                <h3>12-14 ans</h3> 
+                                <p>Connaissances intermédiaires</p>
                                 <div class="progress-bar">
                                     <div class="progress" style="width: 30%"></div>
-                                </div> -->
+                                </div> 
                             </div>
                         </div>
                         <div class="module-card">
@@ -145,11 +144,11 @@
                                 <i class="fas fa-user-graduate"></i>
                             </div>
                             <div class="module-info">
-                                <h3>15+ ans</h3>
-                                <!-- <p>Expertise mondiale</p>
+                                <h3>15+ ans</h3> 
+                                <p>Expertise mondiale</p>
                                 <div class="progress-bar">
                                     <div class="progress" style="width: 15%"></div>
-                                </div> -->
+                                </div> 
                             </div>
                         </div>
                     </div>

@@ -63,6 +63,10 @@
     });
 
     Route::get('/administration/users',function() use($view){
+     // \App\Middlewares\Security\Security::verify_role($_SESSION['user']['role']);
+     if($_SESSION['user']['role'] !== "administrateur"){
+      header('Location: /user/home');
+     }
       $view->users();
     });
 
@@ -91,7 +95,7 @@
     });
 
     Route::get('/forget/password',function(){
-      \App\Controllers\Page\Page::getPage('form');
+      \App\Controllers\Page\Page::getPage('reset-form');
     });
     
     Route::get('/reset/password',function(){
